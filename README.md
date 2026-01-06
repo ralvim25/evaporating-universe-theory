@@ -34,7 +34,7 @@ To install CLASS, please refer to the [official CLASS repository](https://github
 Simply run the main script to generate the plots:
 
 ```bash
-python plot_figures.py
+python evaporating_universe_alvim_theory.py
 ```
 The output images will be saved in the root directory as PNG files (300 DPI).
 
