@@ -1,5 +1,0 @@
-numpy>=1.20.0
-matplotlib>=3.4.0
-scipy>=1.7.0
-# Note: 'classy' (CLASS Boltzmann Solver) must be installed manually or via conda.
-# If unavailable, Figures 4 and 5 will be skipped.
