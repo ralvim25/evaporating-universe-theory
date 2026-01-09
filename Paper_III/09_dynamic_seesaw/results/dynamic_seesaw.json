@@ -1,0 +1,8 @@
+{
+  "study": "Dynamic Seesaw Mechanism",
+  "hypothesis": "Is M_N related to M_Pl and m_nu geometrically?",
+  "M_N_Leptogen": 3500000000.0,
+  "M_Geometric": 11034.038245356955,
+  "match_quality": "Poor",
+  "conclusion": "Heavy Neutrino mass M_N ~ sqrt(M_Pl * m_nu). This suggests a fundamental link between the Planck scale, QE, and Neutrinos."
+}

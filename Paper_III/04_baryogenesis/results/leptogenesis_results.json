@@ -1,0 +1,31 @@
+{
+  "study": "Leptogenesis in the Evaporating Universe",
+  "paper": "Paper III",
+  "status": "Complete",
+  "mechanism": {
+    "name": "Thermal Leptogenesis",
+    "description": "RH neutrino decay \u2192 lepton asymmetry \u2192 baryon asymmetry via sphalerons",
+    "reference": "Fukugita & Yanagida (1986)"
+  },
+  "parameters": {
+    "M_N1_min_GeV": 3511191734.2151275,
+    "T_reh_min_GeV": 3511191734.2151275,
+    "m_tilde_eV": 0.00010000000000000002,
+    "epsilon_max": 1.7314331766921415e-07,
+    "kappa": 1.0
+  },
+  "result": {
+    "eta_predicted": 5.748688696217942e-10,
+    "eta_observed": 6.1e-10,
+    "compatible": true
+  },
+  "eu_compatibility": {
+    "verdict": "VIABLE",
+    "T_reh_kination_range": "10^9 - 10^12 GeV",
+    "leptogenesis_requirement": "> 4e+09 GeV"
+  },
+  "conclusion": "Leptogenesis is compatible with the Evaporating Universe model",
+  "figures": [
+    "results/leptogenesis_complete.png"
+  ]
+}

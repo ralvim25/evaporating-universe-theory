@@ -1,0 +1,41 @@
+{
+  "study": "Cosmic Spark Energy Release",
+  "paper": "Paper III",
+  "status": "Complete",
+  "methodology": {
+    "approach": "Two-step: per causal patch \u00d7 number of patches",
+    "key_insight": "Use physically correct horizon at GUT epoch, not today's universe"
+  },
+  "gut_epoch_parameters": {
+    "Lambda_GeV": 1e+16,
+    "t_GUT_seconds": 1e-36,
+    "r_H_meters": 2.9979999999999996e-28,
+    "rho_J_per_m3": 2.09e+101
+  },
+  "per_causal_patch": {
+    "E_J": 2.35e+19,
+    "E_Hiroshima": 375000.0
+  },
+  "total_observable_universe": {
+    "N_patches": 3.16e+162,
+    "E_total_J": 7.44e+181,
+    "E_Hiroshima": 1.19e+168,
+    "log10_Hiroshima": 168,
+    "E_solar_masses": 4.16e+134
+  },
+  "analogy": {
+    "fuel": "Scalar field \u03c6 (false vacuum energy)",
+    "detonator": "Quantum fluctuation / instability",
+    "explosion": "Latent heat release via \u0393\u03c6\u0307\u00b2",
+    "product": "Primordial plasma + gamma rays"
+  },
+  "key_equations": {
+    "energy_density": "\u03c1 = \u039b\u2074 / (\u0127c)\u00b3",
+    "energy_per_patch": "E_patch = \u03c1 \u00d7 (4\u03c0/3)r_H\u00b3",
+    "total_energy": "E_total = N_patches \u00d7 E_patch",
+    "dissipation": "\u03c1\u0307_\u03b3 = \u0393 \u03c6\u0307\u00b2"
+  },
+  "figures": [
+    "figures/cosmic_spark_energy.png"
+  ]
+}

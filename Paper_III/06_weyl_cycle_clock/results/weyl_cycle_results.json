@@ -1,0 +1,63 @@
+{
+  "study": "Weyl Cycle Clock",
+  "paper": "Paper III",
+  "status": "Complete",
+  "terminology": {
+    "origin": "Cosmic Spark",
+    "note": "Replaces 'Big Bang' - dissipative phase transition, not singularity"
+  },
+  "parameters": {
+    "t_peak_Gyr": 5.0,
+    "t_today_Gyr": 13.8,
+    "tau_evap_Gyr": 4.8,
+    "dof_today": 1.8,
+    "dof_min": 1,
+    "dof_max": 6
+  },
+  "key_results": {
+    "progress_percent": 84.0,
+    "t_freeze_99_percent_Gyr": 27.1,
+    "time_until_freeze_Gyr": 13.3,
+    "total_cycle_duration_Gyr": 27.1
+  },
+  "milestones": {
+    "99% evaporated": {
+      "dof": 1.05,
+      "cosmic_time_Gyr": 27.11,
+      "years_from_now_Gyr": 13.31,
+      "progress_percent": 99.0
+    },
+    "95% evaporated": {
+      "dof": 1.25,
+      "cosmic_time_Gyr": 19.39,
+      "years_from_now_Gyr": 5.59,
+      "progress_percent": 95.0
+    },
+    "90% evaporated": {
+      "dof": 1.5,
+      "cosmic_time_Gyr": 16.06,
+      "years_from_now_Gyr": 2.26,
+      "progress_percent": 90.0
+    },
+    "Today": {
+      "dof": 1.8,
+      "cosmic_time_Gyr": 13.8,
+      "years_from_now_Gyr": 0.0,
+      "progress_percent": 84.0
+    },
+    "50% evaporated": {
+      "dof": 3.5,
+      "cosmic_time_Gyr": 8.33,
+      "years_from_now_Gyr": -5.47,
+      "progress_percent": 50.0
+    }
+  },
+  "interpretation": {
+    "meaning": "The universe is 84% through its complexity cycle",
+    "current_state": "Active evaporation phase",
+    "fate": "Conformal equivalence to Cosmic Spark (Penrose CCC)"
+  },
+  "figures": [
+    "figures/weyl_cycle_clock.png"
+  ]
+}
