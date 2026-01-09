@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "analysis": "MCMC SNe Only (M marginalized)",
+    "date": "2026-01-09T03:19:21.034569",
+    "nwalkers": 32,
+    "nsteps": 5000,
+    "burnin": 1000,
+    "note": "M analytically marginalized (Conley et al. 2011)"
+  },
+  "parameters": {
+    "H0": [
+      72.45224327095458,
+      7.272807720670177
+    ],
+    "Omega_m": [
+      0.154543948081465,
+      0.004444714469785668
+    ],
+    "w0": [
+      -0.930427101211249,
+      0.13068603957072195
+    ],
+    "z_trans": [
+      0.2780252544311044,
+      0.12207961527553898
+    ]
+  },
+  "maturity": "Paper Standard",
+  "figures": [
+    "mcmc_sne_only_corner.png"
+  ]
+}

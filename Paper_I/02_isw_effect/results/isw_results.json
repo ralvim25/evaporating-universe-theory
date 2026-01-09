@@ -1,0 +1,8 @@
+{
+  "study": "Exact ISW Analysis",
+  "method": "Full Growth ODE Solver (No approximations)",
+  "model_w": "Physical Tracker-to-Phantom (Study 10)",
+  "peak_isw_diff": 0.06837888179670445,
+  "peak_z": 1.2441471571906355,
+  "verdict": "Significant enhancement around transition, falsifiable with Euclid/LSST."
+}
