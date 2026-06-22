@@ -16,7 +16,7 @@ The Evaporating Universe (EU) is an interacting dark energy model in which a Gri
 | Result | Value |
 |:--|:--|
 | Hubble tension | Resolved from 5.8σ to **0.52σ** |
-| Growth tension (S₈) | Resolved from ~2.6σ to **~1σ** |
+| Growth tension (S₈) | Resolved from ~2.6σ to **0.58σ** |
 | Additional free parameters | **0** |
 | Model selection (ΔAIC) | **−6.88** (strong evidence) |
 | DESI DR2 CPL mirage | Predicted w₀ = −0.855, observed −0.838 ± 0.055 (**0.3σ**) |
