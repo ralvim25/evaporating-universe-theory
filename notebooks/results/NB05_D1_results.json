@@ -1,0 +1,267 @@
+{
+  "_metadata": {
+    "notebook": "NB05_MCMC_D1",
+    "run_label": "D1 (eu_NB05D1, eu_has_ide_perturbations=1)",
+    "run_description": "ON (full IDE: background + perturbation source terms)",
+    "date": "2026-06-15T19:59:38",
+    "source": "eu_NB05D1 (8 chains)",
+    "convergence": {
+      "R-1_max_post_burnin": 0.00785,
+      "R-1_max_cobaya": 0.006563,
+      "target": 0.01,
+      "status": "FULLY_CONVERGED"
+    },
+    "samples_weighted": 240880,
+    "effective_sample_size": {},
+    "n_chains": 8,
+    "burn_in": "30%",
+    "crosscheck": "PASSED",
+    "software": {
+      "cobaya": "3.6.2",
+      "getdist": "1.7.7",
+      "class": "v3.3.4",
+      "eu_patch": "vf1.3"
+    },
+    "likelihoods": [
+      "planck_NPIPE_highl_CamSpec.TTTEEE",
+      "planck_2018_lowl.TT",
+      "planck_2018_lowl.EE",
+      "planck_2018_lensing.clik",
+      "bao.desi_dr2",
+      "sn.pantheonplus",
+      "shoes_lki.SH0ES_LKI"
+    ],
+    "n_data_per_likelihood": {
+      "planck_NPIPE_highl_CamSpec.TTTEEE": 9915,
+      "planck_2018_lowl.TT": 28,
+      "planck_2018_lowl.EE": 396,
+      "planck_2018_lensing.clik": 9,
+      "bao.desi_dr2": 12,
+      "sn.pantheonplus": 1701
+    },
+    "n_data_total": 12061,
+    "n_sampled_params": 15,
+    "n_dof": 12046,
+    "chi2_per_dof": 1.0291
+  },
+  "cosmological_params": {
+    "omega_b": {
+      "mean": 0.022205,
+      "std": 0.000122,
+      "bestfit": 0.022141,
+      "R-1": 0.000617,
+      "median": 0.022206,
+      "68_lower": 0.022083,
+      "68_upper": 0.022327,
+      "95_lower": 0.021965,
+      "95_upper": 0.022445
+    },
+    "omega_cdm": {
+      "mean": 0.119127,
+      "std": 0.000612,
+      "bestfit": 0.118846,
+      "R-1": 0.000626,
+      "median": 0.119123,
+      "68_lower": 0.118518,
+      "68_upper": 0.11974,
+      "95_lower": 0.117936,
+      "95_upper": 0.120332
+    },
+    "theta_s_100": {
+      "mean": 1.041814,
+      "std": 0.000227,
+      "bestfit": 1.041778,
+      "R-1": 0.001022,
+      "median": 1.041813,
+      "68_lower": 1.041589,
+      "68_upper": 1.04204,
+      "95_lower": 1.041373,
+      "95_upper": 1.04226
+    },
+    "tau_reio": {
+      "mean": 0.056372,
+      "std": 0.006924,
+      "bestfit": 0.058635,
+      "R-1": 0.001557,
+      "median": 0.056194,
+      "68_lower": 0.049607,
+      "68_upper": 0.063231,
+      "95_lower": 0.043108,
+      "95_upper": 0.070505
+    },
+    "logA": {
+      "mean": 3.044565,
+      "std": 0.014048,
+      "bestfit": 3.048742,
+      "R-1": 0.001711,
+      "median": 3.044287,
+      "68_lower": 3.030799,
+      "68_upper": 3.058472,
+      "95_lower": 3.017476,
+      "95_upper": 3.072654
+    },
+    "n_s": {
+      "mean": 0.96403,
+      "std": 0.003419,
+      "bestfit": 0.962635,
+      "R-1": 0.004759,
+      "median": 0.964044,
+      "68_lower": 0.96066,
+      "68_upper": 0.967443,
+      "95_lower": 0.957179,
+      "95_upper": 0.970627
+    },
+    "A_planck": {
+      "mean": 1.000828,
+      "std": 0.00247,
+      "bestfit": 1.001092,
+      "R-1": 0.000565,
+      "median": 1.000827,
+      "68_lower": 0.998379,
+      "68_upper": 1.003273,
+      "95_lower": 0.995967,
+      "95_upper": 1.005675
+    }
+  },
+  "derived_params": {
+    "H0": {
+      "mean": 68.958019,
+      "std": 0.269158,
+      "bestfit": 68.986744,
+      "R-1": 0.000617,
+      "median": 68.957213,
+      "68_lower": 68.689646,
+      "68_upper": 69.228318,
+      "95_lower": 68.436465,
+      "95_upper": 69.487469
+    },
+    "sigma8": {
+      "mean": 0.82742,
+      "std": 0.006005,
+      "bestfit": 0.82793,
+      "R-1": 0.002099,
+      "median": 0.827331,
+      "68_lower": 0.821497,
+      "68_upper": 0.833403,
+      "95_lower": 0.815891,
+      "95_upper": 0.839403
+    },
+    "S8": {
+      "mean": 0.809971,
+      "std": 0.007936,
+      "bestfit": 0.809128,
+      "R-1": 0.000975,
+      "median": 0.809956,
+      "68_lower": 0.801994,
+      "68_upper": 0.817888,
+      "95_lower": 0.794577,
+      "95_upper": 0.825553
+    },
+    "Omega_m": {
+      "mean": 0.287486,
+      "std": 0.003252,
+      "bestfit": 0.286529,
+      "R-1": 0.000622,
+      "median": 0.287479,
+      "68_lower": 0.284215,
+      "68_upper": 0.290737,
+      "95_lower": 0.281199,
+      "95_upper": 0.293919
+    },
+    "fcdm_z0": {
+      "mean": 0.955765,
+      "std": 0.0,
+      "bestfit": 0.955765,
+      "R-1": null,
+      "median": 0.955765,
+      "68_lower": 0.955765,
+      "68_upper": 0.955765,
+      "95_lower": 0.955765,
+      "95_upper": 0.955765
+    },
+    "H0_LKI": {
+      "mean": 72.777869,
+      "std": 0.284067,
+      "bestfit": 72.808185,
+      "R-1": 0.000617,
+      "median": 72.777019,
+      "68_lower": 72.49463,
+      "68_upper": 73.063141,
+      "95_lower": 72.227424,
+      "95_upper": 73.336647
+    },
+    "I_GKI": {
+      "mean": 0.067864,
+      "std": 0.0,
+      "bestfit": 0.067864,
+      "R-1": null,
+      "median": 0.067864,
+      "68_lower": 0.067864,
+      "68_upper": 0.067864,
+      "95_lower": 0.067864,
+      "95_upper": 0.067864
+    },
+    "rdrag": {
+      "mean": 147.512549,
+      "std": 0.185295,
+      "bestfit": 147.65846,
+      "R-1": 0.000416,
+      "median": 147.51559,
+      "68_lower": 147.325645,
+      "68_upper": 147.697128,
+      "95_lower": 147.14582,
+      "95_upper": 147.87056,
+      "unit": "Mpc"
+    }
+  },
+  "convergence_per_param": {
+    "omega_b": 0.000617,
+    "omega_cdm": 0.000626,
+    "theta_s_100": 0.001022,
+    "tau_reio": 0.001557,
+    "logA": 0.001711,
+    "n_s": 0.004759,
+    "A_planck": 0.000565,
+    "amp_143": 0.007194,
+    "amp_217": 0.007684,
+    "amp_143x217": 0.00785,
+    "n_143": 0.004562,
+    "n_217": 0.005255,
+    "n_143x217": 0.004362,
+    "calTE": 0.000858,
+    "calEE": 0.001979,
+    "A_s": 0.001729,
+    "H0": 0.000617,
+    "sigma8": 0.002099,
+    "Omega_m": 0.000622,
+    "rdrag": 0.000416,
+    "S8": 0.000975,
+    "H0_LKI": 0.000617
+  },
+  "eu_params_fixed": {
+    "eps_IR": 0.04264,
+    "z_trans": 5.986,
+    "b": 0.52778,
+    "lambda": 0.66667,
+    "eu_has_ide_perturbations": 1
+  },
+  "chi2_bestfit": {
+    "BAO": 12.035724,
+    "CMB": 10974.818,
+    "SN": 1409.0341,
+    "planck_NPIPE_highl_CamSpec.TTTEEE": 10544.629,
+    "planck_2018_lowl.TT": 23.478383,
+    "planck_2018_lowl.EE": 397.22335,
+    "planck_2018_lensing.clik": 9.48757,
+    "bao.desi_dr2": 12.035724,
+    "sn.pantheonplus": 1409.0341,
+    "shoes_lki.SH0ES_LKI": 0.5622278,
+    "total": 12396.45
+  },
+  "chi2_per_dof": 1.0291,
+  "tensions": {
+    "H0_LKI_vs_SH0ES_sigma": 0.46,
+    "H0_GKI_vs_SH0ES_sigma": 4.9,
+    "S8_vs_DES_sigma": 2.0
+  }
+}

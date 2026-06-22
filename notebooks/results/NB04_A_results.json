@@ -1,0 +1,86 @@
+{
+  "metadata": {
+    "notebook": "NB04_Observational_Validation",
+    "version": "v1.0",
+    "date": "2026-06-13 18:54:37.788353",
+    "description": "Observational validation of EU vs LCDM",
+    "upstream": [
+      "NB01_params.json",
+      "NB02_results.json",
+      "NB03_A_results.json"
+    ],
+    "mode": "A",
+    "mode_label": "Planck fiducial (demonstration)",
+    "mode_description": "Mode A: Planck LCDM fiducial in CLASS-EU. Mode B: MCMC C2 posteriors in CLASS-EU. LCDM reference identical in both."
+  },
+  "h0_decomposition": {
+    "H0_Planck": 67.36,
+    "H0_GKI": 68.56195313594621,
+    "dH0_void": 3.8165811932564413,
+    "H0_local": 72.71732158290668,
+    "H0_SH0ES": 73.17,
+    "H0_SH0ES_err": 0.86,
+    "GKI_contribution": 1.2019531359462121,
+    "LKI_contribution": 3.8165811932564413
+  },
+  "observational_hierarchy": {
+    "method": "KBC Void (Wu & Huterer 2017)",
+    "H0_EU_universal": 72.71732158290668
+  },
+  "bridge": {
+    "sigma8_lcdm": 0.8107746245044825,
+    "sigma8_eu": 0.7999306246557912,
+    "S8_lcdm": 0.8310154406585576,
+    "S8_eu": 0.7904385418826303,
+    "S8_obs": 0.776,
+    "S8_obs_err": 0.017,
+    "Omega_m_lcdm": 0.3153,
+    "Omega_m_eu": 0.2929225620374249,
+    "rd_lcdm": 147.0627812755,
+    "rd_eu": 147.0627812882
+  },
+  "bao_dr2": {
+    "chi2_lcdm": 30.67734493110016,
+    "chi2_eu": 19.192114353382593,
+    "delta_chi2": -11.485230577717566,
+    "N_data": 13
+  },
+  "shapefit_dr1": {
+    "chi2_lcdm": 32.39418545699656,
+    "chi2_eu": 28.892161823355,
+    "delta_chi2": -3.50202363364156,
+    "n_bins": 6,
+    "n_dof": 24,
+    "growth_suppression": 0.9866251366027659
+  },
+  "nogo": {
+    "H0_best_lcdm": 68.84422110552764,
+    "H0_best_eu": 69.54773869346734,
+    "Dchi2_at_73": 158.40885302329082,
+    "sigma_wall": 12.586057882565566
+  },
+  "age": {
+    "t0_lcdm_Gyr": 13.7974744935,
+    "t0_eu_Gyr": 13.77017633246,
+    "t_GC_Gyr": 12.6,
+    "pass": true
+  },
+  "grand_chi2": {
+    "chi2_lcdm_total": 1531.96315476896,
+    "chi2_eu_total": 1525.8021337751068,
+    "delta_chi2": -6.161020993853299,
+    "dof_total": 1718,
+    "datasets": [
+      "CMB_TT",
+      "BAO_DR2",
+      "Pantheon+",
+      "CC"
+    ]
+  },
+  "tensions": {
+    "H0_SH0ES_sigma_lcdm": 6.755813953488375,
+    "H0_SH0ES_sigma_eu": 0.5263702524340977,
+    "S8_DES_sigma_lcdm": 3.2362023916798566,
+    "S8_DES_sigma_eu": 0.8493259930958984
+  }
+}

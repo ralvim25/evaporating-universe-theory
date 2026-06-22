@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "method": "Cobaya minimize (BOBYQA, best_of=4)",
+    "date": "2026-06-03T19:36:52",
+    "cobaya_version": "3.6.2",
+    "note": "LCDM best-fit only. Model-independent. Reusable across D2 updates."
+  },
+  "baseline": {
+    "chi2_total": 12399.379,
+    "H0": 67.823297,
+    "sigma8": 0.80319788,
+    "S8": 0.81152607,
+    "Omega_m": 0.30625353,
+    "rdrag": 147.86273,
+    "per_likelihood": {
+      "BAO": 15.37838,
+      "CMB": 10979.095,
+      "SN": 1404.9061,
+      "planck_NPIPE_highl_CamSpec.TTTEEE": 10549.601,
+      "planck_2018_lowl.TT": 23.151218,
+      "planck_2018_lowl.EE": 396.38295,
+      "planck_2018_lensing.clik": 9.9594787,
+      "bao.desi_dr2": 15.37838,
+      "sn.pantheonplus": 1404.9061
+    }
+  },
+  "extended": {
+    "chi2_total": 12428.633,
+    "H0": 68.503639,
+    "S8": 0.80235115,
+    "chi2_shoes": 29.441488618605934,
+    "chi2_des": 2.4027097104584754,
+    "per_likelihood": {
+      "BAO": 10.548699,
+      "CMB": 10979.897,
+      "SN": 1406.3438,
+      "planck_NPIPE_highl_CamSpec.TTTEEE": 10549.643,
+      "planck_2018_lowl.TT": 23.267134,
+      "planck_2018_lowl.EE": 397.0804,
+      "planck_2018_lensing.clik": 9.9056071,
+      "bao.desi_dr2": 10.548699,
+      "sn.pantheonplus": 1406.3438,
+      "shoes_prior": 29.441488,
+      "des_s8_prior": 2.4027099
+    }
+  }
+}

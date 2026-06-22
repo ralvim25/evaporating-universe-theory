@@ -1,0 +1,105 @@
+{
+  "metadata": {
+    "notebook": "NB06_Model_Selection",
+    "version": "v3.0_fairness_analysis",
+    "date": "2026-06-15T21:23:04",
+    "description": "EU vs LCDM model selection via AIC/BIC/Dchi2",
+    "upstream": [
+      "NB05_C2_results.json",
+      "NB05_D2_results.json",
+      "NB03_B_results.json"
+    ],
+    "method": "Cobaya minimize (BOBYQA, best_of=4)",
+    "used_cache": true,
+    "k_EU": 7,
+    "k_LCDM": 7
+  },
+  "baseline": {
+    "datasets": "Planck NPIPE + DESI DR2 + Pantheon+",
+    "chi2_EU": 12396.289,
+    "chi2_LCDM": 12399.379,
+    "delta_AIC": -3.0900000000001455,
+    "evidence": "Positive",
+    "favors": "EU"
+  },
+  "extended": {
+    "datasets": "Baseline + SH0ES (Breuval 2024)",
+    "chi2_EU": 12396.581239559602,
+    "chi2_LCDM": 12438.031289034896,
+    "delta_AIC": -41.45004947529378,
+    "evidence": "DECISIVE",
+    "favors": "EU",
+    "chi2_shoes_EU": 0.292239559601143,
+    "chi2_shoes_LCDM": 38.652289034895965
+  },
+  "lcdm_bestfit": {
+    "H0": 67.823297,
+    "sigma8": 0.80319788,
+    "S8": 0.81152607,
+    "Omega_m": 0.30625353,
+    "rdrag": 147.86273,
+    "chi2_total": 12399.379
+  },
+  "eu_reference": {
+    "H0_GKI": 68.889061,
+    "H0_LKI": 72.705091,
+    "S8_modeB": 0.811168,
+    "chi2_total": 12396.289
+  },
+  "tensions": {
+    "H0 (SH0ES)": {
+      "LCDM": 6.217096511627913,
+      "EU": 0.540591860465123
+    },
+    "S8 (EU internal)": {
+      "LCDM": 2.0897688235294094,
+      "EU": 0.6071773672819775
+    }
+  },
+  "fairness_scenarios": {
+    "note": "DAIC under different void assumptions for transparency",
+    "scenario_1_baseline": {
+      "description": "CMB+BAO+SNe only (no local data)",
+      "delta_AIC": -3.0900000000001455,
+      "evidence": "Positive"
+    },
+    "scenario_2_shoes_no_void": {
+      "description": "+SH0ES, both models use H0_GKI (no void boost)",
+      "H0_EU": 68.889061,
+      "H0_LCDM": 67.823297,
+      "chi2_shoes_EU": 24.77885170595055,
+      "chi2_shoes_LCDM": 38.652289034895965,
+      "delta_AIC": -16.963437328944565,
+      "evidence": "DECISIVE"
+    },
+    "scenario_3_shoes_both_void": {
+      "description": "+SH0ES, both models use H0_LKI (void-boosted). FAIREST.",
+      "H0_EU": 72.705091,
+      "H0_LCDM_local": 71.43177179617167,
+      "chi2_shoes_EU": 0.292239559601143,
+      "chi2_shoes_LCDM": 4.085231596246964,
+      "delta_AIC": -6.882992036646101,
+      "evidence": "Strong"
+    },
+    "scenario_4_shoes_asymmetric": {
+      "description": "+SH0ES, EU uses H0_LKI, LCDM uses H0 (asymmetric, original headline)",
+      "delta_AIC": -41.45004947529378,
+      "evidence": "DECISIVE",
+      "note": "Inflated: EU gets void boost, LCDM does not"
+    },
+    "scenario_5_lcdm_reoptimized": {
+      "description": "LCDM minimizer with SH0ES+DES in likelihood (H0 pushed to 68.50)",
+      "chi2_lcdm_reopt": 12428.633,
+      "delta_AIC": -32.05176044039763,
+      "evidence": "DECISIVE"
+    }
+  },
+  "eu_extended": {
+    "H0_LKI_ext": 72.637708,
+    "S8_ext": 0.815086,
+    "chi2_base_d2": 13026.639,
+    "d2_status": "CONVERGED",
+    "S8_eu_prediction": 0.8110446274433711,
+    "S8_internal_tension_sigma": 0.6071773672819775
+  }
+}

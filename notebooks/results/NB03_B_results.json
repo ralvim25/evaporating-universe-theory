@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "notebook": "NB03_Background_Cosmology",
+    "version": "v4.0_modeB",
+    "date": "2026-06-13 18:36:16.614255",
+    "description": "CLASS-EU background + bridge quantities (Mode B: MCMC C2 posteriors)",
+    "mode": "B",
+    "mode_label": "MCMC C2 posteriors",
+    "upstream": [
+      "NB01_params.json",
+      "NB05_C2_results.json"
+    ]
+  },
+  "diagnostics": {
+    "TKI_analytic": 0.0678466616588982,
+    "TKI_numerical": 0.0678466616588982,
+    "H0_analytic": 68.90074038965024,
+    "H0_numerical": 68.90074038965024,
+    "H0_CLASS_EU": 68.88808054820674,
+    "H0_SH0ES_tension_sigma": 4.978976106736345
+  },
+  "cosmological_params_used": {
+    "omega_b": 0.022184,
+    "omega_cdm": 0.11926,
+    "theta_s_100": 1.041802,
+    "tau_reio": 0.055785,
+    "logA": 3.043618,
+    "n_s": 0.963711,
+    "source": "NB05_C2_results.json"
+  },
+  "CLASS_background": {
+    "H0_EU_kmsMpc": 68.88808054820674,
+    "H0_LCDM_kmsMpc": 67.36,
+    "Omega_cdm_z0": 0.24019393517584928,
+    "Omega_b_z0": 0.046746778626566954,
+    "Omega_m_z0_incl_nu": 0.28827330937604057,
+    "Omega_fld_z0": 0.7116505213548834,
+    "gki_boost_pct": 2.2685281297606164,
+    "cdm_drain_pct": 4.422558570939605,
+    "r_d_EU_Mpc": 147.4219801782,
+    "r_d_LCDM_Mpc": 147.0627812755
+  },
+  "bianchi": {
+    "fcdm_z0": 0.955774414290604,
+    "Omega_tot_z0": 1.0,
+    "energy_violation": 0.0
+  },
+  "cmb_inputs": {
+    "tau_reio": 0.055785,
+    "A_s": 2.0981015394299024e-09,
+    "n_s": 0.963711,
+    "source": "MCMC C2 posteriors (NB05)"
+  },
+  "class_config": {
+    "eu_epsilon_ir": 0.042638612831103685,
+    "eu_z_trans": 5.986116748871208,
+    "eu_b": 0.5277777777777778,
+    "eu_lambda": 0.6666666666666666,
+    "eu_has_ide_perturbations": 1
+  },
+  "sigma8": {
+    "sigma8_lcdm": 0.8107746245044825,
+    "sigma8_eu": 0.8273764633424394,
+    "S8_lcdm": 0.8310154406585576,
+    "S8_eu": 0.8110446274433711,
+    "S8_eu_ode": 0.8110446274433711,
+    "growth_suppression": 1.0204765150957993,
+    "Omega_m_eu": 0.28827330937604057,
+    "note": "CLASS-EU Boltzmann with MCMC C2 params. Fixed-scale comparison in NB08."
+  },
+  "perturbation_null_test": {
+    "sigma8_ide_off": 0.8259399419345613,
+    "sigma8_ide_on": 0.8259399419345613,
+    "delta_sigma8": 0.0,
+    "cancellation_confirmed": true,
+    "reference": "Valiviita, Maartens & Wands (JCAP 2008)",
+    "note": "Null test from Mode A (EU physics identical)"
+  },
+  "weff_duality": {
+    "w_thermo_z0": -1.0032065537443762,
+    "w_pipe_z0_analytic": -1.0,
+    "w_pipe_z0_class": -1.0032065537443762,
+    "w_pipe_z1": -0.9619262753320783,
+    "cancellation_check": true
+  },
+  "neutrinos": {
+    "m_ncdm_eV": 0.0589,
+    "N_ur": 2.0328,
+    "N_ncdm": 1
+  }
+}

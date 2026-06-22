@@ -1,0 +1,105 @@
+{
+  "metadata": {
+    "notebook": "NB01_Derivation_Framework",
+    "version": "v3.0_planck_reinterpretation",
+    "date": "2026-06-13 16:15:37",
+    "description": "EU model \u2014 Planck Reinterpretation version. Separates model-independent from \u039bCDM-derived parameters.",
+    "delta_k": 0
+  },
+  "planck2018_observables": {
+    "_note": "Direct observables \u2014 model-independent",
+    "theta_s_100": 1.0411,
+    "omega_b": 0.02237,
+    "omega_cdm": 0.12,
+    "omega_nu": 0.0006322863491379432,
+    "tau_reio": 0.054,
+    "ln10As": 3.044,
+    "n_s": 0.9649
+  },
+  "planck2018_LCDM_derived": {
+    "_note": "\u039bCDM-derived \u2014 NOT direct observables. For reference only.",
+    "H0": 67.36,
+    "h": 0.6736,
+    "Omega_m": 0.3153,
+    "Omega_b_LCDM": 0.0493,
+    "Omega_c": 0.266,
+    "Omega_L": 0.6847,
+    "sigma8": 0.8111
+  },
+  "shoes2024": {
+    "H0": 73.17,
+    "H0_err": 0.86,
+    "arxiv": "2404.08038"
+  },
+  "eu_derived": {
+    "lambda": {
+      "value": 0.6666666666666666,
+      "exact": "2/3",
+      "model_dependence": "NONE",
+      "status": "DERIVED"
+    },
+    "b": {
+      "value": 0.5277777777777778,
+      "exact": "19/36",
+      "model_dependence": "NONE",
+      "status": "DERIVED"
+    },
+    "z_trans": {
+      "value": 5.986116748871208,
+      "value_at_h_LCDM": 5.986116748871208,
+      "value_range": {
+        "h_min": 0.66,
+        "h_max": 0.7,
+        "z_trans_at_h_min": 5.847461137711732,
+        "z_trans_at_h_max": 6.247943587525066
+      },
+      "model_dependence": "WEAK",
+      "note": "Depends on h = H0/100 only. All other inputs are model-independent. Variation ~6% over full h range.",
+      "threshold_exact": "1/(16*pi^2)",
+      "threshold_numeric": 0.006332573977646111,
+      "status": "DERIVED"
+    },
+    "eps_bare": {
+      "value": 0.05428916798921333,
+      "formula": "1/sqrt(4*pi*n^3)",
+      "model_dependence": "NONE",
+      "status": "DERIVED"
+    },
+    "screening": {
+      "value": 0.7853981633974483,
+      "exact": "pi/4",
+      "model_dependence": "NONE",
+      "status": "DERIVED"
+    },
+    "eps_IR": {
+      "value": 0.042638612831103685,
+      "formula": "(pi/4)*eps_bare",
+      "model_dependence": "NONE",
+      "status": "DERIVED"
+    },
+    "nu": {
+      "value": 1.894736842105263,
+      "exact": "36/19",
+      "formula": "1/b (Wilson critical exponent)",
+      "model_dependence": "NONE",
+      "status": "DERIVED"
+    }
+  },
+  "predictions": {
+    "note": "H0 prediction requires GKI/LKI decomposition. See NB02."
+  },
+  "model_dependence_summary": {
+    "fully_independent": [
+      "lambda",
+      "b",
+      "eps_bare",
+      "eps_IR",
+      "nu",
+      "screening"
+    ],
+    "weakly_dependent": [
+      "z_trans"
+    ],
+    "dependent_on": "h = H0/100 (via Friedmann integration of theta_s)"
+  }
+}

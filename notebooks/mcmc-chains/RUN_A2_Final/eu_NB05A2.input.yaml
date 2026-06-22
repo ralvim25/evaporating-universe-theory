@@ -1,0 +1,138 @@
+theory:
+  classy:
+    ignore_obsolete: true
+    extra_args:
+      Omega_Lambda: 0
+      w0_fld: -1.0
+      wa_fld: 0
+      cs2_fld: 1.0
+      eu_has_ide_perturbations: 1
+      N_ur: 2.0328
+      N_ncdm: 1
+      m_ncdm: 0.0589
+      l_max_scalars: 2508
+      lensing: 'yes'
+    stop_at_error: false
+likelihood:
+  planck_NPIPE_highl_CamSpec.TTTEEE: null
+  planck_2018_lowl.TT: null
+  planck_2018_lowl.EE: null
+  planck_2018_lensing.clik: null
+  bao.desi_dr2: null
+  sn.pantheonplus: null
+  eu_derived.EU_Derived:
+    python_path: likelihoods
+params:
+  omega_b:
+    prior:
+      min: 0.019
+      max: 0.025
+    ref: 0.022308
+    proposal: 0.0001
+    latex: \omega_b
+  omega_cdm:
+    prior:
+      min: 0.08
+      max: 0.16
+    ref: 0.117778
+    proposal: 0.001
+    latex: \omega_{cdm}
+  theta_s_100:
+    prior:
+      min: 1.03
+      max: 1.05
+    ref: 1.041916
+    proposal: 0.0002
+    latex: 100\theta_s
+    drop: true
+    renames: theta_MC_100
+  100*theta_s:
+    value: 'lambda theta_s_100: theta_s_100'
+    derived: false
+  tau_reio:
+    prior:
+      min: 0.01
+      max: 0.12
+    ref: 0.05872
+    proposal: 0.005
+    latex: \tau_{reio}
+  logA:
+    prior:
+      min: 2.5
+      max: 3.5
+    ref: 3.046191
+    proposal: 0.01
+    latex: \ln(10^{10}A_s)
+    drop: true
+  A_s:
+    value: 'lambda logA: 1e-10*__import__(''numpy'').exp(logA)'
+    latex: A_s
+  n_s:
+    prior:
+      min: 0.9
+      max: 1.05
+    ref: 0.967675
+    proposal: 0.003
+    latex: n_s
+  eu_epsilon_ir:
+    prior:
+      min: 0.0
+      max: 0.15
+    ref: 0.074811
+    proposal: 0.005
+    latex: \varepsilon_{IR}
+  eu_z_trans:
+    prior:
+      min: 0.5
+      max: 15.0
+    ref: 7.681563
+    proposal: 0.5
+    latex: z_{\rm trans}
+  eu_b:
+    prior:
+      min: 0.1
+      max: 1.0
+    ref: 0.550196
+    proposal: 0.02
+    latex: b
+  A_planck:
+    prior:
+      dist: norm
+      loc: 1
+      scale: 0.0025
+    ref: 1.000782
+    proposal: 0.0005
+    latex: y_\mathrm{cal}
+    renames: calPlanck
+  H0:
+    latex: H_0
+  sigma8:
+    latex: \sigma_8
+  Omega_m:
+    latex: \Omega_m
+  rdrag:
+    latex: r_{\rm drag}
+  S8:
+    derived: 'lambda sigma8, Omega_m: sigma8 * (Omega_m/0.3)**0.5'
+    latex: S_8
+  H0_LKI:
+    derived: true
+  fcdm_z0:
+    derived: true
+  I_GKI:
+    derived: true
+sampler:
+  mcmc:
+    drag: true
+    oversample_power: 0.4
+    Rminus1_stop: 0.01
+    Rminus1_cl_stop: 0.15
+    burn_in: 100
+    measure_speeds: true
+    learn_proposal: true
+    max_tries: 10000
+    check_every: 240
+    covmat: covmat_A1.covmat
+packages_path: packages
+output: eu_NB05A2
+timing: true

@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "notebook": "NB03_Background_Cosmology",
+    "version": "v4.0",
+    "date": "2026-06-13 18:36:16",
+    "description": "CLASS-EU background + bridge quantities for downstream notebooks"
+  },
+  "diagnostics": {
+    "TKI_analytic": 0.0678466616588982,
+    "TKI_numerical": 0.0678466616588982,
+    "H0_analytic": 68.90074038965024,
+    "H0_numerical": 68.90074038965024,
+    "H0_CLASS_EU": 68.56195313594621,
+    "H0_SH0ES_tension_sigma": 4.964255360871818
+  },
+  "CLASS_background": {
+    "H0_EU_kmsMpc": 68.56195313594621,
+    "H0_LCDM_kmsMpc": 67.36000000000743,
+    "Omega_cdm_z0": 0.24398902113646498,
+    "Omega_b_z0": 0.04758823770908844,
+    "Omega_m_z0_incl_nu": 0.2929225620374249,
+    "Omega_fld_z0": 0.7070005423441578,
+    "gki_boost_pct": 1.784372232688014,
+    "cdm_drain_pct": 4.422558570920043,
+    "r_d_EU_Mpc": 147.0627812882,
+    "r_d_LCDM_Mpc": 147.0627812755
+  },
+  "bianchi": {
+    "fcdm_z0": 0.9557744142907996,
+    "Omega_tot_z0": 1.0,
+    "energy_violation": 0.0
+  },
+  "cmb_inputs": {
+    "tau_reio": 0.054,
+    "A_s": 2.0989031673191437e-09,
+    "n_s": 0.9649,
+    "source": "Planck 2018 Table 2 (TT,TE,EE+lowE+lensing)"
+  },
+  "class_config": {
+    "eu_epsilon_ir": 0.042638612831103685,
+    "eu_z_trans": 5.986116748871208,
+    "eu_b": 0.5277777777777778,
+    "eu_lambda": 0.6666666666666666,
+    "eu_has_ide_perturbations": 1
+  },
+  "sigma8": {
+    "sigma8_lcdm": 0.8107746245044825,
+    "sigma8_eu": 0.8291847319490028,
+    "S8_lcdm": 0.8310154406585576,
+    "S8_eu": 0.8193455160628902,
+    "Omega_m_eu": 0.2929225620374249,
+    "note": "CLASS-EU Boltzmann (same as MCMC NB05 derived sigma8). Fixed-scale comparison in NB08."
+  },
+  "perturbation_null_test": {
+    "sigma8_ide_off": 0.8259399419345613,
+    "sigma8_ide_on": 0.8259399419345613,
+    "delta_sigma8": 0.0,
+    "cancellation_confirmed": true,
+    "reference": "Valiviita, Maartens & Wands (JCAP 2008)"
+  },
+  "weff_duality": {
+    "w_thermo_z0": -1.0032065537443762,
+    "w_pipe_z0_analytic": -1.0,
+    "w_pipe_z0_class": -1.0016902457421635,
+    "w_pipe_z1": -0.9619262753320783,
+    "cancellation_check": true
+  },
+  "neutrinos": {
+    "m_ncdm_eV": 0.0589,
+    "N_ur": 2.0328,
+    "N_ncdm": 1
+  }
+}

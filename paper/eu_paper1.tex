@@ -1,0 +1,3759 @@
+% ================================================================
+% The Evaporating Universe I: A Dissipation Principle
+% Target: Physical Review D
+% ================================================================
+\documentclass[aps,prd,twocolumn,superscriptaddress]{revtex4-2}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{placeins}
+\graphicspath{{../03_FIGURES/}}
+\usepackage{bm}
+\usepackage{hyperref}
+
+% --- Custom macros ---
+\newcommand{\eps}{\varepsilon}
+\newcommand{\epsbare}{\varepsilon_{\rm bare}}
+\newcommand{\epsIR}{\varepsilon_{\rm IR}}
+\newcommand{\ztrans}{z_{\rm trans}}
+\newcommand{\fsurv}{f_{\rm surv}}
+\newcommand{\Ikin}{\mathcal{I}}
+\newcommand{\rhoc}{\rho_{\rm c}}
+\newcommand{\rhoL}{\rho_\Lambda}
+\newcommand{\rhob}{\rho_{\rm b}}
+\newcommand{\Ocdm}{\Omega_{\rm c}}
+\newcommand{\OL}{\Omega_\Lambda}
+\newcommand{\Om}{\Omega_{\rm m}}
+\newcommand{\wobs}{w_{\rm obs}}
+\newcommand{\wlam}{w_\Lambda}
+\newcommand{\MPl}{M_{\rm Pl}}
+
+\begin{document}
+
+% ================================================================
+% FRONT MATTER
+% ================================================================
+\title{The Evaporating Universe~I: A dissipation principle ---
+       Resolving cosmic tensions without additional free parameters}
+
+\author{Ricardo Alvim}
+\email{ricardoalv1m@pm.me}
+% ORCID: 0009-0004-7744-175X (provided via APS submission system)
+\affiliation{Independent Researcher, Rio de Janeiro, Brazil}
+
+\date{\today}
+
+\begin{abstract}
+The $\Lambda$CDM model faces two persistent tensions:
+the Hubble constant measured locally
+($H_0 = 73.17 \pm 0.86$~km\,s$^{-1}$\,Mpc$^{-1}$,
+SH0ES) disagrees at $5.8\sigma$ with the CMB inference
+($67.36 \pm 0.54$), and weak-lensing surveys measure
+$S_8$ values ${\sim}\,2.6\sigma$ below the Planck
+prediction. We present the Evaporating Universe (EU),
+an interacting dark energy model in which a
+Gribov--Zwanziger ghost condensate mediates a continuous
+CDM$\,{\to}\,$vacuum energy transfer:
+$Q = -\lambda\,\varepsilon(z)\,H\,\rhoc$. The
+dissipation fraction ($\lambda = 2/3$), logistic exponent
+($b = 19/36$), transition redshift
+($z_{\rm trans} \approx 5.986$), bare amplitude
+($\varepsilon_{\rm bare} \approx 0.0543$), and effective
+coupling ($\varepsilon_{\rm IR} \approx 0.0426$) are derived
+from Effective Field Theory in curved spacetime; no parameter
+is fitted to data ($\Delta k = 0$). The model is
+implemented in a modified CLASS Boltzmann solver and
+validated through six Cobaya MCMC runs
+(${\sim}\,380{,}000$ total samples; all six converge at
+$R-1 < 0.01$)
+against Planck CMB, DESI DR2 BAO, Pantheon+ SNe,
+SH0ES, and DES-Y3 weak lensing. The CDM drain yields
+$H_0^{\rm LKI} = 72.71 \pm 0.30$~km\,s$^{-1}$\,Mpc$^{-1}$,
+within $0.52\sigma$ of SH0ES. The $S_8$ tension is
+traced to a systematic bias in the $\Lambda$CDM lensing
+kernel; forward-modeling the EU kernel reduces the
+DES-Y3 discrepancy from ${\sim}\,2.6\sigma$ to $1.03\sigma$.
+Including DES-Y3 data directly in the MCMC confirms
+compatibility at $0.58\sigma$. A $1024^3$-particle
+Gadget-4 $N$-body simulation validates the drain
+signature in $P(k)$, and model selection yields
+$\Delta\text{AIC} = -6.88$. We present ten
+zero-parameter predictions for Euclid DR1, LSST Y1, and
+DESI DR3, one of which --- the CPL equation-of-state
+mirage ($w_0 = -0.855$ with CMB prior) --- already matches
+the DESI DR2 measurement ($w_0 = -0.838 \pm 0.055$) at
+$0.3\sigma$.
+The EU resolves both cosmological tensions
+simultaneously, with zero additional free parameters.
+\end{abstract}
+
+\maketitle
+
+% ================================================================
+% I. INTRODUCTION
+% ================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Two persistent discrepancies challenge the standard
+$\Lambda$CDM cosmology. The Hubble constant inferred from
+the cosmic microwave background (CMB) under
+$\Lambda$CDM~\cite{planck2018},
+$H_0 = 67.36 \pm 0.54$~km\,s$^{-1}$\,Mpc$^{-1}$,
+disagrees at $5.8\sigma$ with the local distance-ladder
+measurement of Breuval, Riess et
+al.~\cite{breuval2024},
+$H_0 = 73.17 \pm 0.86$~km\,s$^{-1}$\,Mpc$^{-1}$.
+Independently, the amplitude of matter fluctuations
+$S_8 \equiv \sigma_8\sqrt{\Omega_m/0.3}$ measured by
+weak-lensing surveys~\cite{des2022} falls below the
+Planck $\Lambda$CDM prediction at $\sim\!2.6\sigma$.
+These tensions persist across instruments, calibration
+methods, and analysis pipelines, suggesting a systematic
+origin rather than a statistical fluctuation.
+
+Numerous extensions of $\Lambda$CDM have been proposed,
+including early dark energy~\cite{poulin2019_ede},
+interacting dark energy~\cite{divalentino2020},
+sign-switching models~\cite{akarsu2023}, and the CPL
+parametrization~\cite{chevallier2001,linder2003}
+recently favored by DESI DR2~\cite{desi_dr2_2025}.
+These approaches typically improve one tension at the
+cost of the other, or introduce free parameters whose
+values must be fitted to data. No published model
+resolves both tensions simultaneously with zero
+additional free parameters.
+
+This paper presents the Evaporating Universe (EU), an IDE
+model in which a Gribov--Zwanziger (GZ) ghost
+condensate~\cite{gribov1978,vandersickel2012}
+mediates a continuous transfer of cold dark matter
+(CDM) energy into the vacuum:
+$Q = -\lambda\,\varepsilon(z)\,H\,\rhoc$, where
+$\lambda = 2/3$ is the transversality fraction on the
+spatial hypersurface and $\varepsilon(z)$ is a logistic
+activation function whose parameters are determined by
+the heat-kernel threshold, the CKN holographic
+bound~\cite{ckn1999}, and the TT projection of the
+ghost--graviton vertex. All five model parameters are
+derived from Effective Field Theory in curved spacetime;
+none are fitted to observational data ($\Delta k = 0$).
+
+The CDM drain modifies the Friedmann equation at the
+percent level, producing two observable effects.
+The \textit{global kinematic imprint} (GKI) raises the
+background expansion rate to
+$H_0^{\rm GKI} = 68.89$~km\,s$^{-1}$\,Mpc$^{-1}$.
+The \textit{local kinematic imprint} (LKI), arising from
+the KBC void outflow~\cite{keenan2013,wu_huterer2017},
+boosts the locally measured value to
+$H_0^{\rm LKI} = 72.71$~km\,s$^{-1}$\,Mpc$^{-1}$
+--- within $0.52\sigma$ of SH0ES.
+The growth tension is resolved by identifying a
+systematic bias in the weak-lensing pipeline: the
+$\Lambda$CDM lensing kernel applied to EU-generated
+data underestimates $S_8$ by construction.
+Forward-modeling the EU kernel reduces the DES-Y3
+tension from ${\sim}\,2.6\sigma$ to $1.03\sigma$; including
+DES-Y3 data directly in the MCMC confirms compatibility
+at $0.58\sigma$.
+Model selection --- comparing both models on identical
+datasets with the KBC void correction applied to
+both --- yields $\Delta\text{AIC} = -6.88$ favoring the EU.
+
+The paper is organized as follows.
+Section~\ref{sec:theory} derives the five EU parameters
+from the GZ framework.
+Section~\ref{sec:gki_lki} presents the
+analytic predictions for $H_0$.
+Section~\ref{sec:class_implementation} describes the
+CLASS-EU implementation and stability properties.
+Section~\ref{sec:mcmc} reports the
+MCMC analysis across six convergence runs.
+Section~\ref{sec:drain} characterizes the drain
+signature in cosmological observables.
+Section~\ref{sec:hubble} resolves the Hubble tension
+via the GKI/LKI decomposition.
+Section~\ref{sec:nbody} validates the drain signature
+with $N$-body simulations.
+Section~\ref{sec:growth} resolves the growth
+tension through lensing kernel forensics.
+Section~\ref{sec:predictions} presents ten falsifiable
+predictions for Euclid, LSST, and DESI.
+Section~\ref{sec:discussion} places the EU in the
+landscape of beyond-$\Lambda$CDM models, discusses
+theoretical limitations, and outlines observational
+tests. Section~\ref{sec:conclusions} summarizes
+the results.
+
+% ================================================================
+% II. THEORETICAL FRAMEWORK
+% ================================================================
+\section{Theoretical Framework}
+\label{sec:theory}
+
+We derive the five parameters of the Evaporating Universe from
+Effective Field Theory in curved spacetime, utilizing the topological
+restrictions of the Gribov--Zwanziger framework and holographic bounds.
+No parameter is fitted to observational data ($\Delta k = 0$).
+
+% ----------------------------------------------------------------
+% II.A --- The Gribov-Zwanziger Ghost Condensate
+% ----------------------------------------------------------------
+\subsection{The Gribov--Zwanziger ghost condensate}
+\label{sec:gz}
+
+The Gribov--Zwanziger (GZ) framework addresses a fundamental obstacle
+in the quantization of non-Abelian gauge theories: the existence of
+gauge-equivalent configurations (Gribov copies) that survive the
+Landau gauge condition $\partial_\mu A^a_\mu = 0$~\cite{gribov1978}.
+The resolution restricts the functional integral to the first Gribov
+region,
+\begin{equation}
+\Omega = \bigl\{A^a_\mu \;\big|\;
+  \partial_\mu A^a_\mu = 0,\;\;
+  \mathcal{M}^{ab} > 0\bigr\},
+\label{eq:gribov_region}
+\end{equation}
+where $\mathcal{M}^{ab} = -\partial_\mu D^{ab}_\mu$ is the
+Faddeev--Popov operator~\cite{vandersickel2012}. This restriction generates a
+non-perturbative ghost condensate
+$\langle \bar{c}^a c^a \rangle \neq 0$ --- a vacuum expectation
+value absent in perturbation theory.
+
+Through Ashtekar's reformulation of general relativity as an SU(2)
+gauge theory on the spatial slice
+$\Sigma$~\cite{ashtekar1986}, the GZ framework extends to the
+gravitational sector~\cite{capri2016}. The ghost condensate on the
+Friedmann--Lema\^itre--Robertson--Walker (FLRW) background acts as
+the order parameter for a cosmological phase transition: below a
+critical redshift $\ztrans \approx 6$, the condensate activates a
+continuous transfer of energy from cold dark matter (CDM) to the
+vacuum.
+
+CDM participates in this transfer because it is a gauge singlet:
+carrying no Standard Model charge, it interacts only gravitationally
+and couples to the bulk vacuum through the ghost condensate. Baryonic
+matter, bound to $\Sigma$ by its
+$\mathrm{SU}(3)_{\rm QCD} \times \mathrm{U}(1)_{\rm EM}$ gauge
+charges, is protected from evaporation by those charges.
+
+% ----------------------------------------------------------------
+% II.B --- The Unique CDM-Vacuum Interaction
+% ----------------------------------------------------------------
+\subsection{The unique CDM--vacuum interaction}
+\label{sec:interaction}
+
+The modified continuity equations for CDM, vacuum energy, and baryons
+are
+\begin{align}
+\dot{\rhoc} + 3H\rhoc &= -Q, \label{eq:cont_cdm} \\
+\dot{\rhoL} &= +Q, \label{eq:cont_de} \\
+\dot{\rhob} + 3H\rhob &= 0, \label{eq:cont_b}
+\end{align}
+where $Q \geq 0$ is the interaction rate. Total energy conservation
+is guaranteed by construction:
+Eqs.~(\ref{eq:cont_cdm})--(\ref{eq:cont_b}) sum to the Bianchi
+identity
+$\dot{\rho}_{\rm tot} + 3H(\rho_{\rm tot} + p_{\rm tot}) = 0$.
+
+The functional form of $Q$ is the unique leading-order interaction
+consistent with FLRW symmetry and decay kinematics.
+
+\textit{(i)~Dimension.}~From Eq.~(\ref{eq:cont_cdm}),
+$[Q] = [\rho]\,[T^{-1}]$: an energy density per unit time.
+
+\textit{(ii)~Initial-state population.}~The interaction describes
+CDM$\,\to\,$vacuum transfer. By Fermi's golden rule, the rate is
+proportional to the initial-state population: $Q \propto \rhoc$.
+This excludes $Q \propto \rhoL$ and mixed forms.
+
+\textit{(iii)~Geometric clock.}~The factor $[T^{-1}]$ must be a
+homogeneous, isotropic, first-order geometric scalar. In FLRW
+spacetime, the unique candidate is $H = \dot{a}/a$. Higher-order
+terms ($\dot{H}/H$, $H^2/H_0$) are sub-leading in the derivative
+expansion; particle-physics scales break geometric universality;
+the cosmic time $1/t$ is not covariant under time reparametrization.
+
+The unique leading-order interaction is therefore
+\begin{equation}
+\boxed{Q = \lambda\,\eps(z)\,H\,\rhoc\,,}
+\label{eq:Q}
+\end{equation}
+where $\lambda$ is the dissipation fraction and $\eps(z)$ is the
+redshift-dependent coupling amplitude, both derived in
+Sec.~\ref{sec:params}. The interacting dark energy (IDE)
+literature~\cite{valiviita2008, gavela2009, divalentino2020}
+postulates this form; Eq.~(\ref{eq:Q}) establishes it as the unique
+solution of the derivative expansion.
+
+The coupling amplitude $\eps(z)$ is the order parameter of the ghost
+condensate. Below the condensation threshold $\ztrans$, it follows a
+generalized logistic profile with a strict Heaviside cutoff
+(Fig.~\ref{fig:anatomy}(a)):
+\begin{equation}
+\eps(z) = \begin{cases}
+\dfrac{\epsIR}{\displaystyle
+  1 + \left(\frac{1+z}{1+\ztrans}\right)^{\!1/b}}
+  & z \leq \ztrans, \\[10pt]
+0 & z > \ztrans.
+\end{cases}
+\label{eq:eps}
+\end{equation}
+The cutoff encodes the physics of the condensation: the ghost order
+parameter is strictly zero above the threshold, so no CDM is drained
+at $z > \ztrans$. The CMB, big bang nucleosynthesis, and all
+pre-condensation physics are exactly $\Lambda$CDM. At late times
+($z \to 0$), $\eps \to \epsIR$ (full coupling); at the transition
+($z = \ztrans$), $\eps = \epsIR/2$ (onset).
+
+% ----------------------------------------------------------------
+% II.C --- Framework-Derived Parameters
+% ----------------------------------------------------------------
+\subsection{Framework-derived parameters}
+\label{sec:params}
+
+The five quantities $\{\lambda,\, b,\, \ztrans,\, \epsbare,\, \epsIR\}$
+entering Eqs.~(\ref{eq:Q})--(\ref{eq:eps}) are each determined by the
+mathematical structure of the GZ framework. We derive them in order of
+increasing complexity.
+
+% ---- Î» = 2/3 ----
+\subsubsection{Dissipation fraction: $\lambda = 2/3$}
+\label{sec:lambda}
+
+The dissipation fraction quantifies the fraction of ghost-field
+channels available for CDM--vacuum energy transfer. Its value follows
+from the transversality structure of the ghost field on the spatial
+slice $\Sigma$.
+
+Under the ADM $3{+}1$ decomposition, the ghost field
+$c^\mu = (c^0, c^i)$ separates into a constrained temporal component
+$c^0$ and three spatial components $c^i$ on $\Sigma$. The Helmholtz
+decomposition theorem yields
+\begin{equation}
+c^i = c^i_T + \partial^i \varphi, \qquad
+\partial_i c^i_T = 0,
+\label{eq:helmholtz}
+\end{equation}
+where $c^i_T$ carries two transverse degrees of freedom and $\varphi$
+is a longitudinal scalar.
+
+Two independent arguments force $\varphi = 0$. First, the Landau
+gauge condition $\partial_\mu A^a_\mu = 0$ projects the
+Faddeev--Popov operator onto the transverse functional space,
+requiring $\partial_i c^i = 0$ and hence
+$\nabla^2\varphi = 0$~\cite{gribov1978}. Second, a longitudinal
+condensate
+$\langle \bar{c}^a_\parallel c^b_\parallel \rangle \neq 0$ would
+single out a preferred direction, spontaneously breaking the isotropy
+of the FLRW background. Both routes eliminate the longitudinal mode:
+only the two transverse polarizations propagate within $\Omega$.
+
+The GZ effective action confirms this counting. At one-loop order in
+$d$ dimensions~\cite{vandersickel2012},
+\begin{align}
+\Gamma^{(1)}_\gamma &\supset
+  \underbrace{-d\,(N^2{-}1)\,\gamma^4}_{\text{tree: }
+    d\text{ modes}}
+  \notag \\
+  &+\;\underbrace{\tfrac{N^2{-}1}{2}(d{-}1)\!\int\!
+    \frac{d^dq}{(2\pi)^d}
+    \ln\frac{q^4 + 2g^2 N\gamma^4}{q^2}}_{\text{loop: }
+    (d{-}1)\text{ transverse modes}}\;,
+\label{eq:gz_action}
+\end{align}
+where the tree-level prefactor $d$ sums over all Lorentz indices and
+the one-loop prefactor $(d{-}1)$ reflects the Landau gauge projection.
+The gap equation $\partial\Gamma/\partial\gamma^2 = 0$ produces the
+ratio $(d{-}1)/d$ as an algebraic quotient of two fixed coefficients
+in the action. On the spatial section of FLRW ($d \to n = 3$):
+\begin{equation}
+\boxed{\lambda = \frac{n-1}{n} = \frac{2}{3}\,.}
+\label{eq:lambda}
+\end{equation}
+
+The stability of this result under radiative corrections
+follows from the Slavnov--Taylor
+identity~\cite{taylor1971} for the ghost--gluon vertex in
+the Landau gauge:
+\begin{equation}
+Z_c = Z_g^{-1}\,Z_A^{-1/2}\,,
+\label{eq:ward}
+\end{equation}
+where $Z_c$, $Z_g$, and $Z_A$ are the renormalization
+constants of the ghost field, coupling, and gluon field,
+respectively. This identity constrains the ghost
+self-energy to all orders: the transverse fraction
+$(n{-}1)/n$ entering the gap equation is not an
+artifact of the one-loop truncation but a consequence
+of the gauge structure itself. Dudal
+et~al.~\cite{dudal2008} verified that the refined
+Gribov--Zwanziger action preserves this identity, so
+the channel counting and the gap equation are anchored
+to the same algebraic structure. Any higher-loop
+correction that modified $\lambda$ would violate
+Eq.~(\ref{eq:ward}).
+
+% ---- b = 19/36 ----
+\subsubsection{Logistic exponent: $b = 19/36$}
+\label{sec:b}
+
+The exponent $b$ in Eq.~(\ref{eq:eps}) controls the sharpness of the
+condensation transition. It equals the fraction of the ghost-graviton
+interaction that couples to the physical (transverse-traceless)
+graviton polarizations in $d = 4$ spacetime.
+
+The ghost-graviton vertex
+$V^\mu_{\;\nu;\rho\sigma}(p,q)$ from linearized quantum
+gravity~\cite{codello2009} couples the Faddeev--Popov ghost to the
+symmetric graviton tensor. The physical content is extracted by
+projecting onto the transverse-traceless (TT) sector via the York
+projector
+$\Pi^{\rm TT}_{\rho\sigma,\lambda\tau}(k)$~\cite{york1973}. The TT
+fraction is
+\begin{equation}
+\boxed{b = \frac{{\rm Tr}\!\left(
+  V \cdot \Pi^{\rm TT} \cdot V\right)}{{\rm Tr}\!\left(
+  V \cdot \mathbb{I} \cdot V\right)} = \frac{19}{36}\,,}
+\label{eq:b}
+\end{equation}
+verified with irreducible exact rational arithmetic across four
+independent momentum configurations (Appendix~\ref{app:tt_vertex}). The
+numerator 19 is prime, confirming irreducibility --- a genuine
+$d = 4$ tensor invariant.
+
+The TT fraction governs the logistic activation through the
+renormalization group (RG). Only the TT-projected component of the
+vertex drives the condensate running --- analogous to active quark
+flavors modifying the QCD $\beta$-function --- so the ghost
+self-energy acquires the anomalous dimension $b$, yielding the Wilson
+critical exponent $\nu = 1/b = 36/19$. The logistic $\beta$-function,
+\begin{equation}
+\frac{d\sigma}{d\ln\mu} =
+  -\frac{1}{b}\,\sigma\!\left(1 -
+  \frac{\sigma}{\sigma_*}\right),
+\label{eq:beta}
+\end{equation}
+is exact at the upper critical dimension $d = 4$: higher-order
+corrections are strictly irrelevant by the Ginzburg criterion,
+protecting the universality of the logistic form. The RG scale maps
+to redshift through the CKN saturation
+(Sec.~\ref{sec:ztrans}):
+$\Lambda_{\rm UV}^4 = \rho_{\rm crit} \propto H^2$ implies
+$\mu \propto H^{1/2}$, a monotonically increasing function of
+$(1{+}z)$. The logistic solution depends only on the ratio
+$(1{+}z)/(1{+}\ztrans)$, rendering the result robust against the
+precise functional form of $\mu(z)$.
+
+% ---- z_trans ----
+\subsubsection{Condensation threshold: $\ztrans \approx 5.986$}
+\label{sec:ztrans}
+
+The transition redshift marks the onset of the ghost condensation. It
+is determined by a closed chain of five links, each independently
+established.
+
+\textit{Link~1: One-loop amplitude.}~The universal one-loop prefactor
+from the Seeley--DeWitt heat-kernel expansion~\cite{vassilevich2003}
+in $d = 4$ dimensions is
+\begin{equation}
+(4\pi)^{-d/2}\big|_{d=4} = \frac{1}{16\pi^2} \approx 0.00633\,.
+\label{eq:hk_prefactor}
+\end{equation}
+This is the standard phase-space suppression of a single quantum loop,
+appearing identically in dimensional regularization, the
+Coleman--Weinberg potential, and the ABJ anomaly.
+
+\textit{Link~2: Holographic bound.}~Cohen, Kaplan, and
+Nelson~\cite{ckn1999} established that an effective field theory
+in a region of size $L$ must satisfy
+$L^3\Lambda_{\rm UV}^4 \lesssim L \MPl^2$. Applied to the Hubble
+sphere ($L = H^{-1}$) with the exact Schwarzschild condition:
+\begin{equation}
+\Lambda_{\rm UV}^4 \leq
+  \frac{3\MPl^2 H^2}{8\pi} = \rho_{\rm crit}\,.
+\label{eq:ckn}
+\end{equation}
+
+\textit{Link~3: Saturation.}~The CKN bound
+(Eq.~\ref{eq:ckn}) is formally an inequality. In a spatially
+flat universe
+($\Omega_k = 0.001 \pm 0.002$~\cite{planck2018}), the
+late-time de~Sitter attractor drives
+$\Omega_\Lambda \to 1$, saturating the Gibbons--Hawking
+entropy bound $S = A/(4G)$ as a thermodynamic
+identity~\cite{gibbons_hawking1977}. The CKN energy bound is
+the effective field theory formulation of this holographic
+constraint~\cite{ckn1999}; the inequality becomes an equality:
+$\Lambda_{\rm UV}^4 = \rho_{\rm crit}$. Conversely, exact
+saturation requires $\Omega_k = 0$: any spatial curvature
+introduces a time-dependent correction
+$\propto k/(a^2 H^2)$, breaking the constancy of the
+bound. The observed flatness and CKN saturation are
+mutually required.
+
+\textit{Link~4: Threshold.}~With
+$\Lambda_{\rm UV}^4 = \rho_{\rm crit}$ (Link~3), the
+cosmological density parameter
+$\Omega_{\rm DE} \equiv \rho_\Lambda/\rho_{\rm crit}$
+measures the vacuum energy as a fraction of the total UV
+phase space. Combining with Link~1, the condensate
+nucleates when this fraction reaches the one-loop
+amplitude:
+\begin{equation}
+\Omega_{\rm DE}(\ztrans) = \frac{1}{16\pi^2}\,.
+\label{eq:threshold}
+\end{equation}
+
+\textit{Link~5: Solution.}~In the matter-dominated $\Lambda$CDM
+background (valid at $z \sim 6$ where EU and radiation corrections
+are negligible):
+\begin{equation}
+\boxed{\ztrans = \left[
+  \frac{\OL\,(16\pi^2 - 1)}{\Om}\right]^{1/3} - 1 \approx 5.986\,.}
+\label{eq:ztrans}
+\end{equation}
+The inputs are $\OL = 0.6847$ and $\Om = 0.3153$ from
+Planck~2018~\cite{planck2018}. Because $\eps(z) = 0$ for
+$z > \ztrans$ (Eq.~\ref{eq:eps}), the pre-condensation background
+is rigorously $\Lambda$CDM; Eq.~(\ref{eq:ztrans}) therefore evaluates
+exactly using the primordial densities. The sensitivity to
+$h = H_0/100$ is weak: $\ztrans$ varies by $\sim 6\%$ over
+$h \in [0.66, 0.70]$
+(Appendix~\ref{app:ztrans_sensitivity}).
+
+% ---- Îµ_bare, Îµ_IR ----
+\subsubsection{Coupling amplitude: $\epsbare$ and $\epsIR$}
+\label{sec:eps}
+
+The coupling amplitude has two components: a bare value set by the
+vacuum channel counting and an infrared screening from the Gribov
+horizon.
+
+\textit{Bare coupling.}~The Gribov--Zwanziger framework
+applies to any gauge theory formulated in terms of a
+connection. General relativity on $\Sigma$, as
+conventionally written in metric variables, is not a
+gauge theory in this sense. Ashtekar's canonical
+reformulation~\cite{ashtekar1986} resolves this by
+recasting the gravitational phase space in terms of an
+SU(2) connection $A_a^i$ and a densitized triad
+$\tilde{E}^a_i$ on the spatial slice. Einstein's
+constraints become polynomial in these variables, and
+the internal gauge group is SU(2) with
+$\dim(\mathrm{SU}(2)) = n = 3$. The existence of Gribov
+copies is a topological property of all non-Abelian gauge
+theories in the Landau gauge, independent of the specific
+gauge group~\cite{vandersickel2012}. This SU(2)
+identification therefore places the gravitational sector
+on the same formal footing as QCD, making the
+Faddeev--Popov operator, the Gribov region $\Omega$, and
+its boundary $\partial\Omega$ well-defined.
+
+Within this gauge-theoretic formulation, the GZ
+localizing field
+$\varphi_a^{ij}$~\cite{zwanziger1989} --- an auxiliary
+tensor coupling the ghost ($c^i$) and anti-ghost
+($\bar{c}^j$) to the gauge index $a$ --- possesses three
+independent indices, each running from 1 to $n$. In the
+deep UV, where the ghost and anti-ghost are distinct
+fermionic fields with unrestricted quantum numbers
+(Zwanziger's independent-index
+theorem~\cite{zwanziger1989}), the auxiliary field
+fluctuates as a fully general rank-3 tensor:
+$N_{\rm bare} = n^3 = 27$ bare channels. In the
+classical IR, the metric symmetry
+$\gamma_{ij} = \gamma_{ji}$ constrains the ghost
+indices, reducing the auxiliary field to
+$n\,n(n{+}1)/2$ independent components:
+$N_{\rm classical} = 18$ for $n = 3$.
+
+The Gribov projection connects these two regimes.
+Setting the effective count
+$\lambda\, n^3 = n^2(n{-}1)$ equal to the
+classical count:
+\begin{equation}
+n^2(n{-}1) = \frac{n^2(n{+}1)}{2}
+\;\;\Longrightarrow\;\;
+\boxed{n = 3\,.}
+\label{eq:n3}
+\end{equation}
+The quantum vacuum recovers the classical limit only in
+three spatial dimensions: $(2/3)(27) = 18
+= 3(3{+}1)/2 \cdot 3$. This consistency
+condition is not imposed; it is a consequence of
+requiring the GZ ghost sector to reproduce the correct
+number of gravitational degrees of freedom.
+
+\textit{Democratic coupling.}~CDM carries no Standard
+Model gauge charge and, crucially, no internal SU(2)
+quantum numbers under the Ashtekar connection. It is a
+gauge singlet. By the Wigner--Eckart theorem, the
+matrix element of any gauge-invariant operator between
+singlet states is proportional to the identity on the
+mediator space: no channel is preferred over any other.
+CDM therefore couples with equal amplitude to all 27
+bare channels. The transverse one-loop factor
+$(4\pi)^{-1}$ --- reflecting the restriction of the
+ghost dynamics to the two-dimensional transverse plane
+on $\Sigma$ (Sec.~\ref{sec:lambda}), in contrast to
+the bulk factor $(4\pi)^{-2}$ used for the condensation
+threshold --- distributes uniformly over the bare
+modes, yielding the phase-space fraction
+$1/(4\pi\,n^3)$. By Fermi's golden rule, the
+transition rate scales as $|\varepsilon|^2$; the
+coupling amplitude is therefore the square root of
+this fraction:
+\begin{equation}
+\boxed{\epsbare = \frac{1}{\sqrt{4\pi\, n^3}}
+  = \frac{1}{\sqrt{108\pi}} \approx 0.05429\,.}
+\label{eq:epsbare}
+\end{equation}
+
+\textit{IR screening.}~In the deep infrared, the Gribov horizon
+modifies the ghost propagator from
+$D_{\rm UV}(k) = 1/(k^2 + \gamma^2)$ to
+$D_{\rm GZ}(k) = k^2/(k^4 + \gamma^4)$. This deformation of
+the internal propagator acts as a vertex renormalization,
+screening the bare coupling by a calculable factor. The
+ratio of integrated propagator densities on the
+two-dimensional transverse momentum
+plane~\cite{zwanziger1991} evaluates exactly to
+(Appendix~\ref{app:gribov_integral})
+\begin{equation}
+\frac{I_{\rm IR}}{I_{\rm UV}} = \frac{\pi}{4}\,.
+\label{eq:screening}
+\end{equation}
+The effective coupling is therefore
+\begin{equation}
+\boxed{\epsIR = \frac{\pi}{4}\,\epsbare \approx 0.04264\,.}
+\label{eq:epsIR}
+\end{equation}
+
+% ---- Table I ----
+\begin{table}[!htb]
+\caption{The five EU parameters. All are derived from the
+  mathematical structure of the Gribov--Zwanziger EFT in curved
+  spacetime. None are fitted to observational data ($\Delta k = 0$).}
+\label{tab:params}
+\begin{ruledtabular}
+\begin{tabular}{llll}
+Parameter & Value & Exact form & Origin \\
+\hline
+$\lambda$ & $0.6\overline{6}$ & $2/3$ &
+  GZ transversality \\
+$b$ & $0.5278$ & $19/36$ &
+  TT vertex fraction \\
+$\ztrans$ & $5.986$ & Eq.~(\ref{eq:ztrans}) &
+  Heat kernel + CKN \\
+$\epsbare$ & $0.05429$ & $1/\sqrt{108\pi}$ &
+  GZ channels \\
+$\epsIR$ & $0.04264$ & $(\pi/4)\,\epsbare$ &
+  Gribov screening \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+% ----------------------------------------------------------------
+% II.D --- Modified Friedmann Equation
+% ----------------------------------------------------------------
+\subsection{Modified Friedmann equation}
+\label{sec:friedmann_eu}
+
+The CDM density evolves under the combined effect of Hubble dilution
+and vacuum transfer. Integrating Eq.~(\ref{eq:cont_cdm}):
+\begin{equation}
+\rhoc(a) = \rho_{c,0}\,a^{-3}\,\fsurv(a),
+\label{eq:rho_c}
+\end{equation}
+where the survival fraction is
+\begin{equation}
+\fsurv(a) = \exp\!\left[
+  -\lambda \int_0^{a}
+  \eps(a')\,\frac{da'}{a'}\right].
+\label{eq:fsurv}
+\end{equation}
+
+The Heaviside cutoff in Eq.~(\ref{eq:eps}) renders the total
+accumulated drain analytically tractable. The kinematic integral is
+\begin{equation}
+\Ikin = \epsIR\,b\left[
+  \ln\!\left(1 + (1{+}\ztrans)^{1/b}\right) - \ln 2\right]
+  \approx 0.0679\,,
+\label{eq:Ikin}
+\end{equation}
+where the $-\ln 2$ arises from the upper limit of integration at
+$\ztrans$. The CDM survival fraction at $z = 0$ is
+\begin{equation}
+\fsurv(0) = e^{-\lambda\Ikin} \approx 0.9558\,,
+\label{eq:fsurv0}
+\end{equation}
+corresponding to a $4.4\%$ transfer of CDM energy to the vacuum since
+$z \approx 6$.
+
+The modified Friedmann equation is
+\begin{align}
+H^2(a) = H_0^2\big[
+  &\Omega_{\rm r}\,a^{-4}
+  + \Omega_{\rm b}\,a^{-3}
+  \notag \\
+  &+ \Ocdm\,a^{-3}\,\fsurv(a)
+  + \OL(a)\big],
+\label{eq:friedmann}
+\end{align}
+where $\Omega_{\rm r}$ encodes photons and relativistic neutrinos
+(one massive species with $\sum m_\nu = 0.06$~eV~\cite{planck2018}),
+$\Ocdm$ denotes the pre-drain CDM density parameter anchored by the
+CMB ($\eps = 0$ at $z > \ztrans$, so $\Ocdm$ retains its
+$\Lambda$CDM value), and $\OL(a)$ is obtained by integrating
+Eq.~(\ref{eq:cont_de}) numerically. The CDM and vacuum terms do not cancel: drained CDM
+energy acquires the vacuum equation of state ($w = -1$) and ceases to
+dilute, generating a net modification to $H(z)$. The full numerical
+integration is performed by the CLASS Boltzmann
+solver~\cite{blas2011} (Sec.~\ref{sec:class_implementation}).
+
+Despite absorbing CDM energy, the vacuum retains $w_\Lambda = -1$
+exactly --- a property proven algebraically in
+Sec.~\ref{sec:stability}.
+
+With all five parameters determined, the model predicts two distinct
+kinematic imprints on the Hubble rate: a global shift from CDM drain
+and a local boost from the KBC void outflow.
+
+% ================================================================
+% III. KINEMATIC IMPRINTS
+% ================================================================
+\section{Kinematic Imprints: GKI and LKI}
+\label{sec:gki_lki}
+
+The five framework-derived parameters produce two distinct kinematic
+signatures on the Hubble rate. The \textit{Global Kinematic Imprint}
+(GKI) modifies the background expansion through CDM drain, while the
+\textit{Local Kinematic Imprint} (LKI) biases local distance-ladder
+measurements through the KBC void outflow. Both are zero-parameter
+predictions.
+
+% ----------------------------------------------------------------
+% III.A --- GKI
+% ----------------------------------------------------------------
+\subsection{Global Kinematic Imprint}
+\label{sec:gki}
+
+The CMB power spectrum fixes the physical CDM density
+$\omega_{\rm cdm} \equiv \Ocdm h^2 = 0.1200 \pm 0.0012$~\cite{planck2018}
+at $z \sim 1100$, where the EU coupling is strictly zero
+($\eps = 0$ for $z > \ztrans$). The CMB therefore measures the same
+$\omega_{\rm cdm}$ as $\Lambda$CDM.
+
+If CDM evaporates at late times, $\Ocdm$ decreases while
+$\omega_{\rm cdm}$ remains CMB-anchored. The reduced Hubble parameter
+$h$ must increase to maintain the constraint:
+\begin{equation}
+h^{\rm EU} = \frac{h^{\rm Planck}}{\sqrt{\fsurv(0)}}\,,
+\label{eq:h_gki}
+\end{equation}
+yielding the global prediction
+\begin{equation}
+\boxed{H_0^{\rm GKI}
+  = \frac{H_0^{\rm Planck}}{\sqrt{\fsurv(0)}}
+  = \frac{67.36}{\sqrt{0.9558}}
+  \approx 68.90 \;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}\,.}
+\label{eq:H0_gki}
+\end{equation}
+
+Because CDM has evaporated, the present-day physical matter density
+is $\omega_m(z{=}0) = \omega_b + \omega_{\rm cdm}\,\fsurv(0)
+\approx 0.137$. The corresponding matter density parameter is
+$\Omega_m^{\rm EU} = \omega_m(z{=}0) / (h^{\rm EU})^2 \approx 0.289$,
+compared with $\Omega_m^{\Lambda\rm CDM} = 0.3153$.
+
+This mechanism --- CDM drain reducing $\Ocdm$ and raising $h$ ---
+is the same physics exploited by Interacting Dark Energy
+models~\cite{divalentino2020}, but with a coupling
+fixed by the framework ($\lambda = 2/3$) rather than
+fitted to data.
+
+% ----------------------------------------------------------------
+% III.B --- LKI
+% ----------------------------------------------------------------
+\subsection{Local Kinematic Imprint}
+\label{sec:lki}
+
+The GKI predicts the \textit{global} expansion rate. Local
+distance-ladder measurements are systematically higher because the
+observer sits inside the KBC void~\cite{keenan2013}, a local
+underdensity extending to $R \sim 300\;\text{Mpc}$ with observed
+contrast $\delta_{\rm obs} = -0.46 \pm 0.06$.
+
+The void outflow biases the locally inferred $H_0$
+(Wu \& Huterer 2017~\cite{wu_huterer2017}):
+\begin{equation}
+\frac{\delta H_0}{H_0}
+  = -\frac{1}{3}\,\delta_{\rm true}\,f(\Omega_m)\,\Theta\,,
+\label{eq:void_bias}
+\end{equation}
+where $f(\Omega_m)$ is the linear growth rate and $\Theta$ accounts
+for the non-linear correction of
+Marra et al.~\cite{marra2013}.
+
+Two refinements enter the calculation. First, the observed contrast
+$\delta_{\rm obs}$ is inflated by redshift-space distortions
+(Haslbauer, Banik \& Kroupa 2020~\cite{haslbauer2020}):
+\begin{equation}
+\delta_{\rm true}
+  = \frac{\delta_{\rm obs}}{1 + f/b_g}
+  = \frac{-0.46}{1 + 0.514/1.0}
+  \approx -0.304\,,
+\label{eq:delta_true}
+\end{equation}
+where $f = 0.514$ is computed from the exact Riccati
+ODE~\cite{linder2005} evaluated in the EU background
+(not the $\Omega_m^{0.55}$ approximation)
+and $b_g = 1.0$ is the $K$-band galaxy bias. Second, the
+non-linear correction $\Theta = 1.064$ amplifies the outflow by
+$6.4\%$ relative to linear theory~\cite{marra2013}.
+
+The local prediction is
+\begin{align}
+H_0^{\rm LKI}
+  &= H_0^{\rm GKI} + \delta H_0
+  \notag \\
+  &= 68.90 + 3.82
+  \approx \boxed{72.72\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}\,.}
+\label{eq:H0_lki}
+\end{align}
+
+CDM drain also causes adiabatic halo expansion~\cite{gnedin2004},
+but its effect on the distance ladder is negligible:
+$\Delta R_{\rm halo} \sim 10\;\text{kpc}$ versus
+$D_{\rm SN} \sim 40\;\text{Mpc}$ implies
+$\Delta H_0 \sim 0.009\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$.
+
+\textit{Sensitivity.}~The LKI prediction is robust against the
+KBC void uncertainty. Propagating
+$\delta_{\rm obs} = -0.46 \pm 0.06$ through the full
+RSD-corrected formula yields
+$H_0^{\rm LKI} \in [72.19, 73.26]$ at $1\sigma$, with worst-case
+tension against SH0ES of $1.14\sigma$.
+
+% [Figure 1 placed in Sec. VII.D where the geometric wall is discussed]
+
+% ----------------------------------------------------------------
+% III.C --- All tracers agree
+% ----------------------------------------------------------------
+\subsection{Observational hierarchy}
+\label{sec:hierarchy}
+
+The GKI and LKI channels predict a characteristic
+hierarchy: global probes recover $H_0$ consistent with
+the Planck value, while local calibrators --- Cepheids,
+TRGB, JAGB --- converge near
+$H_0^{\rm LKI} \approx 72.7$, as their Rung~3 supernovae
+lie within the KBC void.
+
+% [TABLE: Observational hierarchy — 5 tracers]
+\begin{table}[!htb]
+\caption{EU predictions for the Hubble constant. The CMB prediction
+is the GKI (global); all local tracers receive the same LKI (void)
+correction. TRGB/JAGB values from
+Freedman et al.~\cite{freedman2024}.
+All values in km\,s$^{-1}$\,Mpc$^{-1}$.}
+\label{tab:hierarchy}
+\begin{ruledtabular}
+\begin{tabular}{lcccr}
+Tracer & $H_0^{\rm obs}$ & $\sigma$ & $H_0^{\rm EU}$ & Tension \\
+\hline
+CMB/Planck       & 67.36 & 0.54 & 67.36 & $0.0\sigma$ \\
+JAGB/JWST        & 67.80 & 2.72 & 72.72 & $1.8\sigma$ \\
+TRGB/JWST        & 68.81 & 2.22 & 72.72 & $1.8\sigma$ \\
+TRGB (mixed)     & 70.39 & 1.94 & 72.72 & $1.2\sigma$ \\
+SH0ES 2024       & 73.17 & 0.86 & 72.72 & $0.5\sigma$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+Table~\ref{tab:hierarchy} summarizes the comparison. All five
+tracers are consistent with the EU prediction at $< 2\sigma$.
+The analytical predictions of this section
+are validated by the full Boltzmann integration in
+Sec.~\ref{sec:class_implementation}.
+
+The same CDM drain that modifies $H_0$ also suppresses structure
+growth by reducing $\Omega_m$ and altering $H(z)$. The
+quantitative resolution of the $S_8$ tension is presented in
+Sec.~\ref{sec:growth}.
+
+\FloatBarrier
+% ================================================================
+% IV. NUMERICAL IMPLEMENTATION
+% ================================================================
+\section{Numerical Implementation}
+\label{sec:class_implementation}
+
+We implement the EU cosmology in the Cosmic Linear Anisotropy
+Solving System (\textsc{class}
+v3.3.4~\cite{blas2011}), verifying that the analytic
+predictions of Sec.~\ref{sec:gki_lki} are reproduced by the
+full Boltzmann integration. The implementation modifies four
+source files; the complete patched source, analysis notebooks,
+and MCMC chains are publicly
+available~\cite{eu_github}.
+
+% ----------------------------------------------------------------
+% IV.A â€” CLASS-EU solver
+% ----------------------------------------------------------------
+\subsection{Solver architecture}
+\label{sec:solver}
+
+Four patches are applied to the \textsc{class} source. (i)~The
+header \texttt{background.h} receives the five EU parameters
+($\varepsilon_{\rm IR}$, $\ztrans$, $b$, $\lambda$,
+and the perturbation switch). (ii)~The parser \texttt{input.c}
+reads these parameters from the configuration file, defaulting
+to $\varepsilon_{\rm IR} = 0$ (standard $\Lambda$CDM).
+(iii)~The background integrator \texttt{background.c} implements
+the coupled ODE system
+\begin{align}
+\frac{d f_{\rm cdm}}{d\ln a}
+  &= -\lambda\,\eps(z)\,f_{\rm cdm}\,,
+\label{eq:fcdm_ode}\\[4pt]
+\frac{d f_{\rm vac}}{d\ln a}
+  &= +\lambda\,\eps(z)\,f_{\rm cdm}\,a^{-3}\,,
+\label{eq:fvac_ode}
+\end{align}
+where both $f_{\rm cdm}$ and $f_{\rm vac}$ are normalized to
+$\rho_{c,0} \equiv \Omega_{c,0}\,H_0^2/(8\pi G/3)$.
+The system is solved by a fourth-order Runge--Kutta integrator
+over 2000 steps in $\ln a \in [-7, 0]$, with initial conditions
+$f_{\rm cdm} = 1$, $f_{\rm vac} = 0$.
+The CDM density is multiplied by $f_{\rm cdm}(a)$ at each
+background evaluation, and the vacuum receives the Friedmann
+closure injection $\rho_{c,0}\,f_{\rm vac}(a)$.
+(iv)~The perturbation integrator \texttt{perturbations.c}
+receives the interacting dark energy (IDE) source terms
+of Valiviita, Majerotto \& Maartens (2008)~\cite{valiviita2008}.
+
+The EU and $\Lambda$CDM runs share identical cosmological
+parameters (Planck 2018
+baseline~\cite{planck2018}). The $\Lambda$CDM run
+fixes $H_0 = 67.36\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$; the EU run
+inputs the same $100\theta_s$ and lets \textsc{class} shoot
+for~$H_0$, which is the standard procedure when comparing
+models with different late-time physics.
+
+% ----------------------------------------------------------------
+% IV.B â€” Perturbation stability
+% ----------------------------------------------------------------
+\subsection{Perturbation stability}
+\label{sec:stability}
+
+The EU coupling $Q = -\lambda\,\eps(z)\,H\,\rhoc$ is
+proportional to the local CDM density. This proportionality
+guarantees algebraic cancellation of the IDE perturbation
+source terms for $w_\Lambda = -1$:
+
+\textit{Continuity.}~The source term in the CDM overdensity
+equation is proportional to $[\delta Q/Q - \delta_c]$.
+Since $Q \propto \rhoc$, the fractional perturbation
+$\delta Q/Q = \delta_c$, yielding
+$[\delta_c - \delta_c] = 0$.
+
+\textit{Euler.}~The momentum drag is proportional to
+$[\theta_{\rm de} - \theta_{\rm cdm}]$. For $w = -1$ (vacuum),
+$\theta_{\rm de} = 0$; in synchronous gauge,
+$\theta_{\rm cdm} = 0$ by construction. Hence
+$[0 - 0] = 0$.
+
+Dense and underdense regions evaporate at the same fractional
+rate. Structure growth is modified only through the background:
+the diluted Poisson source (weaker $\rho_{\rm cdm}$) produces
+shallower potential wells.
+
+\textit{Null test.}~We verify this cancellation by running
+\textsc{class} twice with identical parameters but the IDE
+perturbation switch toggled on and off. The difference in
+$\sigma_8$ is
+\begin{align}
+\Delta\sigma_8
+  &= |\sigma_8^{\rm IDE\;on} - \sigma_8^{\rm IDE\;off}|
+  \notag \\
+  &= 0\quad (\text{exact to machine precision})\,.
+\label{eq:null_test}
+\end{align}
+
+\textit{Doom factor.}~Standard IDE models with $w \neq -1$
+suffer from large-scale instabilities when the ratio
+$Q/[(1+w)\rho_{\rm de}]$ diverges~\cite{gavela2009,valiviita2008}.
+In the EU, $w_\Lambda = -1$ exactly: the vacuum does not
+cluster ($\delta_{\rm de} = 0$) and carries no velocity
+perturbations ($\theta_{\rm de} = 0$). The dark energy
+Euler equation drops out of the perturbation system,
+so the singular ratio never arises. Unlike standard IDE
+models where $w$ is a free parameter that must be tuned
+away from $-1$ to avoid this instability, the EU derives
+$w_\Lambda = -1$ algebraically from the Cancellation
+Theorem. The doom factor instability is thus structurally
+absent --- a consequence of the model's internal
+consistency, not a numerical choice.
+
+% ----------------------------------------------------------------
+% IV.C â€” Background results
+% ----------------------------------------------------------------
+\subsection{Background evolution}
+\label{sec:bg_results}
+
+Table~\ref{tab:background} compares the $z = 0$ background
+quantities from the fiducial \textsc{class} runs (Planck 2018
+input parameters). The EU CDM drain of $4.42\%$ is confirmed,
+and energy conservation is exact:
+$|\Omega_{\rm tot} - 1| < 10^{-15}$ (Bianchi identity).
+
+% [TABLE: Background Î›CDM vs EU]
+\begin{table}[t]
+\caption{Background quantities at $z = 0$ from \textsc{class}.
+Both runs use Planck 2018 input parameters; the EU run shoots
+for $H_0$ via $\theta_s$ matching.}
+\label{tab:background}
+\begin{ruledtabular}
+\begin{tabular}{lccr}
+Quantity & $\Lambda$CDM & EU & Shift \\
+\hline
+$H_0$ (km\,s$^{-1}$\,Mpc$^{-1}$)      & 67.36 & 68.56 & $+1.8\%$  \\
+$\Omega_m$             & 0.315 & 0.293 & $-7.1\%$  \\
+$\Omega_\Lambda$       & 0.685 & 0.707 & $+3.2\%$  \\
+$f_{\rm cdm}(0)$       & 1.000 & 0.956 & $-4.4\%$  \\
+$r_d$ (Mpc)            & 147.06 & 147.06 & $0.00\%$ \\
+$\sigma_8$             & 0.811 & 0.829 & $+2.3\%$  \\
+$S_8$                  & 0.831 & 0.819 & $-1.4\%$  \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+The vacuum equation of state from \textsc{class} reads
+$w_\Lambda = -1.003$, consistent with $w = -1$ exact to
+within the RK4 integration residual ($\sim 0.3\%$).
+The sound horizon $r_d$ is identical between the two models
+because the EU coupling is zero at $z > \ztrans \approx 6$,
+leaving recombination physics unchanged.
+The fiducial $H_0 = 68.56$ in Table~\ref{tab:background}
+reflects the background response under fixed Planck
+primordial densities; re-evaluation at the MCMC posteriors
+(Sec.~\ref{sec:drain}) shifts $H_0$ upward into sub-percent
+agreement with the analytic prediction of
+Sec.~\ref{sec:gki}.
+
+% ----------------------------------------------------------------
+% IV.D â€” CMB consistency
+% ----------------------------------------------------------------
+\subsection{CMB power spectrum}
+\label{sec:cmb_consistency}
+
+The $C_\ell^{TT}$ power spectra of the two models are
+virtually indistinguishable at $\ell > 30$, where the acoustic
+peaks are determined by pre-recombination physics
+($z > \ztrans$). At $\ell \lesssim 20$, the EU spectrum shows
+a modest enhancement due to the late integrated Sachs--Wolfe
+(ISW) effect: CDM drain reduces the matter density at $z < 2$,
+causing gravitational potentials to decay faster and boosting
+the low-$\ell$ power. This $\sim 5\%$ ISW enhancement is a
+falsifiable prediction of the model.
+
+With the solver validated at both background and perturbation
+level, we proceed to the statistical analysis in
+Sec.~\ref{sec:mcmc}.
+
+% ================================================================
+% V. STATISTICAL ANALYSIS
+% ================================================================
+\section{Statistical Analysis}
+\label{sec:mcmc}
+
+We confront the EU model with cosmological data via Markov
+Chain Monte Carlo (MCMC) sampling, using
+Cobaya~\cite{torrado2021} as the sampler and CLASS-EU
+(Sec.~\ref{sec:class_implementation}) as the theory engine.
+
+% ----------------------------------------------------------------
+% V.A — Methodology
+% ----------------------------------------------------------------
+\subsection{Sampling strategy}
+\label{sec:methodology}
+
+The analysis comprises six MCMC runs organized in three
+phases across two parameter configurations.
+
+The first configuration, \textit{EU-blind} ($\Delta k = 3$),
+samples the three EU parameters
+($\varepsilon_{\rm IR}$, $\ztrans$, $b$) with flat priors
+alongside the standard cosmological parameters. The second,
+\textit{EU} ($\Delta k = 0$), fixes all EU parameters at
+the framework-derived values of Sec.~\ref{sec:params}.
+
+\textit{Phase~1} runs each configuration with the IDE
+perturbation source terms disabled, generating stable
+proposal covariance matrices.
+\textit{Phase~2} activates the source terms and uses the
+Phase~1 covariance as the proposal, producing the baseline
+posteriors.
+\textit{Phase~3} extends the EU configuration with local
+measurements:
+\textit{EU+$H_0$} adds the SH0ES Cepheid distance-ladder
+measurement~\cite{breuval2024};
+\textit{EU+$H_0$+$S_8$} adds DES-Y3
+$3 \times 2$pt cosmic shear via
+Cocoa/CosmoLike~\cite{des2022,krause2021}, sampling 23
+additional nuisance parameters (photometric redshifts,
+shear calibration, intrinsic alignments, and galaxy bias).
+
+All six runs share a baseline likelihood consisting of
+Planck PR4 NPIPE CamSpec TTTEEE, low-$\ell$ TT and EE,
+CMB lensing
+$\phi\phi$~\cite{planck2020npipe}, DESI BAO
+DR2~\cite{desi_dr2_2025}, and Pantheon+ SNe
+Ia~\cite{scolnic2022}. Both the EU and $\Lambda$CDM
+sample the same seven parameters: the six
+$\Lambda$CDM cosmological parameters plus the Planck
+calibration nuisance $A_{\rm planck}$.
+Convergence is assessed via the Gelman--Rubin
+statistic~\cite{gelman1992}; all six runs satisfy
+$R-1 < 0.01$.
+
+% ----------------------------------------------------------------
+% V.B — Perturbation null test
+% ----------------------------------------------------------------
+\subsection{Perturbation null test}
+\label{sec:pert_null_test}
+
+The perturbation stability analysis of
+Sec.~\ref{sec:stability} proved that the IDE source terms
+cancel algebraically for $w = -1$ at the level of a single
+CLASS evaluation. Phase~1 was designed to verify this
+cancellation at the MCMC level: by running each
+configuration with the source terms disabled, the
+resulting posteriors provide a direct comparison against
+the Phase~2 production runs.
+All posterior shifts between Phase~1 and Phase~2 are
+below $0.03\sigma$, consistent with Monte Carlo noise
+for $N_{\rm eff} \simeq 33{,}000$ effective samples.
+The Phase~1 and Phase~2 posteriors are statistically
+indistinguishable; the full parameter-by-parameter
+comparison is presented in
+Table~\ref{tab:null_test} (Appendix~\ref{app:null_test}).
+The four Phase~2 and Phase~3 posteriors therefore
+constitute the complete analysis.
+
+% [TABLE: Consolidated MCMC â€” Î›CDM + 4 EU runs]
+\begin{table*}[t]
+\caption{Posterior constraints from the four EU configurations,
+compared with the $\Lambda$CDM best-fit obtained from the same
+baseline datasets via minimizer. The EU column is the principal
+result ($\Delta k = 0$, framework-derived parameters).
+Uncertainties are $68\%$ credible intervals.}
+\label{tab:mcmc}
+\begin{ruledtabular}
+\begin{tabular}{lccccc}
+ & $\Lambda$CDM & EU-blind ($\Delta k{=}3$)
+ & \textbf{EU} ($\Delta k{=}0$) & EU+$H_0$ & EU+$H_0$+$S_8$ \\
+\hline
+\multicolumn{6}{c}{\textit{Sampled parameters}} \\
+$\omega_b$
+  & $0.02238$ & $0.02231 \pm 0.00012$
+  & $\mathbf{0.02218 \pm 0.00013}$ & $0.02221 \pm 0.00012$
+  & $0.02218 \pm 0.00012$ \\
+$\omega_{\rm cdm}$
+  & $0.11933$ & $0.11778 \pm 0.00062$
+  & $\mathbf{0.11926 \pm 0.00063}$ & $0.11913 \pm 0.00061$
+  & $0.11944 \pm 0.00056$ \\
+$100\theta_s$
+  & $1.04097$ & $1.04191 \pm 0.00023$
+  & $\mathbf{1.04180 \pm 0.00023}$ & $1.04181 \pm 0.00023$
+  & $1.04182 \pm 0.00023$ \\
+$\tau_{\rm reio}$
+  & --- & $0.059 \pm 0.007$
+  & $\mathbf{0.056 \pm 0.007}$ & $0.056 \pm 0.007$
+  & $0.058 \pm 0.007$ \\
+$\ln(10^{10}A_s)$
+  & --- & $3.047 \pm 0.014$
+  & $\mathbf{3.044 \pm 0.014}$ & $3.045 \pm 0.014$
+  & $3.048 \pm 0.014$ \\
+$n_s$
+  & --- & $0.9676 \pm 0.0034$
+  & $\mathbf{0.9637 \pm 0.0034}$ & $0.9640 \pm 0.0034$
+  & $0.9641 \pm 0.0033$ \\[4pt]
+\hline
+\multicolumn{6}{c}{\textit{Derived parameters}} \\
+$H_0^{\rm GKI}$ (km\,s$^{-1}$\,Mpc$^{-1}$)
+  & $67.82$ & $68.13 \pm 0.28$
+  & $\mathbf{68.89 \pm 0.28}$ & $68.96 \pm 0.27$
+  & $68.83 \pm 0.25$ \\
+$H_0^{\rm LKI}$ (km\,s$^{-1}$\,Mpc$^{-1}$)
+  & --- & $71.90 \pm 0.29$
+  & $\mathbf{72.71 \pm 0.30}$ & $72.78 \pm 0.28$
+  & $72.64 \pm 0.26$ \\
+$\sigma_8$
+  & $0.803$ & $0.806 \pm 0.006$
+  & $\mathbf{0.827 \pm 0.006}$ & $0.827 \pm 0.006$
+  & $0.830 \pm 0.006$ \\
+$S_8$
+  & $0.812$ & $0.810 \pm 0.008$
+  & $\mathbf{0.811 \pm 0.008}$ & $0.810 \pm 0.008$
+  & $0.815 \pm 0.007$ \\
+$\Omega_m$
+  & $0.306$ & $0.303 \pm 0.004$
+  & $\mathbf{0.288 \pm 0.003}$ & $0.288 \pm 0.003$
+  & $0.289 \pm 0.003$ \\
+$r_{\rm drag}$ (Mpc)
+  & $147.86$ & $147.76 \pm 0.19$
+  & $\mathbf{147.50 \pm 0.19}$ & $147.52 \pm 0.19$
+  & --- \\
+$f_{\rm cdm}(0)$
+  & $1$ & $0.921 \pm 0.053$
+  & $\mathbf{0.9558}$ & $0.9558$
+  & $0.9558$ \\[4pt]
+\hline
+\multicolumn{6}{c}{\textit{Diagnostics}} \\
+$\chi^2_{\rm total}$
+  & $12{,}399.4$ & $12{,}394.4$
+  & $\mathbf{12{,}396.3}$ & $12{,}396.5$
+  & $13{,}026.6$ \\
+$R-1$
+  & --- & $0.003$ & $\mathbf{0.005}$ & $0.008$ & $0.006$ \\
+$N_{\rm samples}$
+  & --- & $63{,}887$ & $\mathbf{83{,}236}$ & $95{,}548$
+  & $41{,}986$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+% ----------------------------------------------------------------
+% V.C — Posteriors
+% ----------------------------------------------------------------
+\subsection{EU parameters: free versus derived}
+\label{sec:posteriors}
+
+Table~\ref{tab:mcmc} presents the full posterior constraints.
+The $\Lambda$CDM column reports the best-fit from a Cobaya
+minimizer (BOBYQA, best of 4 starts) applied to the baseline
+datasets.
+
+
+The comparison between the EU-blind and EU columns of
+Table~\ref{tab:mcmc} encodes the central statistical argument
+of this analysis.
+
+\textit{EU-blind $\to$ EU.}~The EU-blind run tests whether the data actively prefer evaporation.
+The posterior $\varepsilon_{\rm IR} = 0.075 \pm 0.043$
+excludes zero drain and is consistent with the
+framework-derived value at $0.75\sigma$. However, the three
+EU parameters are not individually constrained. Flat priors
+on ($\varepsilon_{\rm IR}$, $z_{\rm trans}$, $b$) create a
+three-dimensional degeneracy: geometrically distinct
+combinations of transition redshift and coupling strength
+produce nearly identical background expansion histories.
+Current CMB, BAO, and SNe data constrain the integrated
+drain fraction $f_{\rm cdm}(z{=}0)$ but lack the redshift
+resolution to separate $\varepsilon_{\rm IR}$,
+$z_{\rm trans}$, and $b$ individually --- all three
+posteriors are prior-dominated (coefficient of variation
+${>}\,47\%$; $f_{\rm cdm} = 0.921 \pm 0.053$).
+The sampler explores a disproportionately large prior
+volume of combinations that inflate the CDM drain beyond
+its framework-derived value.
+To preserve the acoustic peak structure under excess
+evaporation, the MCMC compensates by lowering
+$\omega_{\rm cdm}$ to $0.1178$ --- a $3.6\sigma$
+displacement from the Planck $\Lambda$CDM inference ---
+which suppresses $H_0^{\rm GKI}$ to
+$68.13\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$.
+
+Fixing the three EU parameters at their framework-derived
+values eliminates this degeneracy. A single evaporation
+curve --- a drain of exactly $4.42\%$ of CDM since
+$z_{\rm trans} \approx 6$ --- replaces the cloud of
+statistically degenerate alternatives. The primordial CDM
+density recovers to $\omega_{\rm cdm} = 0.1193$
+($1.2\sigma$ from Planck), and $H_0^{\rm GKI}$ rises by
+$0.76\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$ to $68.89$. The best-fit $\chi^2$
+increases by only $1.9$ for three fewer degrees of freedom;
+the Akaike information criterion accordingly favors the
+theory-fixed configuration
+($\Delta\text{AIC} = -4.1$; see
+Appendix~\ref{app:free_params}).
+
+
+
+% ----------------------------------------------------------------
+% V.D â€” Knockout tests
+% ----------------------------------------------------------------
+\subsection{Confrontation with local measurements}
+\label{sec:knockout}
+
+The progressive addition of local measurements tests
+the rigidity of the EU posteriors.
+
+\textit{Adding SH0ES (EU+$H_0$).}~The SH0ES Cepheid
+distance-ladder measurement
+$H_0 = 73.17 \pm 0.86\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$~\cite{breuval2024}
+is incorporated via a custom likelihood that compares
+against $H_0^{\rm LKI}$, the EU local observable
+(Sec.~\ref{sec:lki}). All parameter shifts remain
+$\leq 0.25\sigma$ (Table~\ref{tab:mcmc}), and the total
+$\chi^2$ changes by only $0.2$: the CMB, BAO, and SNe
+likelihoods are unperturbed by the addition of a local
+measurement that the model had already accommodated. The
+$S_8$ posterior shifts by $0.15\sigma$ ($0.811 \to 0.810$),
+confirming that the $H_0$ and $S_8$ resolutions operate
+through independent channels --- the CDM drain modifies the
+geometric distance ladder without altering the amplitude of
+structure growth. The SH0ES likelihood contributes no new
+information: it is redundant for a model that predicts
+$H_0^{\rm LKI} = 72.71\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$ from CMB, BAO,
+and SNe alone.
+
+\textit{Adding DES-Y3 (EU+$H_0$+$S_8$).}~This
+configuration tests whether the EU posteriors
+absorb weak-lensing data. The DES-Y3 $3 \times 2$pt cosmic
+shear likelihood~\cite{des2022} introduces 23 additional
+nuisance parameters (38 sampled dimensions total) and 462
+data points. The maximum parameter shift relative to EU is
+$0.50\sigma$ (in $S_8$), from $0.811$ to $0.815$; all other
+parameters remain within $0.3\sigma$. The upward pull on
+$S_8$ is expected: DES-Y3 directly constrains the
+combination $\sigma_8 \sqrt{\Omega_m / 0.3}$, and the
+joint fit rebalances the amplitude of structure growth
+against the geometric expansion history. The $S_8$ tension
+with the DES-Y3 published value decreases from $2.48\sigma$
+($\Lambda$CDM) to $2.14\sigma$ (EU) --- a modest but
+physical reduction driven by the lower $\Omega_m$ of the
+drain scenario (Sec.~\ref{sec:drain_wl}). The maximum shift
+between EU+$H_0$ and EU+$H_0$+$S_8$ is $0.49\sigma$ (in
+$S_8$), confirming that the model remains stable under the
+addition of an independent dataset probing a different
+cosmological observable.
+
+A caveat applies: the non-linear
+matter power spectrum is computed via
+HMCode~\cite{mead2021}, calibrated on $\Lambda$CDM
+$N$-body simulations. Conservative scale cuts are applied
+to restrict the analysis to the regime where EU
+perturbations are algebraically exact
+(Sec.~\ref{sec:pert_null_test}).
+
+% ----------------------------------------------------------------
+% V.C — UV→MCMC concordance
+% ----------------------------------------------------------------
+\subsection{Concordance with analytical predictions}
+\label{sec:concordance}
+
+The analytical predictions of Sec.~\ref{sec:gki_lki},
+derived from the five framework parameters without
+reference to observational data, are compared with the
+MCMC posteriors in Table~\ref{tab:concordance}.
+
+
+The maximum shift is $0.05\sigma$. The analytical framework
+predicted $H_0^{\rm LKI} = 72.72\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$ before
+the MCMC explored $83{,}785$ samples across three
+independent datasets; the posterior mean converged to
+$72.71 \pm 0.30\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$. This concordance
+establishes the causal direction of the EU: QFT $\to$
+framework parameters $\to$ CLASS $\to$ $H(z)$ $\to$ $H_0$.
+The data do not inform the EU parameters --- they validate
+that the framework-derived values are consistent with the
+observable universe. The framework constrains the model more
+tightly than the data alone --- the opposite of overfitting.
+
+% [TABLE: UV vs MCMC concordance]
+\begin{table}[!htb]
+\caption{Concordance between the analytical predictions
+(Sec.~\ref{sec:gki_lki}) and the MCMC posteriors (EU run).
+No EU parameter is fitted to data.}
+\label{tab:concordance}
+\begin{ruledtabular}
+\begin{tabular}{lccc}
+Quantity & Analytic & MCMC (EU) & Shift \\
+\hline
+$H_0^{\rm GKI}$ (km\,s$^{-1}$\,Mpc$^{-1}$) & 68.90 & $68.89 \pm 0.28$ & $0.04\sigma$ \\
+$H_0^{\rm LKI}$ (km\,s$^{-1}$\,Mpc$^{-1}$) & 72.72 & $72.71 \pm 0.30$ & $0.05\sigma$ \\
+$f_{\rm cdm}(0)$ & 0.9558 & 0.9558 & exact \\
+$\mathcal{I}_{\rm GKI}$ & 0.0679 & 0.0679 & exact \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+
+% ----------------------------------------------------------------
+% V.E â€” Model selection
+% ----------------------------------------------------------------
+\subsection{Model selection}
+\label{sec:model_selection}
+
+With identical parameter counts ($k_{\rm EU} = k_{\Lambda\rm CDM}
+= 7$), the information criteria~\cite{burnham_anderson2002}
+reduce to pure goodness-of-fit:
+\begin{equation}
+\Delta\text{AIC} = \Delta\text{BIC}
+  = \Delta\chi^2\,.
+\label{eq:aic}
+\end{equation}
+This is the cleanest possible comparison: no Occam penalty,
+no prior-volume ambiguity. Two dataset configurations are
+compared, both using the $\Lambda$CDM best-fit obtained via
+Cobaya minimizer (BOBYQA) on identical datasets. The
+baseline comprises CMB, BAO, and SNe; the extended
+configuration adds the SH0ES distance-ladder measurement
+under symmetric conditions --- both models receive the KBC
+void outflow correction of
+Wu \& Huterer~\cite{wu_huterer2017}:
+\begin{align}
+\Delta\text{AIC}_{\rm baseline}
+  &= -3.09 \quad (\text{positive evidence})\,,
+  \label{eq:aic_baseline} \\
+\Delta\text{AIC}_{\rm baseline+SH0ES}
+  &= -6.88 \quad (\text{strong evidence})\,.
+  \label{eq:aic_shoes}
+\end{align}
+The baseline improvement is driven by CMB
+($\Delta\chi^2_{\rm CMB} = -4.2$) and BAO
+($\Delta\chi^2_{\rm BAO} = -2.6$), partially offset by SNe
+($\Delta\chi^2_{\rm SNe} = +3.7$). Adding SH0ES
+consolidates the advantage: the EU predicts the correct
+local $H_0$ from geometry alone, converting what is a
+$5\sigma$ tension for $\Lambda$CDM into a
+$0.5\sigma$ agreement.
+
+The DES-Y3 data are not included in the model
+selection. The published
+$S_8 = 0.776$~\cite{des2022} was obtained under
+$\Lambda$CDM using DES data alone, while the EU posterior
+uses five combined datasets; a fair $\chi^2$ comparison
+requires both models to be evaluated on identical data,
+which was not performed for the DES-Y3 component.
+
+The parameter shifts documented in
+Table~\ref{tab:mcmc} --- primordial parameters unchanged,
+acoustic densities rebalanced, sound horizon angle shifted
+--- constitute a characteristic three-layer signature of the
+CDM drain. The physical interpretation is developed in
+Sec.~\ref{sec:drain}.
+
+
+
+% ================================================================
+% VI. DRAIN SIGNATURE
+% ================================================================
+\section{The Drain Signature in Cosmological Observables}
+\label{sec:drain}
+
+The MCMC posteriors of Sec.~\ref{sec:posteriors} are not
+``Planck values.'' They are inferences conditioned on a
+model. The six parameters reported by Planck~\cite{planck2018}
+--- $\omega_b$, $\omega_{\rm cdm}$, $100\theta_s$,
+$\tau_{\rm reio}$, $\ln(10^{10}A_s)$, $n_s$ --- were
+extracted under the assumption that CDM is conserved.
+Replacing that assumption with the EU drain modifies the
+late-time expansion history, and the same CMB data respond
+by readjusting the sampled parameters. The pattern of
+these shifts is not arbitrary: it encodes the physics
+of the CDM drain across three distinct layers.
+
+% ----------------------------------------------------------------
+% VI.A â€” Three-layer hierarchy
+% ----------------------------------------------------------------
+\subsection{Three-layer parameter hierarchy}
+\label{sec:three_layers}
+
+Table~\ref{tab:mcmc} reveals a characteristic hierarchy
+when comparing the EU posteriors against the
+$\Lambda$CDM best-fit.
+
+\textit{Layer~1 --- Primordial ($< 0.3\sigma$).}~The
+parameters $\ln(10^{10}A_s)$, $n_s$, and $\tau_{\rm reio}$
+describe inflationary perturbations ($z \sim 10^{25}$) and
+reionization ($z \sim 6$--$10$). The CDM drain operates at
+$z < \ztrans \approx 6$ with a strict Heaviside cutoff
+(Sec.~\ref{sec:params}). Physics above $\ztrans$ is
+identical to $\Lambda$CDM, so the MCMC has no reason to
+move these parameters. Their stability ($< 0.3\sigma$)
+confirms that the EU preserves the primordial sector.
+
+\textit{Layer~2 --- Acoustic.}~The baryon density
+$\omega_b$ shifts by $-1.5\sigma$ relative to the
+baseline $\Lambda$CDM fit (Table~\ref{tab:mcmc}), while
+the primordial CDM density $\omega_{\rm cdm}$ remains
+remarkably stable ($0.11926$ vs $0.11933$; shift of
+$\sim 0.1\sigma$). The ratio
+$\omega_b / \omega_{\rm cdm}$ controls the baryon
+loading that governs the odd-even peak asymmetry in the
+CMB power spectrum~\cite{hu_dodelson2002}; under the EU
+expansion history, the MCMC rebalances $\omega_b$ to
+preserve the peak structure measured by CamSpec.
+The resulting $\omega_{\rm cdm} = 0.1193$ is the
+primordial CDM density at recombination
+($z \sim 1100$). The effective density today, after
+$4.4\%$ evaporation, is
+\begin{equation}
+\omega_{\rm cdm}^{\rm eff}(0) =
+  \omega_{\rm cdm}\, f_{\rm cdm}(0)
+  = 0.1193 \cdot 0.9558 = 0.1140\,.
+\label{eq:omega_eff}
+\end{equation}
+This $4.4\%$ reduction relative to the primordial
+value is the origin of the reduced $\Omega_m$ and the
+suppressed structure growth that alleviates the $S_8$
+tension.
+
+\textit{Layer~3 --- Geometric ($+3.6\sigma$).}~The
+sound-horizon angle
+$100\theta_s = r_s(z_*) / D_A(z_*)$ shifts from
+$1.04097$ ($\Lambda$CDM) to $1.04180$ (EU). The CDM drain
+transfers energy to the vacuum sector, accelerating the
+late-time expansion and reducing $D_A(z_*)$. At fixed
+sound horizon, the reduced angular diameter distance
+requires a higher $H_0$ to preserve the observed CMB
+peak positions --- yielding
+$H_0^{\rm GKI} = 68.89\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$ instead of
+$67.82$.
+
+The hierarchy --- primordial frozen, densities rebalanced,
+geometry shifted --- is the expected signature of a
+late-time mechanism that modifies the expansion history
+while leaving recombination physics intact.
+% [TABLE: Mode A vs Mode B]
+\begin{table}[h!]
+\caption{CLASS-EU observables in two input cosmologies.
+Mode~A: Planck $\Lambda$CDM best-fit parameters
+($\omega_{\rm cdm} = 0.1200$, $\theta_s = 1.04092$).
+Mode~B: MCMC posteriors
+($\omega_{\rm cdm} = 0.1193$, $\theta_s = 1.04180$).
+Both modes use identical EU parameters. The drain fraction
+and perturbation cancellation are algebraic invariants.}
+\label{tab:mode_ab}
+\begin{ruledtabular}
+\begin{tabular}{lccc}
+Quantity & Mode A & Mode B & $\Delta$ \\
+\hline
+$H_0^{\rm GKI}$ (km\,s$^{-1}$\,Mpc$^{-1}$) & 68.56 & 68.89 & $+0.33$ \\
+$\sigma_8$ & 0.829 & 0.827 & $-0.002$ \\
+$S_8$ & 0.819 & 0.811 & $-0.008$ \\
+$\Omega_m$ & 0.293 & 0.288 & $-0.005$ \\
+$r_d$ (Mpc) & 147.06 & 147.42 & $+0.36$ \\
+\hline
+$f_{\rm cdm}(0)$ & 0.9558 & 0.9558 & $0$ \\
+$\Delta\sigma_8$ (null test) & 0 & 0 & $0$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+
+% ----------------------------------------------------------------
+% VI.B â€” Self-consistent observables
+% ----------------------------------------------------------------
+\subsection{Self-consistent observables}
+\label{sec:mode_b}
+
+The parameter readjustment has a concrete consequence for
+all downstream observables. To isolate it, we compare the
+fiducial CLASS-EU output of Sec.~\ref{sec:class_implementation}
+--- computed with Planck $\Lambda$CDM input parameters
+(Mode~A) --- against a second evaluation (Mode~B) that
+replaces only the standard cosmological inputs
+($\omega_b$, $\omega_{\rm cdm}$, $100\theta_s$) with the
+MCMC posterior means of Table~\ref{tab:mcmc}. The five EU
+parameters are identical in both cases. Each mode is a
+single CLASS-EU evaluation, not an additional MCMC run.
+
+The comparison exposes a diagnostic paradox:
+the analytical prediction of Sec.~\ref{sec:gki_lki}
+gives $H_0^{\rm GKI} = 68.90\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$; the MCMC
+converges to $68.89 \pm 0.28$; but Mode~A yields $68.56$.
+
+The resolution is that the Planck $\Lambda$CDM parameters
+were calibrated for a universe without evaporation. Forcing
+the EU physics into those inputs creates an inconsistent
+hybrid --- the expansion history is modified, but the
+cosmological densities have not relaxed. Mode~B produces
+the self-consistent cosmology: $H_0 = 68.89$, in agreement
+with the analytical prediction to $0.04\sigma$
+(Table~\ref{tab:concordance}).
+
+Table~\ref{tab:mode_ab} compares the two modes. The
+$0.33\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$ offset in $H_0$ traces directly
+to the acoustic-layer shift in $\omega_{\rm cdm}$ and
+$\theta_s$. The GKI boost increases from $1.78\%$
+(Mode~A) to $2.27\%$ (Mode~B) as the self-consistent
+parameters allow the drain to operate at its analytically
+predicted strength. All observables computed from Mode~B
+--- $\sigma_8 = 0.827$, $S_8 = 0.811$,
+$\Omega_m = 0.288$, $r_d = 147.42\;\text{Mpc}$ ---
+constitute the definitive EU predictions.
+
+Two quantities are invariant across modes. The drain
+fraction $f_{\rm cdm}(0) = 0.9558$ depends only on the
+EU parameters ($\varepsilon_{\rm IR}$, $\ztrans$, $b$),
+which are identical in both configurations. The
+perturbation cancellation $\Delta\sigma_8 = 0$
+(Sec.~\ref{sec:stability}) is an algebraic property
+of the IDE stress-energy tensor, independent of the
+background cosmology. These invariants confirm that the
+EU modification is fully specified by the framework
+parameters --- the input cosmology determines only how
+the standard $\Lambda$CDM parameters accommodate the
+drain.
+
+% ----------------------------------------------------------------
+% VI.C â€” Bridge to IX
+% ----------------------------------------------------------------
+\subsection{Implications for structure growth}
+\label{sec:drain_wl}
+
+The drain signature propagates into the derived
+observable $S_8 \equiv \sigma_8\sqrt{\Omega_m/0.3}$
+through two competing effects. Relative to the Planck
+2018 $\Lambda$CDM inference~\cite{planck2018}, the
+perturbation amplitude $\sigma_8$ increases from $0.811$
+to $0.827$ (EU) because the lower $\Omega_m$ reduces the
+transfer-function suppression at late times. But
+$\Omega_m$ itself decreases from $0.315$ to $0.288$,
+and the square-root factor dominates: $S_8$ falls from
+$0.831$ to $0.811$.
+
+The reduced $S_8$ moves the EU prediction toward the
+weak-lensing measurements. However, a direct comparison
+between $S_8^{\rm EU}$ and the published survey values
+is not valid. The parameter $S_8$ reported by DES-Y3,
+KiDS, and HSC is not a model-independent observable: it
+is inferred by fitting shear correlation functions
+to a $\Lambda$CDM template with a fixed matter power
+spectrum and a $\Lambda$CDM lensing kernel $W(\chi)$.
+If the true cosmology is EU, the
+$\Omega_m$-dependent kernel and the modified growth
+history bias the inferred $S_8$. The magnitude of this
+comparison artifact and its resolution are developed in
+Sec.~\ref{sec:growth}.
+
+% ================================================================
+% VII. HUBBLE TENSION
+% ================================================================
+\section{Resolution of the Hubble Tension}
+\label{sec:hubble}
+
+The Hubble tension --- the $5.8\sigma$ discrepancy between
+$H_0 = 67.36\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$ (Planck
+$\Lambda$CDM~\cite{planck2018}) and
+$H_0 = 73.17 \pm 0.86\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$
+(SH0ES~\cite{breuval2024}) --- has resisted resolution by
+late-time modifications to the Friedmann equation.
+The five EU parameters derived in Sec.~\ref{sec:params}
+predict $H_0^{\rm GKI} = 68.90\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$
+(Sec.~\ref{sec:gki_lki}). Combined with the KBC void
+outflow, the predicted local value is
+$H_0^{\rm LKI} = 72.72\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$ ---
+within $0.52\sigma$ of SH0ES, with $\Delta k = 0$.
+The MCMC posteriors of Sec.~\ref{sec:posteriors}
+confirm this prediction at $68.89 \pm 0.28$;
+the comparisons that follow use the framework-derived
+values throughout.
+
+% ----------------------------------------------------------------
+% VII.A — The geometric wall
+% ----------------------------------------------------------------
+\subsection{The geometric wall}
+\label{sec:nogo}
+
+Why has the Hubble tension resisted resolution? The answer is a
+geometric constraint~\cite{schoneberg2022} that we
+quantify via the profile likelihood.
+
+We scan $H_0$ from $64$ to $76\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$
+and, at each fixed $H_0$, minimize $\chi^2$ over
+all remaining parameters (profiling over CMB~TT,
+BAO~DR2, Pantheon+, and cosmic chronometers).
+The resulting profile identifies the best achievable
+fit as a function of $H_0$ for any model whose only
+freedom is the Friedmann equation
+(Fig.~\ref{fig:wall_escape}(a)). For $\Lambda$CDM,
+the profile minimum lies at
+$H_0^{\rm best} = 68.84$;
+for the EU (GKI channel only), at $69.55$. As
+$H_0$ is pushed toward $73.17$ (SH0ES), the
+$\chi^2$ penalty grows quadratically:
+\begin{equation}
+\Delta\chi^2(H_0 = 73.17) = 158.41
+\quad \Rightarrow \quad 12.59\sigma\,.
+\label{eq:nogo_wall}
+\end{equation}
+This $12.59\sigma$ wall is model-independent in the
+following sense: it applies to \textit{any} theory
+that modifies only $H(z)$ while preserving the
+pre-recombination physics. Early dark
+energy~\cite{poulin2019_ede}, interacting dark
+energy~\cite{divalentino2020},
+$w_0 w_a$CDM~\cite{desi_w0wa}, and decaying dark
+matter all face the same geometric constraint.
+The wall exists because raising $H_0$ globally
+shrinks both $r_s(z_*)$ and $D_A(z_*)$, and the
+CMB peak positions pin their ratio to $\sim\!0.1\%$
+precision.
+
+\begin{figure}[h!]
+\includegraphics[width=\columnwidth]{fig1_wall_escape.pdf}
+\caption{\textbf{(a)}~The geometric wall: $\Delta\chi^2$ profiles
+for $\Lambda$CDM (solid) and the EU GKI (dashed). The SH0ES value
+($H_0 = 73.17$) lies at $\Delta\chi^2 > 150$ ($12.59\sigma$).
+\textbf{(b)}~Waterfall decomposition: Planck baseline ($67.36$),
+GKI shift ($+1.53$), LKI void boost ($+3.82$), residual to
+SH0ES ($0.52\sigma$).}
+\label{fig:wall_escape}
+\end{figure}
+
+% ----------------------------------------------------------------
+% VII.B — Two-scale resolution
+% ----------------------------------------------------------------
+\subsection{Two-scale resolution}
+\label{sec:two_scale}
+
+The EU respects the geometric wall rather than
+attempting to breach it. The resolution separates
+two physically distinct scales: a global kinematic
+imprint (GKI) from the CDM drain, and a local
+kinematic imprint (LKI) from the KBC void outflow
+(Fig.~\ref{fig:wall_escape}(b)).
+
+The GKI modifies the global Friedmann equation.
+The CDM drain reduces $\Omega_{\rm cdm}$ at
+$z < \ztrans$, and flatness requires $H_0$ to
+increase to compensate. The framework predicts
+$H_0^{\rm GKI} = 68.90$ (Sec.~\ref{sec:gki_lki});
+the MCMC posteriors confirm
+$H_0^{\rm GKI} = 68.89 \pm 0.28\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$
+(Sec.~\ref{sec:posteriors}).
+This shift is anchored by the CMB:
+$\omega_{\rm cdm}$ is fixed at recombination, and the
+drain fraction $f_{\rm cdm}(0) = 0.9558$ is determined
+by the framework parameters. The GKI operates on the
+entire observable universe and affects all cosmological
+probes uniformly. At $H_0^{\rm GKI} = 68.90$, the
+EU sits within the parabolic minimum of the profile
+likelihood --- well below the geometric wall.
+
+The LKI closes the remaining gap. The KBC void
+($\delta_{\rm obs} = -0.46 \pm 0.06$, $R \approx
+300\;\text{Mpc}$~\cite{keenan2013}) is an observed
+underdensity surrounding the Milky Way. Within such a
+void, bulk outflow biases distance-ladder measurements of
+$H_0$~\cite{wu_huterer2017}. The magnitude of the bias
+depends on the growth rate: $\delta H_0 / H_0 =
+-(1/3)\,\delta_{\rm true}\,f(\Omega_m)$, where
+$\delta_{\rm true} = -0.304$ after RSD
+correction~\cite{haslbauer2020}. In the EU, the
+growth rate $f(\Omega_m)$ is computed with the
+self-consistent $\Omega_m = 0.288$, yielding
+$\delta H_0 = +3.82\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$.
+The void bias depends on $f(\Omega_m)$, which is
+itself modified by the CDM drain: the same physics
+that produces the GKI also determines the magnitude
+of the LKI. The local boost is not an external
+correction appended to the model --- it is a
+consequence of the drain operating through structure
+growth.
+
+The two channels are additive and independent:
+\begin{equation}
+\begin{split}
+H_0^{\rm LKI} &= H_0^{\rm GKI} + \delta H_0^{\rm void} \\
+&= 68.90 + 3.82
+= 72.72\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}\,.
+\end{split}
+\label{eq:h0_lki}
+\end{equation}
+The GKI modifies the background cosmology; the LKI
+modifies only the local frame of the observer. This
+separation is rigid: the void outflow does not enter
+the Friedmann equation and does not affect the CMB,
+BAO, or any other global probe. It biases exclusively
+the distance-ladder measurements that calibrate
+supernovae within $\sim\!300\;\text{Mpc}$.
+
+All local calibration methods --- Cepheids (SH0ES),
+TRGB, JAGB, Miras --- share a common Rung~3
+(supernovae in the Hubble flow) and therefore share
+the void bias. The EU predicts that these methods
+should cluster near $H_0^{\rm LKI} \approx 72.7$,
+while CMB and inverse-distance-ladder measurements
+should cluster near $H_0^{\rm GKI} \approx 68.9$. The
+observed hierarchy (Table~\ref{tab:hierarchy}) is
+consistent with this prediction
+(Sec.~\ref{sec:hierarchy}).
+
+% ----------------------------------------------------------------
+% VII.C — Quantitative resolution
+% ----------------------------------------------------------------
+\subsection{Quantitative resolution}
+\label{sec:quantitative_h0}
+
+The EU reduces the Hubble tension from $5.8\sigma$
+to $0.52\sigma$:
+\begin{equation}
+\frac{|H_0^{\rm LKI} - H_0^{\rm SH0ES}|}
+     {\sigma_{\rm SH0ES}}
+= \frac{|72.72 - 73.17|}{0.86}
+= 0.52\sigma\,.
+\label{eq:h0_tension}
+\end{equation}
+The numerator compares the framework prediction
+($H_0^{\rm LKI} = 72.72$, Sec.~\ref{sec:gki_lki})
+with the latest SH0ES calibration (Breuval et~al.
+2024~\cite{breuval2024}). The EU prediction is
+framework-derived; the only uncertainty enters from
+the measurement. The MCMC posteriors confirm
+$H_0^{\rm LKI} = 72.71 \pm 0.30$; including this
+uncertainty in quadrature yields an identical
+$0.51\sigma$.\footnote{Granting
+$\Lambda$CDM the same KBC void correction
+(Wu \& Huterer~\cite{wu_huterer2017}) yields
+$H_0^{\Lambda{\rm CDM},\,{\rm local}} \approx 71.2\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$,
+still in $2.3\sigma$ tension with SH0ES.
+The EU advantage persists because the CDM drain
+lowers $\Omega_m$ and shifts the growth rate
+$f(\Omega_m)$, amplifying the GKI contribution
+relative to $\Lambda$CDM.}
+
+The EU+$H_0$ run (Phase~3, Table~\ref{tab:mcmc}) provides an independent
+confirmation. Adding the SH0ES likelihood to the
+baseline EU fit shifts $H_0^{\rm LKI}$ by
+$0.25\sigma$, and the blind best-fit yields
+$\chi^2(\text{SH0ES}) = 0.29$.
+Both diagnostics indicate that the local
+distance-ladder measurement is already accommodated
+by the EU prediction without any pull on the
+cosmological parameters. The SH0ES data are
+redundant: the model predicted the correct local
+$H_0$ before seeing it.
+
+The LKI prediction is robust against the dominant
+astrophysical uncertainty --- the KBC void contrast
+$\delta$. The sensitivity band derived in
+Sec.~\ref{sec:lki} spans $H_0^{\rm LKI} \in
+[72.19,\, 73.26]$ at $1\sigma$, corresponding to a
+worst-case tension of $1.14\sigma$ against SH0ES.
+
+The cosmic age provides a consistency check:
+$t_0 = 13.77\;\text{Gyr}$ (EU) versus
+$13.80\;\text{Gyr}$ ($\Lambda$CDM). The difference
+of $0.03\;\text{Gyr}$ ($0.2\%$) is negligible, and
+both values exceed the age of the oldest globular
+clusters ($t_{\rm GC} > 12.6\;\text{Gyr}$).
+
+% ----------------------------------------------------------------
+% VII.D — Distance probes
+% ----------------------------------------------------------------
+\subsection{Distance probes}
+\label{sec:distance_probes}
+
+The modified expansion history produces measurable
+shifts in distance observables. We validate against
+three independent datasets.
+
+\textit{BAO --- DESI DR2.}~The 13-point DESI DR2
+compilation~\cite{desi_dr2_2025} spans
+$0.1 < z < 4.2$ and measures the transverse comoving
+distance $D_M(z)/r_d$, the Hubble distance
+$D_H(z)/r_d$, and the angle-averaged distance
+$D_V(z)/r_d$. Both models are evaluated at their
+respective best-fit parameters (Cobaya minimizer,
+identical dataset suite). The EU achieves
+$\chi^2_{\rm BAO} = 12.5$ compared with
+$\chi^2_{\rm BAO} = 15.4$ for $\Lambda$CDM,
+yielding
+\begin{equation}
+\Delta\chi^2_{\rm BAO} = -2.9
+\quad (N_{\rm data} = 13)\,.
+\label{eq:bao_dchi2}
+\end{equation}
+The physical origin is the modified late-time
+expansion history. The EU sound horizon
+$r_d = 147.50\;\text{Mpc}$ (versus $147.86$ for
+$\Lambda$CDM) and the reduced matter fraction
+$\Omega_m = 0.288$ (versus $0.306$) shift the
+predicted distance ratios toward the DESI
+measurements. The acoustic scale is determined at
+recombination, where the EU and $\Lambda$CDM are
+identical; the improvement comes from the
+late-time expansion that converts $r_d$
+into observed angles and redshifts.
+
+\textit{Full-shape clustering --- DESI DR1.}~The
+ShapeFit compressed parameters ($q_{\rm iso}$,
+$q_{\rm AP}$, $df$, $dm$) measured by DESI
+DR1~\cite{desi_dr1_shapefit} provide a complementary
+test of the matter power spectrum shape. The EU
+yields $\chi^2_{\rm ShapeFit} = 28.89$ versus
+$32.39$ for $\Lambda$CDM
+($\Delta\chi^2 = -3.50$, $n_{\rm dof} = 24$). The
+growth suppression factor
+$g \equiv \sigma_8^{\rm EU} / \sigma_8^{\rm fid}
+= 0.987$ confirms that the CDM drain produces a
+subtle but detectable modification of the growth
+rate.
+
+\textit{Type Ia supernovae and cosmic chronometers.}~The
+Pantheon+ compilation~\cite{brout2022} contributes
+$\chi^2 \approx 1408$ for both models --- the CDM drain
+is too weak ($\varepsilon_{\rm IR} = 0.0426$) to produce
+a measurable shift in distance moduli. The 32-point
+cosmic-chronometer compilation~\cite{moresco2022}
+yields $\Delta\chi^2 < 1$. Both datasets confirm that
+the EU expansion history is conservative: it modifies
+$H(z)$ at the percent level, preserving the
+calibrated distance ladder.
+
+% ================================================================
+% VIII. N-BODY VALIDATION
+% ================================================================
+\section{N-body Validation}
+\label{sec:nbody}
+
+The analytical predictions and Boltzmann integration of the
+preceding sections operate in the linear regime. Nonlinear
+structure formation --- halo collapse, mergers, the nonlinear
+power spectrum --- requires a full $N$-body simulation. We run
+two parallel Gadget-4 simulations to validate that the CDM
+drain is a pure background-level mass rescaling, decoupled
+from the gravitational force computation.
+
+% ----------------------------------------------------------------
+% VIII.A â€” Simulation setup
+% ----------------------------------------------------------------
+\subsection{Simulation setup}
+\label{sec:nbody_setup}
+
+We use Gadget-4~\cite{gadget4} with a custom EU patch that
+implements the CDM drain at the background level. The patch
+reads a pre-computed table (\texttt{eu\_tables.h}) of
+$f_{\rm cdm}(z)$ values generated from the analytical
+formula of Sec.~\ref{sec:friedmann_eu} and rescales the CDM
+particle mass at each time step. No modifications are
+made to the gravitational force solver --- the
+drain enters only through the mass assignment, not
+through any fifth force or coupling in the Poisson equation.
+
+Both simulations use $1024^3$ particles in a periodic box
+of $500\;\text{Mpc}/h$, initialized at $z = 49$ with
+second-order Lagrangian perturbation theory
+(monofonIC~\cite{monofonic}). The cosmological parameters
+are the baseline EU posteriors
+(Table~\ref{tab:mcmc}):
+$H_0 = 68.89\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$,
+$\omega_{\rm cdm} = 0.1193$, $n_s = 0.965$,
+$\ln(10^{10}A_s) = 3.044$. Power spectra are extracted at
+15 snapshots from $z = 49$ to $z = 0$ using
+Pylians3~\cite{pylians} with a $512^3$ CIC grid and
+interlacing compensation.
+
+Two configurations are run. The \textit{Production} run
+uses the full TreePM gravitational solver; CDM particles
+form halos, filaments, and voids as in a standard
+cosmological simulation. The \textit{Null Test} run
+disables self-gravity (\texttt{SELFGRAVITY = OFF}):
+particles free-stream from their initial conditions,
+generating no structure, while the CDM mass drain
+continues to operate identically. From the Production
+snapshots, a 2D interpolator $P(k, z)$ is constructed
+(443 $k$-bins $\times$ 7 redshifts, $z = 0$ to $3$),
+recovering exact $P(k)$ values at snapshot redshifts
+to machine precision ($\sim\!10^{-14}\%$). This
+interpolator feeds the downstream lensing analysis
+(Sec.~\ref{sec:growth}) and the Stage~IV survey
+predictions (Sec.~\ref{sec:predictions}).
+
+% ----------------------------------------------------------------
+% VIII.B â€” Null test
+% ----------------------------------------------------------------
+\subsection{Drain decoupling and the null test}
+\label{sec:null_test}
+
+The null test provides the most direct validation of the EU
+implementation. With self-gravity disabled, the matter power
+spectrum $P(k)$ remains flat shot noise across all 15
+snapshots --- no halos, no filaments, no nonlinear
+clustering. Yet the CDM mass evolves identically to the
+Production run.
+
+Table~\ref{tab:drain_nbody} presents the triple comparison
+across all fifteen snapshots. The drain measured in the
+Null Test, Production, and analytical formula agree to
+$< 0.016\%$ at all epochs.
+
+% [TABLE: Drain triple comparison]
+\begin{table}[t]
+\caption{CDM mass evolution: triple comparison between the
+Null Test (self-gravity off), Production (full TreePM),
+and the analytical formula from the EU framework
+parameters. All masses are normalized to the $z = 49$
+initial condition. The first three snapshots lie above
+$\ztrans$ and show exactly zero drain.}
+\label{tab:drain_nbody}
+\begin{ruledtabular}
+\begin{tabular}{lcccc}
+$z$ & Null & Prod & Analytic
+  & $|\Delta|_{\rm max}$ \\
+\hline
+$49.00$ & $1.0000$ & $1.0000$ & $1.0000$
+  & $0\%$ \\
+$6.99$  & $1.0000$ & $1.0000$ & $1.0000$
+  & $0\%$ \\
+$6.02$  & $1.0000$ & $1.0000$ & $1.0000$
+  & $0\%$ \\
+\hline
+$5.50$  & $0.9759$ & $0.9758$ & $0.9758$
+  & $0.016\%$ \\
+$5.02$  & $0.9743$ & $0.9742$ & $0.9742$
+  & $0.016\%$ \\
+$4.50$  & $0.9724$ & $0.9723$ & $0.9723$
+  & $0.016\%$ \\
+$4.01$  & $0.9706$ & $0.9704$ & $0.9704$
+  & $0.015\%$ \\
+$3.51$  & $0.9685$ & $0.9684$ & $0.9684$
+  & $0.014\%$ \\
+$2.99$  & $0.9664$ & $0.9663$ & $0.9663$
+  & $0.013\%$ \\
+$2.50$  & $0.9644$ & $0.9643$ & $0.9643$
+  & $0.011\%$ \\
+$2.00$  & $0.9624$ & $0.9623$ & $0.9623$
+  & $0.009\%$ \\
+$1.50$  & $0.9604$ & $0.9603$ & $0.9603$
+  & $0.007\%$ \\
+$1.00$  & $0.9586$ & $0.9586$ & $0.9585$
+  & $0.005\%$ \\
+$0.50$  & $0.9570$ & $0.9570$ & $0.9570$
+  & $0.003\%$ \\
+$0.00$  & $0.9558$ & $0.9558$ & $0.9558$
+  & $0.002\%$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+Three results follow from this comparison
+(Fig.~\ref{fig:anatomy}(b)).
+
+\textit{(i)~Gravitational decoupling.}~The drain is
+identical whether or not particles interact
+gravitationally. Dense clusters and empty voids
+evaporate at the same fractional rate. The CDM drain
+is a background-level thermodynamic process ---
+it rescales the mass budget without modifying the
+Poisson equation or introducing any fifth force.
+This confirms at the nonlinear level the algebraic
+cancellation proven analytically in
+Sec.~\ref{sec:stability}.
+
+\textit{(ii)~UV concordance.}~The total drain at
+$z = 0$ is $4.42\%$ in both simulations, matching
+the analytical prediction from the five
+framework-derived parameters
+(Sec.~\ref{sec:params}). The EFT prediction is
+confirmed by $10^9$ particles to an accuracy of
+$0.003\%$.
+
+\textit{(iii)~Heaviside cutoff.}~Above $\ztrans$,
+the mass spread across snapshots is exactly zero:
+$f_{\rm cdm}(z{=}49) = f_{\rm cdm}(z{=}6.99) =
+f_{\rm cdm}(z{=}6.02)$. The first mass drop occurs
+at $z = 5.50$ ($2.4\%$ below the initial
+condition), confirming that the Heaviside cutoff
+in Eq.~(\ref{eq:eps}) is preserved exactly in
+the nonlinear regime. No drain leaks into the
+pre-recombination universe.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig2_anatomy.pdf}
+\caption{Anatomy of the evaporating universe. \textbf{(a)}~The
+coupling function $\varepsilon(z)$, with logistic activation
+at $\ztrans \approx 5.99$ and IR plateau
+$\epsIR = 4.26\%$. \textbf{(b)}~CDM survival fraction
+$f_{\rm cdm}(z)$: analytical solution (solid),
+$N$-body snapshots (circles), and null-test
+particles (diamonds).}
+\label{fig:anatomy}
+\end{figure}
+
+% ----------------------------------------------------------------
+% VIII.C â€” Power spectrum and growth
+% ----------------------------------------------------------------
+\subsection{Power spectrum suppression and anemic halos}
+\label{sec:pk_suppression}
+
+The suppression ratio
+$S(k) \equiv P_{\rm EU}(k) / P_{\Lambda{\rm CDM}}(k)$
+at $z = 0$ reveals three physically distinct regimes
+(Fig.~\ref{fig:power_spectrum}), where
+$P_{\Lambda{\rm CDM}}$ is computed from CLASS
+with HMCode nonlinear corrections~\cite{mead2021}
+using the same cosmological parameters.
+
+\textit{Linear scales ($k < 0.1\;h/\text{Mpc}$).}~The
+suppression ratio plateaus at $S \approx 1.065$,
+consistent with the linear Conservative Upper Bound (CUB) expectation
+$(\sigma_8^{\rm EU} / \sigma_8^{\Lambda\rm CDM})^2
+= 1.038$ given the cosmic variance of the
+$500\;\text{Mpc}/h$ simulation volume. The EU has
+more linear power than $\Lambda$CDM because the
+reduced $\Omega_m$ requires a higher $\sigma_8$ to
+fit the same CMB acoustic peaks. This is the same
+mechanism that raises $\sigma_8$ analytically in
+Sec.~\ref{sec:drain_wl}.
+
+\textit{Quasi-linear scales
+($0.1 < k < 1.0\;h/\text{Mpc}$).}~$S(k)$ dips
+below the CUB line. This is the signature of
+\textit{anemic halos}: CDM evaporation reduces
+the mass of collapsed objects, producing shallower
+potential wells and less concentrated density
+profiles. The power spectrum suppression at these
+scales drives the $S_8$ reduction that alleviates
+the growth tension (Sec.~\ref{sec:growth}).
+
+\textit{Deep nonlinear scales
+($k > 1.0\;h/\text{Mpc}$).}~$S(k)$ rises sharply
+above the CUB. This is a known artifact of
+dark-matter-only simulations: the $\Lambda$CDM
+reference (HMCode) includes baryonic feedback
+that suppresses halo cores, while the Gadget-4
+run has no such feedback. The rise does not
+reflect EU physics; it validates the decision to
+anchor the small-scale power spectrum to HMCode
+in the downstream $S_8$ analysis
+(Sec.~\ref{sec:growth}).
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig3_power_spectrum.pdf}
+\caption{Power spectrum suppression ratio
+$S(k) \equiv P_{\rm EU}(k) / P_{\Lambda{\rm CDM}}(k)$ at $z = 0$.
+Three regimes: linear plateau at $S \approx 1.065$
+(large scales), anemic-halo dip (quasi-linear,
+driving the $S_8$ resolution), and rise at
+$k > 1\;h/\text{Mpc}$ from the absence of baryonic
+feedback. Dashed line: CUB prediction.}
+\label{fig:power_spectrum}
+\end{figure}
+
+The three-regime structure persists across redshifts.
+The linear plateau grows monotonically from
+$S = 1.044$ at $z = 2$ through $1.052$ ($z = 1$) and
+$1.057$ ($z = 0.5$) to $1.065$ ($z = 0$), tracking
+the accumulating CDM drain (Table~\ref{tab:drain_nbody}).
+The quasi-linear dip deepens in parallel: halos at
+$z = 0$ have lost $4.4\%$ of their initial CDM mass,
+versus $3.8\%$ at $z = 2$, producing progressively
+more anemic density profiles. This redshift dependence
+is a prediction unique to the EU --- in $\Lambda$CDM,
+the ratio $P_{\rm model}/P_{\rm ref}$ is unity at
+all epochs by construction.
+
+The linear growth factor confirms the suppression.
+Extracting $D(z)$ from the $N$-body power spectrum
+at $k_{\rm ref} = 0.05\;h/\text{Mpc}$ and comparing
+with the analytical growth ODE yields
+\begin{equation}
+g \equiv \frac{D_{\rm EU}(0)}{D_{\Lambda{\rm CDM}}(0)}
+= 0.992\,,
+\label{eq:growth_suppression}
+\end{equation}
+corresponding to a $0.8\%$ suppression relative to
+$\Lambda$CDM. The $N$-body extraction agrees with the
+analytical ODE to $\Delta g = 0.0004$, confirming that
+the linear growth regime is faithfully reproduced by
+the simulation.
+
+% ================================================================
+% IX. GROWTH TENSION
+% ================================================================
+\section{Resolution of the Growth Tension}
+\label{sec:growth}
+
+The parameter $S_8 \equiv \sigma_8\sqrt{\Omega_m/0.3}$ reported
+by weak-lensing surveys is not a model-independent observable.
+It is extracted by fitting shear correlation functions to
+$\Lambda$CDM templates --- using a $\Lambda$CDM lensing
+kernel, a $\Lambda$CDM comoving distance, and a $\Lambda$CDM
+matter power spectrum. If the true cosmology is EU, every
+link in this inference chain carries a systematic bias.
+
+The EU resolves the growth tension through two complementary
+arguments. The EU+$H_0$+$S_8$ run (Sec.~\ref{sec:mcmc_confirmation})
+proves numerically that DES-Y3 data are consistent with
+$S_8 = 0.815$ when analyzed under EU cosmology. The forward
+analysis explains the mechanism: geometric kernel
+bias of $-5\%$ to $-7\%$ systematically depresses the
+$S_8$ inferred by $\Lambda$CDM pipelines.
+
+% ----------------------------------------------------------------
+% IX.A â€” The lensing kernel bias
+% ----------------------------------------------------------------
+\subsection{The lensing kernel bias}
+\label{sec:kernel_bias}
+
+Weak-lensing surveys measure the angular cross-spectrum of
+cosmic shear between tomographic bins $i$ and $j$. Under the
+Limber approximation~\cite{limber1953},
+\begin{equation}
+C_\ell^{ij} = \int_0^{\chi_H}
+  \frac{W_i(\chi)\,W_j(\chi)}{\chi^2}\;
+  P\!\left(\frac{\ell + 1/2}{\chi},\, z(\chi)\right)
+  d\chi\,,
+\label{eq:limber}
+\end{equation}
+where $P(k,z)$ is the matter power spectrum and $W_i(\chi)$
+is the lensing efficiency kernel for bin $i$:
+\begin{equation}
+W_i(\chi) = \frac{3\,\Omega_m\,H_0^2}{2\,c^2}\;
+  \frac{\chi}{a(\chi)}\;
+  \int_\chi^{\chi_H}
+  n_i(\chi')\,\frac{\chi' - \chi}{\chi'}\;d\chi'\,.
+\label{eq:kernel}
+\end{equation}
+Three quantities in Eq.~(\ref{eq:kernel}) depend on the
+assumed cosmology: the matter density $\Omega_m$, the
+comoving distance $\chi(z)$, and the source distribution
+$n_i(\chi)$ mapped from redshift space. The EU modifications
+--- $\Omega_m^{\rm EU} = 0.288$ (vs $0.315$) and
+$\chi_{\rm EU}(z) \neq \chi_{\Lambda{\rm CDM}}(z)$ due to
+the altered expansion history --- shift the kernel peaks,
+change the overlap between tomographic bins, and modify
+the Limber mapping $k = (\ell + 1/2)/\chi$.
+
+A $\Lambda$CDM pipeline analyzing shear data from an EU
+universe uses the wrong kernel in every integral. To
+quantify the resulting bias, we define the
+\textit{pipeline-inferred} value
+\begin{equation}
+\hat{S}_8 = S_8^{\rm EU}\,
+  \sqrt{\left\langle A_{ij} \right\rangle_{\rm Fisher}}\,,
+\label{eq:shat}
+\end{equation}
+where $A_{ij} = C_\ell^{ij}(\text{EU}) /
+C_\ell^{ij}(\Lambda\text{CDM})$ is the amplitude ratio
+of the true (EU) to template ($\Lambda$CDM) angular spectra,
+and the Fisher average weights each bin pair by its
+signal-to-noise ratio. The ratio $\hat{S}_8 / S_8^{\rm EU}$
+is the kernel bias.
+
+% ----------------------------------------------------------------
+% IX.B â€” Resolution by survey
+% ----------------------------------------------------------------
+\subsection{Quantitative resolution}
+\label{sec:s8_resolution}
+
+We compute $\hat{S}_8$ for four independent Stage-III
+surveys using our forward-modeling pipeline:
+mock shear spectra are generated with the EU matter power
+spectrum from the $N$-body simulation
+(Sec.~\ref{sec:pk_suppression}) and EU lensing kernels,
+then reanalyzed with $\Lambda$CDM kernels via
+Fisher-weighted Knox variance~\cite{knox1995}.
+Each survey uses its official source redshift distributions,
+except HSC-Y3, for which we adopt a Smail
+parametrization matched to the published
+tomographic bins.
+
+Table~\ref{tab:s8} and Fig.~\ref{fig:s8_forest} present the results. All four surveys
+converge to $\hat{S}_8 \approx 0.794 \pm 0.002$, with
+inter-survey scatter of $\Delta\hat{S}_8 = 0.004$ ---
+smaller than any individual statistical uncertainty.
+
+% [TABLE: Sâ‚ˆ tensions by survey]
+\begin{table}[t]
+\caption{Resolution of the growth tension across four
+independent Stage-III weak-lensing surveys. $S_8^{\rm pub}$
+is the published value (inferred under $\Lambda$CDM);
+$\hat{S}_8$ is the pipeline-inferred value in an EU
+universe (forward model). All kernel biases are
+geometric and require no additional parameters.}
+\label{tab:s8}
+\begin{ruledtabular}
+\begin{tabular}{lccccc}
+Survey & $S_8^{\rm pub}$ & $\hat{S}_8$ &
+  $\sigma_{\Lambda\rm CDM}$ &
+  $\sigma_{\rm EU}$ & Bias \\
+\hline
+DES-Y3        & $0.776$ & $0.794$ &
+  ${\sim}\,2.6\sigma$ & $\mathbf{-1.03\sigma}$ & $-5.6\%$ \\
+KiDS-1000~\cite{heymans2021}
+  & $0.759$ & $0.792$ &
+  $2.17\sigma$ & $\mathbf{-1.38\sigma}$ & $-6.6\%$ \\
+KiDS-Legacy~\cite{wright2025}
+  & $0.815$ & $0.793$ &
+  $0.89\sigma$ & $\mathbf{+1.15\sigma}$ & $-6.2\%$ \\
+HSC-Y3~\cite{li2023_hsc}
+  & $0.776$ & $0.796$ &
+  $1.10\sigma$ & $\mathbf{-0.63\sigma}$ & $-5.4\%$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+The convergence across surveys with different source
+distributions, sky coverage, and shear calibration confirms
+that the kernel bias is a universal geometric effect of the
+EU expansion history, not a survey-specific systematic.
+The pattern is particularly instructive: DES-Y3 and
+KiDS-Legacy bracket the EU expectation from opposite
+sides ($-1.03\sigma$ and $+1.15\sigma$, respectively),
+while KiDS-1000 and HSC-Y3 scatter below it. Under
+$\Lambda$CDM, these surveys present an incoherent picture
+--- DES-Y3 reports a ${\sim}\,2.6\sigma$ deficit while
+KiDS-Legacy finds sub-$\sigma$ agreement. Under the EU,
+all four measurements reduce to standard
+${\sim}\,1\sigma$ statistical scatter around a common
+geometric expectation.
+
+The KiDS-Legacy result merits specific attention. Wright
+et~al.~\cite{wright2025} replaced the direct calibration
+method of KiDS-1000 with Self-Organizing Map (SOM)
+photometric redshifts, calibrated against $126{,}085$
+spectroscopic sources, and extended the tomographic
+analysis to six bins ($z \leq 1.2$). While this
+improved $n(z)$ calibration raised the published $S_8$
+from $0.759$ to $0.815$, the geometric kernel bias
+persists: the SOM calibrates $n(z)$ from spectral lines
+(a purely kinematic measurement), but the Limber
+projection in CosmoSIS continues to assume
+$\chi_{\Lambda{\rm CDM}}(z)$.
+
+The bias depends on the source redshift distribution.
+Table~\ref{tab:kernel_bias} presents the per-bin kernel
+bias for DES-Y3 and KiDS-Legacy, both with official
+$n(z)$ distributions. For DES-Y3, the bias peaks at
+$\bar{z} = 0.70$ ($-6.2\%$), where the divergence between
+$\chi_{\rm EU}(z)$ and $\chi_{\Lambda{\rm CDM}}(z)$
+maximizes. For KiDS-Legacy, the bias decreases
+monotonically from $-7.1\%$ (BIN1, $\bar{z} \approx 0.34$)
+to $-4.9\%$ (BIN6, $\bar{z} \approx 1.22$), reflecting
+the reduced CDM drain fraction at higher redshifts.
+This redshift structure is a prediction: Euclid, with 10
+tomographic bins extending to $z \approx 2$, will map
+this curve with percent-level precision
+(Sec.~\ref{sec:euclid}).
+
+\begin{table}[t]
+\caption{Per-bin kernel bias for the two Stage-III surveys
+with official source redshift distributions. The bias
+$\mathcal{B}_i \equiv (W_i^{\rm EU} - W_i^{\Lambda{\rm CDM}})
+/ W_i^{\Lambda{\rm CDM}}$ is the fractional deficit of the
+EU lensing kernel relative to $\Lambda$CDM in each
+tomographic bin.}
+\label{tab:kernel_bias}
+\begin{ruledtabular}
+\begin{tabular}{lccc}
+Survey & Bin & $\bar{z}$ range & Bias (\%) \\
+\hline
+DES-Y3 & 1 & $0.0$--$0.36$ & $-5.1$ \\
+        & 2 & $0.36$--$0.63$ & $-5.7$ \\
+        & 3 & $0.63$--$0.87$ & $-6.2$ \\
+        & 4 & $0.87$--$1.30$ & $-5.3$ \\
+\hline
+KiDS-Legacy & 1 & $0.1$--$0.3$ & $-7.1$ \\
+            & 2 & $0.3$--$0.5$ & $-7.1$ \\
+            & 3 & $0.5$--$0.7$ & $-6.7$ \\
+            & 4 & $0.7$--$0.9$ & $-6.1$ \\
+            & 5 & $0.9$--$1.1$ & $-5.6$ \\
+            & 6 & $1.1$--$1.5$ & $-4.9$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+The total shift from $S_8^{\Lambda\rm CDM} = 0.832$ to
+$\hat{S}_8 = 0.794$ decomposes into two physical
+contributions: the geometric kernel bias
+($\Delta S_8 = -0.028$, $\sim\!75\%$) and the anemic halo
+suppression from the quasi-linear $P(k)$ dip
+($\Delta S_8 = -0.010$, $\sim\!25\%$;
+Sec.~\ref{sec:pk_suppression}). The kernel bias dominates
+because the $C_\ell$ integrand
+(Eq.~\ref{eq:limber}) depends quadratically on $W(\chi)$:
+a $6\%$ kernel deficit propagates as a $\sim\!12\%$
+suppression in $C_\ell$, which the pipeline interprets
+as a lower $\sigma_8$.
+
+The $S_8$ ``ladder'' summarizes the chain of inferences:
+\begin{align}
+S_8^{\Lambda\rm CDM} &= 0.832
+  \quad\text{(Planck, $\Lambda$CDM)} \notag \\
+S_8^{\rm EU} &= 0.811
+  \quad\text{(EU prediction, no WL data)} \notag \\
+\hat{S}_8 &= 0.794
+  \quad\text{(EU $\to$ $\Lambda$CDM pipeline)} \notag \\
+S_8^{\rm pub} &= 0.776
+  \quad\text{(DES-Y3 published)}\,.
+\label{eq:s8_ladder}
+\end{align}
+The $\Lambda$CDM tension (typically reported at
+${\sim}\,2.6\sigma$) arises from comparing two numbers
+computed in different cosmologies. The EU tension
+(${\sim}\,1\sigma$) compares like with like.
+
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig4_s8_forest.pdf}
+\caption{Resolution of the growth tension across four independent
+Stage-III weak-lensing surveys. For each survey, the published
+$S_8^{\rm pub}$ (extracted under $\Lambda$CDM assumptions) is
+compared with the EU forward-model prediction $\hat{S}_8$. The
+kernel bias shifts all surveys toward concordance with the CMB,
+reducing the average tension from $\sim\!2.6\sigma$ to
+$\sim\!1\sigma$.}
+\label{fig:s8_forest}
+\end{figure}
+
+
+A parallel pattern emerges in the growth data. Under
+$\Lambda$CDM with constant $\Omega_m$, the CMB yields
+$S_8 = 0.832 \pm 0.013$~\cite{planck2018} while
+DES-Y3 cosmic shear reports
+$S_8 = 0.776 \pm 0.017$~\cite{des2022} --- a
+${\sim}\,2.6\sigma$ discrepancy between the early and
+late universe. The CMB measurement reflects the
+primordial matter density at $z \sim 1100$; the
+weak-lensing measurement is sensitive to the
+integrated growth rate at $z < 1$. When these
+datasets are jointly analyzed under $\Lambda$CDM
+(together with BAO, supernovae, and CMB lensing),
+the single-$\Omega_m$ compromise converges to
+$S_8 = 0.812 \pm 0.008$~\cite{des2022}.
+The arithmetic mean of the two inputs is
+$S_8 \approx 0.804$; the joint constraint lies
+$1\sigma$ above this because the CMB carries an order
+of magnitude more Fisher information than cosmic shear
+at current survey depth.
+
+The EU predicts $S_8 = 0.811$
+(Sec.~\ref{sec:s8_resolution}), within $0.001$ of
+this $\Lambda$CDM joint constraint. The agreement has
+a structural explanation. In the EU, $\Omega_m(z)$
+evolves: high at recombination (consistent with the
+CMB), $4.4\%$ lower at $z = 0$ (consistent with
+weak lensing). A $\Lambda$CDM analysis, constrained
+to a single constant $\Omega_m$, has no choice but
+to find the value that best approximates this
+dynamical trajectory. The result is a compromise
+pulled toward the high-weight CMB measurement but
+dragged below it by the late-universe data --- landing
+on the EU prediction.
+
+% ----------------------------------------------------------------
+% IX.C â€” Robustness
+% ----------------------------------------------------------------
+\subsection{Robustness tests}
+\label{sec:s8_robustness}
+
+\textit{UV extrapolation.}~The Gadget-4 simulation has
+$k_{\rm Nyquist} \approx 4.3\;h/\text{Mpc}$. Beyond this
+scale, we perform an A/B test replacing the default
+power-law extrapolation with HMCode2020
+anchoring~\cite{mead2021}. The maximum impact on
+$\hat{S}_8$ is $0.074\sigma$ (DES-Y3); all four
+surveys satisfy the criterion $\Delta\hat{S}_8/\sigma
+< 0.2$. Stage-III surveys are insensitive to the
+deep nonlinear power spectrum.
+
+\textit{Intrinsic alignments.}~Adding the NLA
+model~\cite{bridle2007} with amplitude $A_{\rm IA} = 1.0$
+(DES-Y3 fiducial) shifts $\hat{S}_8$ upward by $+0.005$.
+The tension with DES-Y3 increases from $1.03\sigma$ to
+$1.33\sigma$ --- still well within concordance. Ignoring
+intrinsic alignments is the conservative choice.
+
+\textit{Residual gap.}~The forward analysis captures
+$\sim\!70\%$ of the total $S_8$ shift ($0.832 \to 0.794$;
+$\Delta = -0.038$ of a total $-0.056$). The remaining
+gap ($0.794 \to 0.776$) arises from pipeline effects not
+modeled in our Fisher analysis: baryonic feedback,
+photo-$z$ uncertainties, shear calibration, and
+nonlinear galaxy bias. All of these are included in the
+full CosmoLike likelihood used by the EU+$H_0$+$S_8$ run, which
+independently confirms $S_8 = 0.815 \pm 0.007$
+(Sec.~\ref{sec:mcmc_confirmation}). The forward
+analysis is a diagnostic tool that explains the
+mechanism; the full MCMC is the definitive numerical
+verdict.
+
+% ----------------------------------------------------------------
+% IX.D — MCMC confirmation
+% ----------------------------------------------------------------
+\subsection{MCMC confirmation}
+\label{sec:mcmc_confirmation}
+
+The EU+$H_0$+$S_8$ run adds the DES-Y3 $3 \times 2$pt cosmic shear
+likelihood~\cite{des2022} (462 data points, analyzed via
+Cocoa/CosmoLike~\cite{krause2021}) to the baseline
+CMB+BAO+SNe+SH0ES dataset. The sampling space expands
+to 38 dimensions: 7 cosmological parameters,
+8 instrumental nuisance parameters ($A_{\rm planck}$
+and Planck calibration), and 23 DES nuisance parameters
+(shear calibration $m_i$,
+photo-$z$ shifts $\Delta z_i$, intrinsic alignment
+amplitudes $A_{\rm IA}$, galaxy bias $b_i$, and
+baryonic feedback).
+
+The posterior converges at $R-1 < 0.006$
+(per-parameter Gelman--Rubin diagnostic) with
+$41{,}986$ samples across eight chains
+(Table~\ref{tab:mcmc}).
+The key derived parameters are
+\begin{align}
+S_8^{\rm full} &= 0.815 \pm 0.007
+  \quad (0.50\sigma\;\text{from baseline})\,,
+  \notag \\
+H_0^{\rm GKI} &= 68.83 \pm 0.25
+  \quad (0.23\sigma\;\text{from baseline})\,,
+  \notag \\
+\Omega_m &= 0.289 \pm 0.003
+  \quad (0.27\sigma\;\text{from baseline})\,.
+\label{eq:d2_params}
+\end{align}
+Adding 462 weak-lensing data points shifts $S_8$ by
+$0.50\sigma$ --- from $0.811$ (CMB+BAO+SNe alone) to
+$0.815$ (including DES-Y3). The model absorbs the
+full DES-Y3 $3 \times 2$pt dataset without stress.
+
+This result resolves both caveats of the forward
+analysis: the simplified background
+integration and the diagonal Fisher approximation. The
+full CosmoLike pipeline includes baryonic feedback,
+photo-$z$ marginalization, shear calibration, and the
+complete off-diagonal covariance matrix.
+
+The EU growth tension is best quantified through the
+three hierarchical $S_8$ values that the framework
+produces. The first is the CLASS-EU standalone
+prediction (Mode~B, Sec.~\ref{sec:mode_b}):
+the five EFT-derived parameters are fed into the
+Boltzmann solver with the baseline cosmological posteriors,
+and $S_8$ is computed without any weak-lensing data
+entering the calculation. The result is $S_8 = 0.811$.
+The second is the baseline MCMC posterior mean,
+$S_8 = 0.811 \pm 0.008$, obtained by marginalizing
+over all six $\Lambda$CDM parameters while fitting
+CMB, BAO, and supernovae simultaneously. The third is
+the full posterior, $S_8 = 0.815 \pm 0.007$, which
+adds 462 DES-Y3 data points and 23 nuisance parameters
+to the fit.
+
+These three values --- 0.811, 0.811, 0.815 --- span a
+range of $0.004$, smaller than the statistical
+uncertainty of any single determination. The analytical
+prediction, the Phase~2 EU posterior, and the Phase~3
+EU+$H_0$+$S_8$ posterior converge to the same $S_8$. The
+shift from the blind prediction to the full fit,
+\begin{equation}
+\frac{|S_8^{\rm full} - S_8^{\rm Mode\,B}|}
+     {\sigma_{\rm full}}
+= \frac{|0.8151 - 0.8112|}{0.0067} = 0.58\sigma\,,
+\label{eq:s8_tension_eu}
+\end{equation}
+is the true EU growth tension: a model predicted
+$S_8 = 0.811$ without seeing any shear data, and the
+same shear data, analyzed within that model, returned
+$S_8 = 0.815$.
+
+The contrast with $\Lambda$CDM is stark. Under
+$\Lambda$CDM, the CMB predicts $S_8 = 0.832$, while
+DES-Y3 measures $S_8 = 0.776 \pm 0.017$ --- a
+${\sim}\,2.6\sigma$ internal tension with no mechanism
+to bridge the gap. Under the EU, the framework predicts
+$S_8 = 0.811$ before seeing any shear data; adding the
+full DES-Y3 likelihood to the fit shifts the posterior
+to $S_8 = 0.815 \pm 0.007$ --- a $0.58\sigma$
+agreement.
+
+For $\Lambda$CDM, the growth tension is genuine: the
+model predicts $S_8 = 0.832$ and most Stage-III
+surveys report $S_8 \lesssim 0.78$, with no internal
+mechanism to bridge the gap. For the EU, the kernel
+bias accounts for the dominant share of this apparent
+deficit ($\hat{S}_8 \approx 0.794$;
+Table~\ref{tab:s8}). The convergence of four
+independent surveys to the same suppressed
+$\hat{S}_8$ band is not a coincidence requiring
+explanation --- it is a geometric consequence of
+analyzing an evaporating universe with a
+non-evaporating template.
+
+% ----------------------------------------------------------------
+% IX.E â€” Pipeline bias generalization
+% ----------------------------------------------------------------
+\subsection{Pipeline bias generalization}
+\label{sec:pipeline_bias}
+
+The forensic pipeline dissection performed above for $S_8$
+revealed a \emph{model-intrinsic} bias: the lensing kernel
+$W(\chi)$ carries $\Lambda$CDM-calibrated parameters that
+systematically deflate the inferred $\hat{S}_8$.
+This bias is monotonically redshift-dependent
+(Table~\ref{tab:kernel_bias}), peaking at low $z$ where the
+cumulative CDM drain is largest. Whether this redshift
+structure contributes to the photo-$z$ calibration residuals
+reported at low redshift by Stage-III surveys merits
+independent investigation.
+
+An analogous bias affects the Hubble constant, but its origin
+is \emph{structural} rather than model-intrinsic --- the
+SH0ES calibrators reside within the KBC
+void~\cite{keenan2013}, whose gravitational outflow
+contaminates $M_B$ and inflates the inferred $H_0$.
+Because this cosmographic bias depends on the local void
+profile rather than on the cosmological model, its forensic
+decomposition requires independent probes (peculiar
+velocities, BAO-anchored joint analysis) that fall outside
+the scope of the present work.
+The complete dissection will be presented in Paper~II.
+
+% ================================================================
+% X. FALSIFIABLE PREDICTIONS
+% ================================================================
+\section{Falsifiable Predictions}
+\label{sec:predictions}
+
+The EU framework, with its five derived parameters, generates
+quantitative predictions for three independent Stage-IV
+programs. Each prediction follows from the baseline EU posteriors
+and the $N$-body calibration of the preceding sections.
+No parameter is adjusted to the test data.
+
+% ----------------------------------------------------------------
+% X.A — Euclid DR1
+% ----------------------------------------------------------------
+\subsection{Euclid DR1 weak lensing and spectroscopy}
+\label{sec:euclid}
+
+\textit{Anomalous $C_\ell$ pattern.}~The lensing kernel bias
+identified in Sec.~\ref{sec:kernel_bias} predicts a specific
+suppression of the angular power spectrum measurable by
+Euclid~\cite{euclid2024}. Across the 10 tomographic bins of the
+Euclid photometric survey ($0.001 < z < 2.5$), the lensing
+kernel $W(\chi)$ is suppressed by $-8.1\%$ (Bin~1,
+$\bar{z} = 0.30$) to $-4.7\%$ (Bin~10, $\bar{z} = 1.85$). 
+Since $C_\ell \propto W^2$, the power spectrum deficit ranges
+from approximately $-16\%$ at low redshift to $-9\%$ at high
+redshift.
+
+This pattern has four distinguishing properties:
+(i)~negative at all redshifts, (ii)~monotonically decreasing
+with increasing $z$ (the CDM drain is strongest at late
+times), (iii)~smooth in $\ell$ (no oscillatory features),
+and (iv)~strictly zero in B-modes. No known $\Lambda$CDM
+systematic produces this combination. Photometric redshift
+errors generate oscillatory residuals in $\ell$; shear
+calibration errors are redshift-independent; intrinsic
+alignments contaminate B-modes. The EU signature is
+geometrically distinct from all three.
+
+\textit{Spectral crossing.}~A further discriminant emerges from the
+scale dependence of the $C_\ell$ ratio. At low multipoles
+($\ell \lesssim 255$), the geometric kernel bias
+dominates: the EU lensing kernels are ${\sim}\,6\%$ weaker
+than their $\Lambda$CDM counterparts, suppressing
+$C_\ell^{\rm EU}/C_\ell^{\Lambda{\rm CDM}}$ below unity.
+At high multipoles ($\ell \gtrsim 255$), the EU matter
+power spectrum amplitude takes over: $\sigma_8^{\rm EU} =
+0.827$ exceeds $\sigma_8^{\Lambda{\rm CDM}} = 0.811$,
+injecting more small-scale power and driving the ratio
+above unity. The crossover at $\ell \approx 255$ is a
+shape-dependent prediction that does not depend on
+the overall normalization of $C_\ell$ --- it depends on
+the interplay between a geometric effect (kernel) and
+a dynamical effect ($P(k)$ amplitude). Stage-III surveys,
+with $\ell_{\rm max} \lesssim 300$, probe only the
+suppressed regime. Euclid, reaching $\ell \sim 5000$
+across 10 tomographic bins, will map both regimes and
+measure the crossover scale directly.
+
+\textit{Pipeline-inferred $\hat{S}_8$.}~The Euclid CUB prediction for the
+pipeline-inferred parameter is $\hat{S}_8 = 0.801$. With
+Euclid's projected uncertainty $\sigma(S_8) \approx 0.01$
+and the Planck uncertainty $\sigma = 0.013$ combined in
+quadrature, this lies ${\sim}\,1.9\sigma$ below the Planck
+$\Lambda$CDM value ($S_8 = 0.832$). The EU predicts that
+this persistent deficit will be interpreted as a growth
+tension within $\Lambda$CDM --- but will resolve to
+$< 1\sigma$ when the EU lensing kernel is adopted.
+
+\textit{Alcock--Paczy\'nski anomaly.}~The EU expansion
+history modifies the radial and transverse distance
+scales measured by Euclid's spectroscopic survey
+(NISP grism, $0.9 < z < 1.8$). The Alcock--Paczy\'nski
+parameters~\cite{alcock_paczynski1979} deviate from
+unity:
+\begin{equation}
+\alpha_\parallel(z{=}1) = 1.012\,,\qquad
+\alpha_\perp(z{=}1) = 0.998\,.
+\label{eq:ap}
+\end{equation}
+The radial stretching ($\alpha_\parallel > 1$ by $1.2\%$)
+arises because $H_{\rm EU}(z) \neq H_{\Lambda{\rm CDM}}(z)$;
+the transverse parameter $\alpha_\perp$ exhibits a sign
+change at $z \approx 1.2$, coinciding with the crossover
+in the Limber mapping shift
+$\Delta k/k = (\chi_{\Lambda{\rm CDM}} - \chi_{\rm EU})/
+\chi_{\rm EU}$.
+This test is purely spectroscopic and shares no nuisance
+parameters with the photometric $3 \times 2$pt analysis.
+
+\textit{$3 \times 2$pt probe decomposition.}~The remaining
+legs of the $3 \times 2$pt analysis carry
+independent EU signatures. The galaxy clustering kernel
+$q(\chi) = b(z)\,n(z)\,H(z)/c$ is biased by
+$\Delta H/H$, which ranges from $+0.7\%$ at $z = 0.3$
+to $-1.7\%$ at $z = 1.85$ --- changing sign at
+$z \approx 0.5$ as the GKI boost
+(Sec.~\ref{sec:gki}) gives way to the freezing of the
+drain at high redshift. This bias varies
+\textit{within} each tomographic bin: $H(z)$ is not
+constant across the bin width, so the per-bin galaxy
+bias $b_i$ (a free nuisance parameter, constant within
+each bin) cannot absorb the signal. The mismatch between
+the intra-bin $H(z)$ shape in EU versus $\Lambda$CDM is
+a non-degenerate signature.
+
+Galaxy-galaxy lensing $C_\ell^{\delta\gamma}$ inherits
+bias from all three physical sources simultaneously:
+the lensing kernel deficit ($-5\%$ to $-8\%$), the
+clustering kernel shift ($\pm\!2\%$), and the Limber
+mapping displacement ($\pm\!1\%$). Their combination
+produces a total bias of $-6.0\%$ at $z = 0.3$ to
+$-7.1\%$ at $z = 0.96$ --- making galaxy-galaxy lensing
+the single most sensitive Euclid observable to the EU
+modification. This sensitivity arises because the cross-
+correlation probes both the matter distribution (lensing)
+and the galaxy field (clustering) through kernels that
+are \textit{both} shifted by the altered expansion
+history.
+
+The nuisance-free statistic $E_G$~\cite{zhang2007},
+defined as the ratio of lensing-galaxy to galaxy-galaxy
+angular spectra, cancels galaxy bias $b$ algebraically.
+In $\Lambda$CDM, $E_G = \Omega_m/f(z)$, where $f(z)$ is
+the linear growth rate. In the EU, both $\Omega_m(z)$ and
+$f(z)$ are modified by the drain. The resulting bias
+ranges from $-4.7\%$ at $z = 0.3$ (where the CDM deficit
+is largest) to $-0.02\%$ at $z = 1.85$ (where the drain
+freezes and the EU converges to $\Lambda$CDM). This
+convergence is itself a prediction: $E_G(z)$ should
+approach the $\Lambda$CDM value at $z > z_{\rm trans}$,
+providing a direct measurement of the evaporation onset
+redshift.
+
+% ----------------------------------------------------------------
+% X.B — LSST Y1
+% ----------------------------------------------------------------
+\subsection{LSST Y1 weak lensing}
+\label{sec:lsst}
+
+The Vera C.~Rubin Observatory Legacy Survey of Space
+and Time~\cite{lsst_srd2018} provides a ground-based,
+Southern-hemisphere complement to Euclid's Northern
+photometric survey. Its Year~1 analysis will employ
+five tomographic bins ($z_{\rm edges} = 0.20, 0.43,
+0.63, 0.90, 1.30, 3.00$) following the DESC Science
+Requirements Document~\cite{mandelbaum2018}, with an
+effective source density $n_{\rm eff} = 10\;\mathrm{arcmin}^{-2}$
+and intrinsic ellipticity dispersion $\sigma_e = 0.26$.
+
+\textit{The kernel bias gradient.}~Applying the EU lensing
+kernel to the LSST $n(z)$ distribution yields a
+tomographic gradient in the kernel bias:
+\begin{equation}
+\Delta W_i/W_i = \{-7.9\%,\; -7.3\%,\; -6.7\%,\; -5.9\%,\; -4.8\%\}\,,
+\label{eq:lsst_gradient}
+\end{equation}
+for bins $i = 1$ through $5$ ($\bar{z} = 0.35$ to $1.75$).
+The $40\%$ decrease from Bin~1 to Bin~5 is a direct
+imprint of the CDM drain freezing at high redshift:
+shallow bins, dominated by galaxies in the active-drain
+epoch ($z \lesssim 2$), exhibit the full kernel deficit;
+deep bins, weighted toward the frozen regime, are less
+affected. This monotonic gradient is unique to the EU
+--- no other extension of $\Lambda$CDM produces this
+specific $z$-dependent pattern.
+
+The same gradient in Euclid's 10 bins ($-8.1\%$ to
+$-4.7\%$) confirms that the signal is physical, not
+instrumental. Euclid operates in space at optical-to-NIR
+wavelengths in the Northern hemisphere; LSST operates
+from the ground at optical wavelengths in the Southern
+hemisphere. Independent detection of the same gradient
+across both surveys would constitute strong evidence
+for a cosmological origin.
+
+\textit{The false internal tension.}~The kernel bias
+gradient has a practical consequence for $\Lambda$CDM
+analyses. A per-bin $\hat{S}_8$ fit to LSST data in
+the EU universe will yield systematically higher
+$\hat{S}_8$ values in deep bins (where the kernel bias
+is weaker) than in shallow bins (where it is stronger).
+This bin-dependent trend will appear as an internal
+inconsistency when analyzed under $\Lambda$CDM. The EU
+predicts that it will be attributed to photo-$z$
+systematic errors at high redshift --- but will resolve
+when the CDM drain is included in the analysis kernel.
+
+\textit{Pipeline-inferred $\hat{S}_8$.}~The kernel bias
+gradient is shown in Fig.~\ref{fig:kernel_gradient}.
+The LSST CUB
+prediction is $\hat{S}_8 = 0.801$, consistent with the
+Euclid prediction ($\hat{S}_8 = 0.801$). Both forecasts
+derive from the same EU background cosmology; the
+difference in $n(z)$, sky coverage, and systematics
+modeling produces a $< 0.1\%$ shift in the predicted
+value. The convergence of two independent Stage-IV
+pipelines on the same $\hat{S}_8$ is a consistency
+check of the EU prediction.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig5_kernel_gradient.pdf}
+\caption{Kernel bias gradient $\Delta W_i / W_i$ as a function of
+mean tomographic redshift for Euclid DR1 (10 bins, circles) and
+LSST Y1 (5 bins, squares). The $40\%$ decrease from
+$\bar{z} \approx 0.3$ to $\bar{z} \approx 1.8$ traces the
+CDM drain freezing at high redshift.}
+\label{fig:kernel_gradient}
+\end{figure}
+
+% ----------------------------------------------------------------
+% X.C — DESI and the CPL mirage
+% ----------------------------------------------------------------
+\subsection{Distance probes and the equation-of-state mirage}
+\label{sec:cpl_mirage}
+
+The Dark Energy Spectroscopic Instrument~\cite{desi_dr2_2025}
+measures baryon acoustic oscillation (BAO) distances $D_H/r_d$
+and $D_M/r_d$ across seven tracer populations spanning
+$0.1 < z < 2.5$. The EU predicts systematic deviations from
+the $\Lambda$CDM baseline that change sign with redshift.
+
+\textit{BAO distance residuals.}~At low redshift ($z \lesssim 0.5$),
+the CDM drain increases $H(z)$ through the GKI mechanism
+(Sec.~\ref{sec:gki}), yielding $D_H^{\rm EU} < D_H^{\Lambda\rm CDM}$
+and $D_M^{\rm EU} < D_M^{\Lambda\rm CDM}$. At $z \gtrsim 0.5$,
+the drain freezes and $H_{\rm EU}(z) < H_{\Lambda\rm CDM}(z)$
+(because the pre-drain $\Omega_{\rm cdm}$ was larger), reversing
+the sign. The $D_H$ crossover occurs at $z \approx 0.5$; the
+$D_M$ crossover at $z \approx 1.2$. At $z = 2.33$ (Ly$\alpha$),
+the EU predicts $\Delta D_H/D_H = +1.7\%$ and
+$\Delta D_M/D_M = +0.6\%$. This sign structure is consistent
+with the DESI DR2 finding that low-redshift BAO measurements
+fall above the Planck $\Lambda$CDM prediction~\cite{desi_dr2_2025}.
+
+\textit{The CPL mirage.}~The vacuum equation of state is $w_\Lambda = -1$
+exactly (Sec.~\ref{sec:stability}), but a CPL fitter
+applied to EU-generated distances reveals a
+quantitative mirage. We fit a CPL template
+$w(a) = w_0 + w_a(1{-}a)$~\cite{chevallier2001, linder2003}
+to the EU-generated $D_H(z)$ and $D_M(z)$ at 37 redshift
+points via Nelder-Mead minimization. Two configurations
+are tested.
+
+\textit{Fit~A} ($\Omega_m$ free):
+the fitter recovers $\Omega_m = 0.295$, $w_0 = -1.006$,
+$w_a = -0.12$, with $\chi^2 = 2 \times 10^{-5}$. The
+pipeline correctly identifies the EU as a cosmological
+constant: when allowed to adjust $\Omega_m$ to the
+post-drain value ($\Omega_m \approx 0.29$), the CPL
+template finds $w_0 \approx -1$ and negligible $w_a$.
+
+\textit{Fit~B} ($\Omega_m$ fixed to CMB prior):
+fixing $\Omega_m = 0.3153$ (Planck 2018), the fitter
+yields
+\begin{equation}
+w_0 = -0.855\,,\qquad w_a = -0.81\,.
+\label{eq:cpl_mirage}
+\end{equation}
+The $\chi^2$ degrades to $5.2 \times 10^{-4}$ but remains
+small. The CMB prior forces the fitter to accommodate the
+drain-reduced distances by pushing $w_0$ above $-1$.
+
+The physical mechanism is transparent: the CDM drain
+reduces $\Omega_m$ from $0.315$ (CMB epoch) to $0.288$
+(today). When a pipeline anchors $\Omega_m$ to the
+CMB value, the excess matter relative to the true
+late-time density must be compensated by an apparent
+change in the dark energy equation of state. The
+CPL template absorbs this mismatch as $w_0 > -1$
+(quintessence-like). The apparent ``dynamical dark
+energy'' is a prior artifact of the CDM mass
+reassignment.
+
+\textit{Comparison with DESI DR2.}~The DESI collaboration
+reports~\cite{desi_dr2_2025}
+\begin{equation}
+w_0 = -0.838 \pm 0.055\,,\quad
+w_a = -0.62^{+0.22}_{-0.19}\,,
+\label{eq:desi_w0}
+\end{equation}
+for the combination DESI~BAO + Planck~CMB +
+Pantheon+ (Eq.~7 of Ref.~\cite{desi_dr2_2025}),
+corresponding to a $2.8\sigma$ preference for evolving
+dark energy. The EU Fit~B prediction
+($w_0 = -0.855$) lies $0.3\sigma$ from this
+central value. The $w_a$ residual ($-0.81$ versus
+$-0.62$) reflects the additional constraining power
+of the supernova likelihood, which is absent in our
+geometric-only fit.
+
+\textit{$\Omega_m$ scan.}~To demonstrate that the
+mirage is a monotonic function of the $\Omega_m$
+prior, we repeat Fit~B across $\Omega_m \in [0.27, 0.33]$.
+The resulting $w_0(\Omega_m)$ curve is strictly increasing:
+$w_0 = -1.04$ at $\Omega_m = 0.288$ (the EU post-drain
+value) and $w_0 = -0.86$ at $\Omega_m = 0.315$ (Planck).
+The crossover $w_0 = -1$ occurs at $\Omega_m \approx 0.297$,
+precisely between the EU and $\Lambda$CDM values.
+Higher $\Omega_m$ priors yield progressively stronger
+quintessence-like signals ($w_0 > -1$), as the fitter
+weakens dark energy to compensate for the excess matter.
+Conversely, priors below the crossover yield mild
+phantom-like values ($w_0 < -1$), as the fitter
+strengthens dark energy to compensate for the deficit
+of high-redshift matter. The mirage is
+driven by $\Delta\Omega_m = \Omega_{m,\rm CMB} -
+\Omega_{m,\rm local}$.
+
+This result connects to the ``mirage'' dark energy
+class identified in the DESI extended
+analysis~\cite{desi_extended_de_2025},
+where models along $w_a \approx -3.66(1 + w_0)$
+capture the full DE phenomenology with a single
+degree of freedom. The authors note that ``the
+exact physical mechanism for such rapid emergence
+of dark energy remains unclear.'' The CDM drain
+provides this mechanism
+(Fig.~\ref{fig:cpl_mirage}): it reduces the late-time
+matter density, forcing a quintessence-like
+compensation when the pipeline assumes a constant
+$\Omega_m$.
+The same mechanism operates in the growth data:
+the $\Lambda$CDM joint constraint
+$S_8 = 0.812$ coincides with the EU prediction
+$S_8 = 0.811$ because a constant-$\Omega_m$ fit
+must approximate the dynamical $\Omega_m(z)$
+trajectory of an evaporating universe
+(Sec.~\ref{sec:s8_resolution}).
+
+\textit{Growth versus geometry.}~The EU growth
+suppression $g = D_{\rm EU}/D_{\Lambda\rm CDM} = 0.993$
+is below $1\%$, well within current error bars on
+$f\sigma_8$. The DESI Full-Shape analysis confirms
+general relativity at the $\mu_0 = 0.11 \pm 0.45$
+level~\cite{desi_fullshape_2024}. The EU is consistent
+with this null result: the drain modifies
+\textit{geometry} (distances, kernels, AP parameters)
+but leaves \textit{growth} essentially unchanged.
+This asymmetry is the model's distinctive signature
+--- it separates the EU from modified-gravity theories,
+which generically alter both growth and geometry at
+comparable levels.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig6_cpl_mirage.pdf}
+\caption{The CPL mirage: apparent $w_0$ recovered by a $w$CDM
+pipeline as a function of the forced $\Omega_m$ prior. The EU
+predicts $w_0 = -0.855$ at $\Omega_m = 0.315$ (red circle),
+consistent with the DESI DR2 measurement
+$w_0 = -0.838 \pm 0.055$ (blue band) at $0.3\sigma$.
+Crossover $w_0 = -1$ at $\Omega_m \approx 0.297$
+(green diamond).}
+\label{fig:cpl_mirage}
+\end{figure}
+
+% ----------------------------------------------------------------
+% X.D — Prediction summary and timeline
+% ----------------------------------------------------------------
+\subsection{Prediction summary and timeline}
+\label{sec:timeline}
+
+Table~\ref{tab:predictions} collects ten falsifiable
+predictions of the EU model, each fully specified
+before encountering the test data.
+Prediction~P6, the CPL mirage, is already consistent with
+DESI DR2 at $0.3\sigma$.
+
+\begin{table*}[t]
+\caption{Falsifiable predictions of the Evaporating Universe.
+All quantities are computed from the baseline EU posteriors
+and the $N$-body calibrated power spectrum, with zero
+additional free parameters. P6 is already tested against
+DESI DR2 data.}
+\label{tab:predictions}
+\begin{ruledtabular}
+\begin{tabular}{clllc}
+ & Prediction & Observable & Magnitude & Data \\
+\hline
+P1 & $C_\ell$ suppression (WL)
+  & $\Delta C_\ell/C_\ell$
+  & $-9\%$ to $-16\%$
+  & Euclid DR1 \\
+P2 & $\hat{S}_8$ below Planck
+  & $\hat{S}_8$
+  & $0.801$ ($1.9\sigma$ below $\Lambda$CDM)
+  & Euclid DR1 \\
+P3 & AP radial stretching
+  & $\alpha_\parallel$
+  & $1.012$ at $z{=}1$
+  & Euclid NISP \\
+P4 & $C_\ell$ spectral crossing
+  & $C_\ell^{\rm EU}/C_\ell^{\Lambda}$
+  & crossover at $\ell \approx 255$
+  & Euclid DR1 \\
+P5 & Probe inconsistency (GC vs WL)
+  & $(w_0, \Omega_m)$ split
+  & resolves with CDM drain
+  & Euclid DR1 \\
+P6 & CPL mirage ($w_0 > -1$)
+  & $w_0$
+  & $-0.855$ (with CMB prior)
+  & \textbf{DESI DR2 (\checkmark)} \\
+P7 & LSST $\hat{S}_8$ below Planck
+  & $\hat{S}_8$
+  & $0.801 \pm 0.012$
+  & LSST Y1 \\
+P8 & LSST kernel bias gradient
+  & $\Delta W/W$ vs $z$
+  & $-7.9\%$ to $-4.8\%$
+  & LSST Y1 \\
+P9 & $w_0$ stabilization
+  & $w_0$
+  & $\approx -0.85$ (not $\to -1$)
+  & DESI DR3 \\
+P10 & BAO distance excess at $z > 2$
+  & $D_H/r_d,\; D_M/r_d$
+  & $+1.7\%,\; +0.6\%$ at $z = 2.33$
+  & DESI DR3 \\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+The timeline is compressed. Euclid DR1
+($\sim\!2500\;\text{deg}^2$, expected 2026) tests
+predictions P1--P5 simultaneously. DESI DR2 (2025) has
+already provided a $0.3\sigma$-consistent measurement of
+P6. LSST Y1 (expected 2027) tests P7 and P8 from the
+Southern hemisphere with an independent photometric
+pipeline; detection of the same kernel bias gradient
+reported by Euclid in the Northern hemisphere would
+confirm the cosmological origin of the signal. DESI
+DR3 (2027) will test P9 and P10 with improved BAO
+statistics and additional tracer populations.
+
+The three programs --- Euclid (space, photometric +
+spectroscopic, North), LSST (ground, photometric, South),
+and DESI (ground, spectroscopic, all-sky) --- employ
+independent instruments, pipelines, and sky coverage.
+If all ten predictions are confirmed, the EU
+framework will have passed tests spanning photometric
+lensing, spectroscopic clustering, BAO distance
+measurements, and the dark energy equation of state
+--- with zero fitted dark-sector parameters.
+
+% ================================================================
+% XI. DISCUSSION
+% ================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+% ----------------------------------------------------------------
+% XI.A â€” Model comparison
+% ----------------------------------------------------------------
+\subsection{Model comparison}
+\label{sec:model_comparison}
+
+Di~Valentino et al.~\cite{divalentino2021} catalog roughly
+100 beyond-$\Lambda$CDM proposals aimed at the Hubble or
+growth tensions, spanning ten broad categories. We compare
+the EU against the strongest representative of each
+category in Table~\ref{tab:model_comparison}.
+
+\begin{table}[t]
+\caption{Model comparison. $\Delta k$: extra free
+parameters. Level: 0\,=\,parametrization,
+1\,=\,phenomenological, 2\,=\,form derived / values
+fitted, 3\,=\,form and values derived. Tensions
+from published posteriors vs~SH0ES and
+weak-lensing surveys.
+$^\dagger$With SH0ES and KiDS-1000 in fit.}
+\label{tab:model_comparison}
+\begin{ruledtabular}
+\begin{tabular}{p{1.8cm}ccccl}
+Model & $\Delta k$ & $H_0$ & $S_8$ & Level & Ref. \\
+\hline
+$\Lambda$CDM
+  & 0 & $5.8\sigma$ & ${\sim}\,2.6\sigma$ & --- &
+  \cite{planck2018} \\
+EDE
+  & 2--3 & ${\sim}\,2\sigma$ &
+  ${\sim}\,3\sigma\,\uparrow$ & 2 &
+  \cite{poulin2019_ede} \\
+$\Lambda_s$CDM
+  & 1 & ${\lesssim}\,1\sigma^{\dagger}$ &
+  ${\lesssim}\,1\sigma^{\dagger}$ & 1 &
+  \cite{akarsu2023} \\
+RVM
+  & 1 & ${\sim}\,4\sigma$ &
+  ${\sim}\,1.5\sigma$ & 2 &
+  \cite{sola2017_rvm} \\
+IDE ($Q \propto \rho_{\rm de}$)
+  & 1--2 & ${\sim}\,2.6\sigma$ & reduces & 1 &
+  \cite{divalentino2020} \\
+$w_0 w_a$CDM
+  & 2 & --- & marginal & 0 &
+  \cite{desi_dr2_2025} \\
+\textbf{EU}
+  & \textbf{0} & $\mathbf{0.52\sigma}$ &
+  $\mathbf{0.58\sigma}$ & \textbf{3}
+  & This work \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+A useful organizing principle is the
+\textit{derivation hierarchy} of model parameters:
+
+\begin{itemize}
+\item \textbf{Level~0 (parametrization):}
+  The functional form is postulated without physical
+  motivation. The CPL parametrization
+  $w(a) = w_0 + w_a(1-a)$ is the standard example.
+
+\item \textbf{Level~1 (phenomenological):}
+  A coupling form is postulated
+  (e.g., $Q = \xi H\rhoc$ or $Q = \xi H\rho_{\rm de}$)
+  with numerical coefficients fitted to data. This
+  describes the IDE models of
+  Di~Valentino et al.~\cite{divalentino2020},
+  decaying dark matter~\cite{vattis2019},
+  and $\Lambda_s$CDM~\cite{akarsu2023}.
+
+\item \textbf{Level~2 (form derived, values fitted):}
+  The coupling form is motivated by quantum field theory,
+  but numerical parameters remain free.
+  EDE~\cite{poulin2019_ede} derives an axion-like potential
+  from the string landscape; the Running Vacuum
+  Model~\cite{sola2017_rvm} derives
+  $\Lambda(H) = c_0 + \nu H^2$ from QFT in curved
+  spacetime. In both cases, at least one coefficient
+  ($f_{\rm EDE}$, $z_c$, or $\nu$) is fitted by MCMC.
+
+\item \textbf{Level~3 (form and values derived):}
+  Both the functional form and all numerical parameters
+  are determined by the theoretical framework, with
+  $\Delta k = 0$. The EU is the only published model
+  in this category.
+\end{itemize}
+
+The closest competitor in derivation rigor is the
+Running Vacuum Model of Sol\`a
+Peracaula~\cite{sola2017_rvm}. Both the RVM and the EU
+invoke QFT to modify the dark sector; both produce
+a coupling of the form $Q \propto H\rhoc$. The
+difference is surgical: the RVM running coefficient
+$\nu$ is \textit{motivated} by renormalization group
+arguments but \textit{fitted} by MCMC, placing it at
+Level~2. The EU coupling
+$\lambda\varepsilon_{\rm IR} = (2/3)({\pi}/{4})/\sqrt{108\pi}$
+is \textit{calculated} from the Gribov--Zwanziger
+effective action and \textit{confirmed} by MCMC
+(Sec.~\ref{sec:concordance}), placing it at Level~3.
+
+Phenomenological IDE models ($Q = \xi H\rhoc$)
+and decaying dark matter~\cite{vattis2019}
+are the Level~1 counterparts of the EU:
+they postulate the same coupling form that the EU
+derives. The EU thus \textit{provides the microscopic
+mechanism} that the IDE literature assumes.
+
+The DESI DR2 measurement of $w_0 > -1$ at
+${\sim}\,2.8\sigma$~\cite{desi_dr2_2025} is often
+interpreted as evidence for dynamical dark energy.
+Within the EU, the vacuum equation of state is
+$w_\Lambda = -1$ exactly (Sec.~\ref{sec:stability}),
+but an observer fitting CPL templates to
+EU-generated distances recovers $w_0 = -1.006$
+when $\Omega_m$ is free (the EU \textit{is} a
+cosmological constant) and $w_0 = -0.855$ when
+$\Omega_m$ is fixed to the Planck CMB prior
+(Sec.~\ref{sec:cpl_mirage}). The latter lies
+$0.3\sigma$ from the DESI central value
+($w_0 = -0.838 \pm 0.055$), confirming that
+the DESI signal is quantitatively consistent with
+a CDM drain artifact.
+
+
+% ----------------------------------------------------------------
+% XI.B â€” Theoretical structure and limitations
+% ----------------------------------------------------------------
+\subsection{Theoretical structure and limitations}
+\label{sec:theory_limits}
+
+The EU rests on a physical distinction between the 4D
+spacetime bulk and the 3D spatial hypersurface $\Sigma$.
+While the ADM decomposition is conventionally treated as
+a gauge choice, the Gribov--Zwanziger ghost
+condensate~\cite{gribov1978,zwanziger1989,vandersickel2012}
+is a non-perturbative phenomenon defined on the 4D
+manifold that affects $\Sigma$ through a calculable
+barrier. The 10 independent components of $g_{\mu\nu}$
+and the six independent components of $\gamma_{ij}$ define
+two physically distinct domains; the four constrained
+degrees of freedom (lapse and shift, removed by the
+Hamiltonian and momentum constraints) constitute the
+interface between them. The requirement that all vacuum
+fluctuations respect spherical isotropy --- the same
+geometric principle that fixes the factor $4\pi$ in
+Gauss's law --- recurs at every stage of the EU
+derivation: in the heat-kernel prefactor
+$(4\pi)^{-d/2}|_{d=4}$ that sets $z_{\rm trans}$,
+in the loop measure $(4\pi)^{-1}$ that enters
+$\varepsilon_{\rm bare}$, and in the CKN volume
+$(4\pi/3)R_H^3$ that establishes the UV cutoff.
+This geometric coherence is the reason
+$\Delta k = 0$: no free parameters survive when
+isotropy fully determines the structure at every scale.
+
+The triple convergence on $\lambda = 2/3$
+(Sec.~\ref{sec:lambda}) and the Slavnov--Taylor
+protection of this value to all orders
+(Eq.~\ref{eq:ward}) ensure that the effective coupling
+$\varepsilon_{\rm IR} = (\pi/4)\,\varepsilon_{\rm bare}$
+contains zero adjustable coefficients.
+
+\textit{Why baryons are immune.}~The democratic coupling
+derived in Sec.~\ref{sec:eps} requires the interacting
+field to be a gauge singlet under the Ashtekar SU(2)
+connection: only singlet states satisfy the
+Wigner--Eckart condition for uniform coupling to all
+27 ghost channels. Baryonic matter carries Standard
+Model gauge charges
+($\mathrm{SU}(3)_{\rm QCD} \times \mathrm{U}(1)_{\rm EM}$)
+and transforms non-trivially under the full gauge group.
+Its internal quantum numbers break the democratic
+coupling condition, excluding it from the condensate
+interaction. This selection rule is structural: it is
+the negative corollary of the same representation
+theory that determines the CDM coupling amplitude
+$\varepsilon_{\rm bare}$ in Eq.~(\ref{eq:epsbare}).
+
+\textit{Limitations.}~Several aspects of the present
+analysis require qualification.
+(i)~The growth tension is resolved to
+$\sim\!1\sigma$ using the CUB forward model
+(Sec.~\ref{sec:kernel_bias}), but the baryonic
+feedback correction relies on the ratio
+$P_{\rm EU}/P_{\Lambda{\rm CDM}}$ from a
+gravity-only $N$-body simulation
+(Sec.~\ref{sec:nbody}). A hydrodynamic simulation
+incorporating the CDM drain alongside baryonic
+processes would sharpen this estimate.
+(ii)~The local kinematic imprint (LKI) accounts for
+$\sim\!70\%$ of the $H_0$ resolution.
+The KBC void parameters ($\delta \approx -0.30$,
+$R \sim 300$~Mpc) are observational inputs, not
+EU-specific predictions; the EU permits and
+quantifies the void boost, but does not create
+the void.
+(iii)~The framework has been validated with a single
+Boltzmann code implementation (CLASS-EU).
+Independent reproduction --- using, e.g., CAMB with
+equivalent patches --- is a natural next step
+following publication. The full MCMC infrastructure
+(CLASS patches, Cobaya configuration files,
+Gadget-4 scripts) will be made publicly available
+to facilitate this.
+(iv)~The CDM drain modifies $H(z)$ at the percent
+level, by design. Differential tests therefore
+require high-precision data; the predictions of
+Sec.~\ref{sec:predictions} are calibrated to the
+sensitivity of Euclid, LSST, and DESI DR3.
+
+% ----------------------------------------------------------------
+% XI.C â€” Outlook
+% ----------------------------------------------------------------
+\subsection{Outlook}
+\label{sec:outlook}
+
+A concrete prediction emerges from comparing the
+$N$-body and CUB forward models across angular scales.
+At $\ell \lesssim 300$ --- the regime probed by
+Stage-III surveys --- the gravity-only simulation
+yields $\hat{S}_{8,\rm Nbody} < \hat{S}_{8,\rm CUB}$,
+because CDM evaporation makes halos genuinely lighter
+(``anemic'' suppression). At
+$\ell \lesssim 5000$ --- accessible to Euclid ---
+the inequality reverses:
+$\hat{S}_{8,\rm Nbody} > \hat{S}_{8,\rm CUB}$,
+because the DM-only simulation lacks baryonic blowout
+and retains artificially dense cores.
+The crossover occurs at $\ell \approx 300$, precisely
+where current surveys place their scale cuts.
+The amplitude of the reversal
+($\Delta S_8 \approx 0.09$) quantifies the baryonic
+feedback correction and constitutes a falsifiable
+prediction for Euclid's extended multipole coverage.
+
+DESI DR3 (2027) will provide a sharper test of the
+equation-of-state duality (Sec.~\ref{sec:cpl_mirage}).
+A probe-split analysis --- fitting $w_0$ and $w_a$
+separately from galaxy clustering and weak lensing ---
+should reveal inconsistent $(w_0, \Omega_m)$ values
+under $\Lambda$CDM, resolving to concordance when the
+CDM drain is included.
+
+The cosmographic bias identified in
+Sec.~\ref{sec:pipeline_bias} --- contamination of
+$M_B$ by the KBC void outflow --- will receive a
+complete forensic decomposition in Paper~II. That
+analysis will combine Cosmicflows-4 peculiar
+velocity fields~\cite{tully2023}, a joint
+CMB$\,{+}\,$BAO$\,{+}\,$SNe fit with $M_B$ free, and
+the statistical amplification of deep voids in the EU
+power spectrum ($\sigma(R)$ enhanced by $3.5\%$
+relative to $\Lambda$CDM, rendering voids of
+$\delta > 0.3$ an order of magnitude more probable).
+The objective is to complete the parallel established
+in Sec.~\ref{sec:s8_resolution}: the growth tension
+is resolved by the lensing kernel bias; the Hubble
+tension, by the cosmographic bias. Both are
+consequences of analyzing an evaporating universe
+with a non-evaporating template.
+
+% ================================================================
+% XII. CONCLUSIONS
+% ================================================================
+\section{Conclusions}
+\label{sec:conclusions}
+
+The Evaporating Universe is an interacting dark energy model
+in which a Gribov--Zwanziger ghost condensate mediates a
+continuous transfer of energy from CDM to the vacuum. All
+five model parameters are derived from EFT in curved
+spacetime; none are fitted to data ($\Delta k = 0$).
+The principal findings are as follows.
+
+\begin{enumerate}
+
+\item \textit{Framework.}~The coupling
+$Q = -\lambda\,\varepsilon(z)\,H\,\rhoc$ is the unique
+leading-order interaction consistent with FLRW symmetry
+and Fermi's golden rule. The dissipation fraction
+$\lambda = 2/3$, logistic exponent $b = 19/36$, transition
+redshift $z_{\rm trans} \approx 5.986$, bare amplitude
+$\varepsilon_{\rm bare} \approx 0.0543$, and effective
+coupling $\varepsilon_{\rm IR} \approx 0.0426$ are
+determined by the spatial dimensionality $n = 3$ and the
+topological structure of the Gribov horizon. The
+Cancellation Theorem guarantees $w_\Lambda = -1$ exactly,
+eliminating the doom factor instability that plagues
+generic IDE models.
+
+\item \textit{Hubble tension.}~The CDM drain raises the
+global expansion rate to
+$H_0^{\rm GKI} = 68.89 \pm 0.28$~km\,s$^{-1}$\,Mpc$^{-1}$.
+The KBC void outflow adds a local kinematic imprint,
+yielding
+$H_0^{\rm LKI} = 72.71 \pm 0.30$~km\,s$^{-1}$\,Mpc$^{-1}$
+--- within $0.52\sigma$ of
+SH0ES~\cite{breuval2024}. Adding the SH0ES likelihood
+to the MCMC shifts the posterior by $0.25\sigma$,
+confirming that the local measurement is redundant
+rather than constraining.
+
+\item \textit{Growth tension.}~Weak-lensing surveys
+infer $S_8$ using a $\Lambda$CDM lensing kernel that
+systematically underestimates the amplitude in an
+evaporating universe. Forward-modeling the EU kernel
+yields $\hat{S}_8 = 0.794$ for
+DES-Y3~\cite{des2022}, reducing the tension from
+${\sim}\,2.6\sigma$ to $1.03\sigma$ (kernel-corrected).
+Including DES-Y3 data directly in the MCMC yields
+$S_8 = 0.815 \pm 0.007$ --- within $0.58\sigma$ of the
+blind EU prediction ($0.811$).
+
+\item \textit{Validation.}~All six MCMC runs converge at
+$R-1 < 0.01$, including the 38-dimensional
+EU+$H_0$+$S_8$ configuration. The UV-derived
+parameters match the Phase~2 EU posteriors (CMB+BAO+SNe)
+to $0.04\sigma$~(Sec.~\ref{sec:concordance}).
+A Gadget-4 $N$-body simulation ($1024^3$ particles)
+confirms the drain signature in $P(k)$.
+Model selection yields
+$\Delta\text{AIC} = -6.88$ in the fair-fight
+configuration ($\Delta k = 0$, both models
+void-corrected).
+
+\item \textit{Falsifiability.}~Ten zero-parameter
+predictions target Euclid DR1, LSST Y1, and DESI DR3.
+Prediction P6 --- the CPL mirage
+($w_0 = -0.855$ when $\Omega_m$ is fixed to the CMB
+prior) --- already matches the DESI DR2 measurement
+($w_0 = -0.838 \pm 0.055$) at $0.3\sigma$
+(Sec.~\ref{sec:cpl_mirage}). The remaining nine span
+$C_\ell$ suppression ($-9\%$ to $-16\%$),
+$\hat{S}_8 = 0.801$ ($1.9\sigma$ below Planck under
+$\Lambda$CDM),
+Alcock--Paczy\'nski stretching
+($\alpha_\parallel = 1.012$ at $z = 1$),
+LSST kernel bias gradient
+($-7.9\%$ to $-4.8\%$ across five bins), and
+BAO distance excess at $z > 2$.
+If any prediction fails, the framework is
+falsified --- because all derive from the same
+modified $H(z)$.
+
+\end{enumerate}
+
+The Evaporating Universe resolves both cosmological
+tensions simultaneously, with zero additional free
+parameters --- not by fitting the data, but by
+predicting it.
+
+
+% ================================================================
+% ACKNOWLEDGMENTS
+% ================================================================
+\begin{acknowledgments}
+
+
+This work would not have been possible without the open-source tools and
+public data sets maintained by the cosmology community. I gratefully
+acknowledge the developers of
+\textsc{class}~\cite{blas2011},
+\textsc{Cobaya}~\cite{torrado2021},
+\textsc{CosmoLike}~\cite{krause2021},
+\textsc{Gadget-4}~\cite{gadget4},
+\textsc{monofonIC}~\cite{monofonic},
+\textsc{Pylians}~\cite{pylians},
+and \textsc{HMCode}~\cite{mead2021}
+for making state-of-the-art numerical cosmology accessible to
+independent researchers. I am equally indebted to the
+Planck~\cite{planck2018}, DES~\cite{des2022},
+KiDS~\cite{heymans2021},
+HSC~\cite{li2023_hsc},
+SH0ES~\cite{breuval2024}, Pantheon$+$~\cite{scolnic2022},
+and DESI~\cite{desi_dr2_2025}
+collaborations for their commitment to public data releases.
+
+Portions of this manuscript were edited and polished with the
+assistance of AI-based writing tools.
+All code, data, and supplementary material for this work are
+publicly available~\cite{eu_github}.
+
+\end{acknowledgments}
+
+% ================================================================
+% DATA AVAILABILITY
+% ================================================================
+\section*{DATA AVAILABILITY}
+
+The modified \textsc{class} source code, analysis notebooks,
+MCMC chains, and $N$-body simulation outputs that support the
+findings of this article are openly available~\cite{eu_github}.
+
+% ================================================================
+% APPENDICES
+% ================================================================
+\appendix
+
+% ================================================================
+% APPENDIX A --- DETAILED DERIVATIONS
+% ================================================================
+\section{Detailed derivations supporting Sec.~\ref{sec:params}}
+\label{app:derivations}
+
+% ----------------------------------------------------------------
+% A.1 --- TT Projection
+% ----------------------------------------------------------------
+\subsection{Ghost-graviton vertex and TT projection}
+\label{app:tt_vertex}
+
+The ghost-graviton vertex in $d = 4$ linearized quantum gravity
+reads~\cite{codello2009}
+\begin{align}
+V^\mu_{\;\nu;\rho\sigma}(p,q) = \tfrac{1}{2}\big[
+  &\delta^\mu_\rho\, q_\sigma\, p_\nu
+  + \delta^\mu_\sigma\, q_\rho\, p_\nu
+  + \delta_{\nu\rho}\, p_\sigma\, q^\mu
+  \notag \\
+  &+ \delta_{\nu\sigma}\, p_\rho\, q^\mu
+  - \delta_{\rho\sigma}(q^\mu p_\nu + p^\mu q_\nu)
+  \notag \\
+  &- \delta^\mu_\nu(p_\rho q_\sigma + p_\sigma q_\rho
+  - \delta_{\rho\sigma}\,p{\cdot}q)\big],
+\label{eq:vertex}
+\end{align}
+where $p$ is the ghost momentum and $q = p + k$ the anti-ghost
+momentum.
+
+The York TT projector on symmetric rank-2
+tensors~\cite{york1973} is
+\begin{equation}
+\Pi^{\rm TT}_{\rho\sigma,\lambda\tau}(k) =
+  \tfrac{1}{2}(P_{\rho\lambda}P_{\sigma\tau}
+  + P_{\rho\tau}P_{\sigma\lambda})
+  - \tfrac{1}{d{-}1}P_{\rho\sigma}P_{\lambda\tau},
+\label{eq:projector}
+\end{equation}
+where $P_{\mu\nu} = \delta_{\mu\nu} - k_\mu k_\nu/k^2$ is the
+transverse projector, satisfying idempotency
+($\Pi^{\rm TT}\cdot\Pi^{\rm TT} = \Pi^{\rm TT}$), transversality
+($k^\rho\Pi^{\rm TT}_{\rho\sigma,\lambda\tau} = 0$), and
+tracelessness
+($\delta^{\rho\sigma}\Pi^{\rm TT}_{\rho\sigma,\lambda\tau} = 0$).
+
+The TT trace ratio
+$b = {\rm Tr}(V{\cdot}\Pi^{\rm TT}{\cdot}V)/
+     {\rm Tr}(V{\cdot}\mathbb{I}{\cdot}V)$
+is evaluated using irreducible exact rational arithmetic, ensuring
+zero floating-point contamination. Four independent momentum
+configurations yield:
+
+\begin{table}[h]
+\caption{Verification of $b = 19/36$ across four momentum
+  configurations. All computations use exact rational arithmetic.}
+\label{tab:b_verification}
+\begin{ruledtabular}
+\begin{tabular}{lccc}
+Configuration & ${\rm Tr}_{\rm TT}/p^2$ &
+  ${\rm Tr}_{\rm full}/p^2$ & Ratio \\
+\hline
+$p \perp k$, axes (1,2) & $19/3$ & $12$ & $19/36$ \\
+$p \perp k$, axes (2,3) & $19/3$ & $12$ & $19/36$ \\
+$p \perp k$, axes (4,1) & $19/3$ & $12$ & $19/36$ \\
+$|p|{=}|k|{=}\sqrt{2}$  & $38/3$ & $24$ & $19/36$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\noindent
+The ratio is momentum-independent, as required for a well-defined
+projector fraction. The identity on symmetric tensors entering the
+denominator is
+$\mathbb{I}_{\rho\sigma,\lambda\tau} =
+  \frac{1}{2}(\delta_{\rho\lambda}\delta_{\sigma\tau}
+  + \delta_{\rho\tau}\delta_{\sigma\lambda})$.
+
+% ----------------------------------------------------------------
+% A.2 --- z_trans Sensitivity
+% ----------------------------------------------------------------
+\subsection{Condensation threshold sensitivity}
+\label{app:ztrans_sensitivity}
+
+The transition redshift depends weakly on $h = H_0/100$ through
+$\Om = (\omega_b + \omega_{\rm cdm})/h^2$, where $\omega_b = 0.02237$
+and $\omega_{\rm cdm} = 0.1200$ are direct CMB
+observables~\cite{planck2018}. For $h \in [0.660, 0.700]$:
+
+\begin{table}[h]
+\caption{Sensitivity of $\ztrans$ to the reduced Hubble constant $h$.
+  The total variation is $\Delta\ztrans \approx 0.40$ ($\sim 6.7\%$).}
+\label{tab:ztrans_sensitivity}
+\begin{ruledtabular}
+\begin{tabular}{cccl}
+$h$ & $\Om$ & $\ztrans$ & Source \\
+\hline
+$0.660$ & $0.328$ & $5.847$ & Lower bound \\
+$0.6736$ & $0.315$ & $5.986$ & Planck ($\Lambda$CDM) \\
+$0.690$ & $0.300$ & $6.150$ & EU upper estimate \\
+$0.700$ & $0.292$ & $6.248$ & Upper bound \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\noindent
+Higher-order heat-kernel corrections are of order
+$(H/\MPl)^2 \sim 10^{-122}$, confirming that the leading-order
+threshold is exact for all practical purposes.
+
+% ----------------------------------------------------------------
+% A.3 --- Gribov Integral
+% ----------------------------------------------------------------
+\subsection{Gribov propagator integral}
+\label{app:gribov_integral}
+
+The screening ratio $I_{\rm IR}/I_{\rm UV}$ is evaluated on the
+two-dimensional transverse momentum plane. This requires
+justification beyond the channel counting of
+Sec.~\ref{sec:eps}: eliminating the longitudinal
+polarization ($\lambda = 2/3$) reduces the number of active
+\textit{channels} but does not by itself reduce the dimensionality of
+the momentum integral --- a photon has two polarizations yet
+integrates over $d^3k$.
+
+The 2D measure follows from Zwanziger's horizon dominance
+theorem~\cite{zwanziger1991}: in the thermodynamic limit
+$V \to \infty$, the functional measure concentrates on the Gribov
+horizon $\partial\Omega$ --- a codimension-1 surface in configuration
+space --- for the same reason that the volume of a high-dimensional
+sphere concentrates at its surface. The CDM$\,\to\,$vacuum transition
+crosses this boundary (Sec.~\ref{sec:gz}), so by Fermi's
+golden rule the density of accessible final states is defined on
+$\partial\Omega$, yielding the transverse measure $k\,dk/(2\pi)$.
+
+An independent route converges on the same result: the CKN
+holographic bound (Sec.~\ref{sec:ztrans}, Link~2) establishes that
+the effective degrees of freedom in a causal volume are governed by
+its bounding surface, not its bulk. Both the Zwanziger argument
+(field-space boundary) and the CKN argument (geometric boundary)
+select the 2D measure.
+
+\textit{UV reference} (free massive propagator,
+$D_{\rm UV} = 1/(k^2 + \gamma^2)$):
+\begin{equation}
+I_{\rm UV} = \frac{1}{2\pi}\int_0^\infty
+  \frac{k\,dk}{(k^2 + \gamma^2)^2}
+  = \frac{1}{4\pi\gamma^2}\,.
+\label{eq:IUV}
+\end{equation}
+
+\textit{IR integral} (Gribov propagator,
+$D_{\rm GZ} = k^2/(k^4 + \gamma^4)$):
+\begin{equation}
+I_{\rm IR} = \frac{1}{2\pi}\int_0^\infty
+  \frac{k^5\,dk}{(k^4 + \gamma^4)^2}\,.
+\label{eq:IIR}
+\end{equation}
+Substituting $u = k^2$, then $u = \gamma^2\tan\theta$:
+\begin{align}
+I_{\rm IR}
+  &= \frac{1}{4\pi}\int_0^\infty
+    \frac{u^2\,du}{(u^2 + \gamma^4)^2}
+  \notag \\
+  &= \frac{1}{4\pi\gamma^2}\int_0^{\pi/2}
+    \sin^2\!\theta\;d\theta
+  = \frac{1}{4\pi\gamma^2}\cdot\frac{\pi}{4}
+  = \frac{1}{16\gamma^2}\,.
+\label{eq:IIR_result}
+\end{align}
+The ratio is
+\begin{equation}
+\frac{I_{\rm IR}}{I_{\rm UV}}
+  = \frac{1/(16\gamma^2)}{1/(4\pi\gamma^2)}
+  = \frac{\pi}{4}\,,
+\label{eq:ratio}
+\end{equation}
+as can be verified by direct evaluation. The Gribov mass $\gamma$
+cancels in the ratio, yielding a universal screening factor.
+
+
+% ================================================================
+% ================================================================
+
+
+% APPENDIX B --- SUPPORTING ANALYSES FOR SEC. V
+% ================================================================
+\section{Supporting analyses for Sec.~\ref{sec:mcmc}}
+\label{app:free_params}
+
+\subsection{Perturbation null test}
+\label{app:null_test}
+
+\begin{table*}[!t]
+\caption{Perturbation null test: Phase~1 (perturbation
+source terms off) versus Phase~2 (source terms on).
+The EU-blind configuration frees
+$\varepsilon_{\rm IR}$, $b$, $z_{\rm trans}$; the
+theory-fixed configuration holds them at the
+framework-derived values. All posterior shifts are
+$< 0.03\sigma$.}
+\label{tab:null_test}
+\begin{ruledtabular}
+\begin{tabular}{lcccc}
+ & \multicolumn{2}{c}{EU-blind ($\Delta k{=}3$)}
+ & \multicolumn{2}{c}{EU ($\Delta k{=}0$)} \\
+ & Phase~1 (off) & Phase~2 (on)
+ & Phase~1 (off) & Phase~2 (on) \\
+\hline
+\multicolumn{5}{c}{\textit{Sampled parameters}} \\
+$\omega_b$
+  & $0.02231 \pm 0.00012$ & $0.02231 \pm 0.00012$
+  & $0.02218 \pm 0.00012$ & $0.02218 \pm 0.00013$ \\
+$\omega_{\rm cdm}$
+  & $0.11777 \pm 0.00061$ & $0.11778 \pm 0.00062$
+  & $0.11927 \pm 0.00064$ & $0.11926 \pm 0.00063$ \\
+$100\theta_s$
+  & $1.04191 \pm 0.00023$ & $1.04191 \pm 0.00023$
+  & $1.04180 \pm 0.00023$ & $1.04180 \pm 0.00023$ \\
+$\tau_{\rm reio}$
+  & $0.059 \pm 0.007$ & $0.059 \pm 0.007$
+  & $0.056 \pm 0.007$ & $0.056 \pm 0.007$ \\
+$\ln(10^{10}A_s)$
+  & $3.046 \pm 0.014$ & $3.047 \pm 0.014$
+  & $3.044 \pm 0.014$ & $3.044 \pm 0.014$ \\
+$n_s$
+  & $0.9676 \pm 0.0034$ & $0.9676 \pm 0.0034$
+  & $0.9637 \pm 0.0035$ & $0.9637 \pm 0.0034$ \\
+\hline
+\multicolumn{5}{c}{\textit{Derived parameters}} \\
+$H_0^{\rm GKI}$ (km\,s$^{-1}$\,Mpc$^{-1}$)
+  & $68.13 \pm 0.28$ & $68.13 \pm 0.28$
+  & $68.88 \pm 0.28$ & $68.89 \pm 0.28$ \\
+$\sigma_8$
+  & $0.805 \pm 0.006$ & $0.806 \pm 0.006$
+  & $0.828 \pm 0.006$ & $0.827 \pm 0.006$ \\
+$S_8$
+  & $0.810 \pm 0.008$ & $0.810 \pm 0.008$
+  & $0.811 \pm 0.008$ & $0.811 \pm 0.008$ \\
+$\Omega_m$
+  & $0.303 \pm 0.004$ & $0.303 \pm 0.004$
+  & $0.288 \pm 0.003$ & $0.288 \pm 0.003$ \\
+\hline
+\multicolumn{5}{c}{\textit{Diagnostics}} \\
+$\chi^2_{\rm total}$
+  & $12{,}394.7$ & $12{,}394.4$
+  & $12{,}396.2$ & $12{,}396.3$ \\
+$(R-1)_{\rm max}$
+  & $0.003$ & $0.003$
+  & $0.004$ & $0.005$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+Table~\ref{tab:null_test} presents the full posterior
+comparison between Phase~1 (perturbation source terms off)
+and Phase~2 (source terms on) for both the EU-blind
+($\Delta k = 3$) and theory-fixed ($\Delta k = 0$)
+configurations. All parameter shifts are below
+$0.03\sigma$, confirming the cancellation theorem of
+Sec.~\ref{sec:stability}: the perturbation source terms
+have no measurable effect on the posterior.
+
+\subsection{Free-parameter runs}
+\label{app:free_runs}
+
+The EU-blind configuration samples three additional
+parameters with uniform priors:
+$\varepsilon_{\rm IR} \in [0.001, 0.200]$ (theory: $0.04264$),
+$b \in [0.10, 2.00]$ (theory: $19/36$), and
+$z_{\rm trans} \in [2.0, 12.0]$ (theory: $5.986$).
+Figure~\ref{fig:corner_comparison} shows the resulting
+posterior comparison. The three-parameter degeneracy
+and its statistical consequences are discussed in
+Sec.~\ref{sec:posteriors}; the theory-fixed configuration
+is preferred by $\Delta\text{AIC} = -4.1$.
+
+
+\begin{figure*}[!t]
+\includegraphics[width=0.85\textwidth]{fig7_corner_comparison.pdf}
+\caption{Posterior comparison between the theory-fixed
+configuration (blue) and the EU-blind free-parameter
+configuration (green). Diagonal panels show
+1D marginalized posteriors; off-diagonal panels show
+68\% and 95\% credible regions. Red dotted lines mark
+the framework-derived values.}
+\label{fig:corner_comparison}
+\end{figure*}
+
+\clearpage
+% BIBLIOGRAPHY
+% ================================================================
+\bibliography{eu_paper1}
+
+\end{document}
