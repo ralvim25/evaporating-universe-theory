@@ -3,6 +3,8 @@
 **Paper I: A Dissipation Principle — Resolving Cosmic Tensions Without Additional Free Parameters**
 
 [![PRD](https://img.shields.io/badge/Physical_Review_D-submitted-blue)](https://journals.aps.org/prd/)
+[![Zenodo](https://img.shields.io/badge/Zenodo-10.5281%2Fzenodo.20790999-blue)](https://doi.org/10.5281/zenodo.20790999)
+[![arXiv](https://img.shields.io/badge/arXiv-pending-yellow)](https://arxiv.org/)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 ---
