@@ -1,12 +1,13 @@
 % ================================================================
-% The Evaporating Universe I: A Dissipation Principle
-% Target: Physical Review D
+% The Evaporating Universe I: A dissipation principle
+% Target: Physics of the Dark Universe (Elsevier)
 % ================================================================
-\documentclass[aps,prd,twocolumn,superscriptaddress]{revtex4-2}
+\documentclass[a4paper,fleqn]{cas-dc}
 
+\usepackage[numbers]{natbib}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
-\usepackage{placeins}
+\usepackage[section]{placeins}
 \graphicspath{{../03_FIGURES/}}
 \usepackage{bm}
 \usepackage{hyperref}
@@ -29,19 +30,40 @@
 \newcommand{\MPl}{M_{\rm Pl}}
 
 \begin{document}
+\let\WriteBookmarks\relax
+% --- Permissive float placement (figures inline, not at end) ---
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.7}
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{4}
+\setcounter{totalnumber}{8}
 
 % ================================================================
 % FRONT MATTER
 % ================================================================
-\title{The Evaporating Universe~I: A dissipation principle ---
-       Resolving cosmic tensions without additional free parameters}
 
-\author{Ricardo Alvim}
-\email{ricardoalv1m@pm.me}
-% ORCID: 0009-0004-7744-175X (provided via APS submission system)
-\affiliation{Independent Researcher, Rio de Janeiro, Brazil}
+\shorttitle{The Evaporating Universe~I}
+\shortauthors{R.\ Alvim}
 
-\date{\today}
+\title [mode = title]{The Evaporating Universe~I: A dissipation
+       principle --- Resolving cosmic tensions without additional
+       free parameters}
+
+\author[1]{Ricardo Alvim}[orcid=0009-0004-7744-175X]
+\cormark[1]
+\ead{ricardoalv1m@pm.me}
+\credit{Conceptualization, Methodology, Software, Validation,
+        Formal analysis, Investigation, Data curation,
+        Writing -- original draft, Writing -- review \& editing,
+        Visualization}
+
+\affiliation[1]{organization={Independent Researcher},
+            city={Rio de Janeiro},
+            country={Brazil}}
+
+\cortext[1]{Corresponding author}
 
 \begin{abstract}
 The $\Lambda$CDM model faces two persistent tensions:
@@ -86,6 +108,12 @@ $0.3\sigma$.
 The EU resolves both cosmological tensions
 simultaneously, with zero additional free parameters.
 \end{abstract}
+
+\begin{keywords}
+dark energy \sep interacting dark energy \sep Hubble tension
+\sep $S_8$ tension \sep Gribov--Zwanziger \sep ghost condensate
+\sep DESI
+\end{keywords}
 
 \maketitle
 
@@ -318,7 +346,7 @@ entering Eqs.~(\ref{eq:Q})--(\ref{eq:eps}) are each determined by the
 mathematical structure of the GZ framework. We derive them in order of
 increasing complexity.
 
-% ---- Î» = 2/3 ----
+% ---- ÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â½ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â» = 2/3 ----
 \subsubsection{Dissipation fraction: $\lambda = 2/3$}
 \label{sec:lambda}
 
@@ -523,7 +551,7 @@ $h = H_0/100$ is weak: $\ztrans$ varies by $\sim 6\%$ over
 $h \in [0.66, 0.70]$
 (Appendix~\ref{app:ztrans_sensitivity}).
 
-% ---- Îµ_bare, Îµ_IR ----
+% ---- ÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â½ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµ_bare, ÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â½ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµ_IR ----
 \subsubsection{Coupling amplitude: $\epsbare$ and $\epsIR$}
 \label{sec:eps}
 
@@ -632,12 +660,11 @@ The effective coupling is therefore
 \end{equation}
 
 % ---- Table I ----
-\begin{table}[!htb]
+\begin{table}[pos=!htbp]
 \caption{The five EU parameters. All are derived from the
   mathematical structure of the Gribov--Zwanziger EFT in curved
   spacetime. None are fitted to observational data ($\Delta k = 0$).}
 \label{tab:params}
-\begin{ruledtabular}
 \begin{tabular}{llll}
 Parameter & Value & Exact form & Origin \\
 \hline
@@ -652,7 +679,6 @@ $\epsbare$ & $0.05429$ & $1/\sqrt{108\pi}$ &
 $\epsIR$ & $0.04264$ & $(\pi/4)\,\epsbare$ &
   Gribov screening \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 % ----------------------------------------------------------------
@@ -852,15 +878,14 @@ TRGB, JAGB --- converge near
 $H_0^{\rm LKI} \approx 72.7$, as their Rung~3 supernovae
 lie within the KBC void.
 
-% [TABLE: Observational hierarchy — 5 tracers]
-\begin{table}[!htb]
+% [TABLE: Observational hierarchy ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 5 tracers]
+\begin{table}[pos=!htbp]
 \caption{EU predictions for the Hubble constant. The CMB prediction
 is the GKI (global); all local tracers receive the same LKI (void)
 correction. TRGB/JAGB values from
 Freedman et al.~\cite{freedman2024}.
 All values in km\,s$^{-1}$\,Mpc$^{-1}$.}
 \label{tab:hierarchy}
-\begin{ruledtabular}
 \begin{tabular}{lcccr}
 Tracer & $H_0^{\rm obs}$ & $\sigma$ & $H_0^{\rm EU}$ & Tension \\
 \hline
@@ -870,7 +895,6 @@ TRGB/JWST        & 68.81 & 2.22 & 72.72 & $1.8\sigma$ \\
 TRGB (mixed)     & 70.39 & 1.94 & 72.72 & $1.2\sigma$ \\
 SH0ES 2024       & 73.17 & 0.86 & 72.72 & $0.5\sigma$ \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 Table~\ref{tab:hierarchy} summarizes the comparison. All five
@@ -901,7 +925,7 @@ and MCMC chains are publicly
 available~\cite{eu_github}.
 
 % ----------------------------------------------------------------
-% IV.A â€” CLASS-EU solver
+% IV.A ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â CLASS-EU solver
 % ----------------------------------------------------------------
 \subsection{Solver architecture}
 \label{sec:solver}
@@ -943,7 +967,7 @@ for~$H_0$, which is the standard procedure when comparing
 models with different late-time physics.
 
 % ----------------------------------------------------------------
-% IV.B â€” Perturbation stability
+% IV.B ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Perturbation stability
 % ----------------------------------------------------------------
 \subsection{Perturbation stability}
 \label{sec:stability}
@@ -998,7 +1022,7 @@ absent --- a consequence of the model's internal
 consistency, not a numerical choice.
 
 % ----------------------------------------------------------------
-% IV.C â€” Background results
+% IV.C ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Background results
 % ----------------------------------------------------------------
 \subsection{Background evolution}
 \label{sec:bg_results}
@@ -1009,13 +1033,12 @@ input parameters). The EU CDM drain of $4.42\%$ is confirmed,
 and energy conservation is exact:
 $|\Omega_{\rm tot} - 1| < 10^{-15}$ (Bianchi identity).
 
-% [TABLE: Background Î›CDM vs EU]
+% [TABLE: Background ÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â½ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºCDM vs EU]
 \begin{table}[t]
 \caption{Background quantities at $z = 0$ from \textsc{class}.
 Both runs use Planck 2018 input parameters; the EU run shoots
 for $H_0$ via $\theta_s$ matching.}
 \label{tab:background}
-\begin{ruledtabular}
 \begin{tabular}{lccr}
 Quantity & $\Lambda$CDM & EU & Shift \\
 \hline
@@ -1027,7 +1050,6 @@ $r_d$ (Mpc)            & 147.06 & 147.06 & $0.00\%$ \\
 $\sigma_8$             & 0.811 & 0.829 & $+2.3\%$  \\
 $S_8$                  & 0.831 & 0.819 & $-1.4\%$  \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 The vacuum equation of state from \textsc{class} reads
@@ -1044,7 +1066,7 @@ agreement with the analytic prediction of
 Sec.~\ref{sec:gki}.
 
 % ----------------------------------------------------------------
-% IV.D â€” CMB consistency
+% IV.D ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â CMB consistency
 % ----------------------------------------------------------------
 \subsection{CMB power spectrum}
 \label{sec:cmb_consistency}
@@ -1063,6 +1085,15 @@ With the solver validated at both background and perturbation
 level, we proceed to the statistical analysis in
 Sec.~\ref{sec:mcmc}.
 
+The development of the CLASS-EU solver patches, Cobaya
+configuration files, and Gadget-4 simulation scripts was
+supported by an AI coding assistant used for code development,
+debugging, and optimization. All numerical outputs were
+independently verified by the author through convergence
+diagnostics ($R-1 < 0.01$), analytical cross-checks
+(Table~\ref{tab:concordance}), and null tests
+(Table~\ref{tab:nbody_drain}).
+
 % ================================================================
 % V. STATISTICAL ANALYSIS
 % ================================================================
@@ -1075,7 +1106,7 @@ Cobaya~\cite{torrado2021} as the sampler and CLASS-EU
 (Sec.~\ref{sec:class_implementation}) as the theory engine.
 
 % ----------------------------------------------------------------
-% V.A — Methodology
+% V.A ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Methodology
 % ----------------------------------------------------------------
 \subsection{Sampling strategy}
 \label{sec:methodology}
@@ -1120,7 +1151,7 @@ statistic~\cite{gelman1992}; all six runs satisfy
 $R-1 < 0.01$.
 
 % ----------------------------------------------------------------
-% V.B — Perturbation null test
+% V.B ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Perturbation null test
 % ----------------------------------------------------------------
 \subsection{Perturbation null test}
 \label{sec:pert_null_test}
@@ -1143,7 +1174,7 @@ Table~\ref{tab:null_test} (Appendix~\ref{app:null_test}).
 The four Phase~2 and Phase~3 posteriors therefore
 constitute the complete analysis.
 
-% [TABLE: Consolidated MCMC â€” Î›CDM + 4 EU runs]
+% [TABLE: Consolidated MCMC ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â½ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂºCDM + 4 EU runs]
 \begin{table*}[t]
 \caption{Posterior constraints from the four EU configurations,
 compared with the $\Lambda$CDM best-fit obtained from the same
@@ -1151,7 +1182,6 @@ baseline datasets via minimizer. The EU column is the principal
 result ($\Delta k = 0$, framework-derived parameters).
 Uncertainties are $68\%$ credible intervals.}
 \label{tab:mcmc}
-\begin{ruledtabular}
 \begin{tabular}{lccccc}
  & $\Lambda$CDM & EU-blind ($\Delta k{=}3$)
  & \textbf{EU} ($\Delta k{=}0$) & EU+$H_0$ & EU+$H_0$+$S_8$ \\
@@ -1223,11 +1253,10 @@ $N_{\rm samples}$
   & --- & $63{,}887$ & $\mathbf{83{,}236}$ & $95{,}548$
   & $41{,}986$ \\
 \end{tabular}
-\end{ruledtabular}
 \end{table*}
 
 % ----------------------------------------------------------------
-% V.C — Posteriors
+% V.C ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Posteriors
 % ----------------------------------------------------------------
 \subsection{EU parameters: free versus derived}
 \label{sec:posteriors}
@@ -1284,7 +1313,7 @@ Appendix~\ref{app:free_params}).
 
 
 % ----------------------------------------------------------------
-% V.D â€” Knockout tests
+% V.D ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Knockout tests
 % ----------------------------------------------------------------
 \subsection{Confrontation with local measurements}
 \label{sec:knockout}
@@ -1341,7 +1370,7 @@ perturbations are algebraically exact
 (Sec.~\ref{sec:pert_null_test}).
 
 % ----------------------------------------------------------------
-% V.C — UV→MCMC concordance
+% V.C ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â UVÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢MCMC concordance
 % ----------------------------------------------------------------
 \subsection{Concordance with analytical predictions}
 \label{sec:concordance}
@@ -1354,7 +1383,7 @@ MCMC posteriors in Table~\ref{tab:concordance}.
 
 The maximum shift is $0.05\sigma$. The analytical framework
 predicted $H_0^{\rm LKI} = 72.72\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$ before
-the MCMC explored $83{,}785$ samples across three
+the MCMC explored $83{,}236$ samples across three
 independent datasets; the posterior mean converged to
 $72.71 \pm 0.30\;\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}$. This concordance
 establishes the causal direction of the EU: QFT $\to$
@@ -1365,12 +1394,11 @@ observable universe. The framework constrains the model more
 tightly than the data alone --- the opposite of overfitting.
 
 % [TABLE: UV vs MCMC concordance]
-\begin{table}[!htb]
+\begin{table}[pos=!htbp]
 \caption{Concordance between the analytical predictions
 (Sec.~\ref{sec:gki_lki}) and the MCMC posteriors (EU run).
 No EU parameter is fitted to data.}
 \label{tab:concordance}
-\begin{ruledtabular}
 \begin{tabular}{lccc}
 Quantity & Analytic & MCMC (EU) & Shift \\
 \hline
@@ -1379,12 +1407,11 @@ $H_0^{\rm LKI}$ (km\,s$^{-1}$\,Mpc$^{-1}$) & 72.72 & $72.71 \pm 0.30$ & $0.05\si
 $f_{\rm cdm}(0)$ & 0.9558 & 0.9558 & exact \\
 $\mathcal{I}_{\rm GKI}$ & 0.0679 & 0.0679 & exact \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 
 % ----------------------------------------------------------------
-% V.E â€” Model selection
+% V.E ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Model selection
 % ----------------------------------------------------------------
 \subsection{Model selection}
 \label{sec:model_selection}
@@ -1459,7 +1486,7 @@ these shifts is not arbitrary: it encodes the physics
 of the CDM drain across three distinct layers.
 
 % ----------------------------------------------------------------
-% VI.A â€” Three-layer hierarchy
+% VI.A ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Three-layer hierarchy
 % ----------------------------------------------------------------
 \subsection{Three-layer parameter hierarchy}
 \label{sec:three_layers}
@@ -1530,7 +1557,6 @@ Mode~B: MCMC posteriors
 Both modes use identical EU parameters. The drain fraction
 and perturbation cancellation are algebraic invariants.}
 \label{tab:mode_ab}
-\begin{ruledtabular}
 \begin{tabular}{lccc}
 Quantity & Mode A & Mode B & $\Delta$ \\
 \hline
@@ -1543,12 +1569,11 @@ $r_d$ (Mpc) & 147.06 & 147.42 & $+0.36$ \\
 $f_{\rm cdm}(0)$ & 0.9558 & 0.9558 & $0$ \\
 $\Delta\sigma_8$ (null test) & 0 & 0 & $0$ \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 
 % ----------------------------------------------------------------
-% VI.B â€” Self-consistent observables
+% VI.B ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Self-consistent observables
 % ----------------------------------------------------------------
 \subsection{Self-consistent observables}
 \label{sec:mode_b}
@@ -1603,7 +1628,7 @@ the standard $\Lambda$CDM parameters accommodate the
 drain.
 
 % ----------------------------------------------------------------
-% VI.C â€” Bridge to IX
+% VI.C ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Bridge to IX
 % ----------------------------------------------------------------
 \subsection{Implications for structure growth}
 \label{sec:drain_wl}
@@ -1657,7 +1682,7 @@ the comparisons that follow use the framework-derived
 values throughout.
 
 % ----------------------------------------------------------------
-% VII.A — The geometric wall
+% VII.A ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â The geometric wall
 % ----------------------------------------------------------------
 \subsection{The geometric wall}
 \label{sec:nogo}
@@ -1697,7 +1722,7 @@ shrinks both $r_s(z_*)$ and $D_A(z_*)$, and the
 CMB peak positions pin their ratio to $\sim\!0.1\%$
 precision.
 
-\begin{figure}[h!]
+\begin{figure}[pos=!htbp]
 \includegraphics[width=\columnwidth]{fig1_wall_escape.pdf}
 \caption{\textbf{(a)}~The geometric wall: $\Delta\chi^2$ profiles
 for $\Lambda$CDM (solid) and the EU GKI (dashed). The SH0ES value
@@ -1709,7 +1734,7 @@ SH0ES ($0.52\sigma$).}
 \end{figure}
 
 % ----------------------------------------------------------------
-% VII.B — Two-scale resolution
+% VII.B ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Two-scale resolution
 % ----------------------------------------------------------------
 \subsection{Two-scale resolution}
 \label{sec:two_scale}
@@ -1788,7 +1813,7 @@ consistent with this prediction
 (Sec.~\ref{sec:hierarchy}).
 
 % ----------------------------------------------------------------
-% VII.C — Quantitative resolution
+% VII.C ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Quantitative resolution
 % ----------------------------------------------------------------
 \subsection{Quantitative resolution}
 \label{sec:quantitative_h0}
@@ -1847,7 +1872,7 @@ both values exceed the age of the oldest globular
 clusters ($t_{\rm GC} > 12.6\;\text{Gyr}$).
 
 % ----------------------------------------------------------------
-% VII.D — Distance probes
+% VII.D ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Distance probes
 % ----------------------------------------------------------------
 \subsection{Distance probes}
 \label{sec:distance_probes}
@@ -1924,7 +1949,7 @@ drain is a pure background-level mass rescaling, decoupled
 from the gravitational force computation.
 
 % ----------------------------------------------------------------
-% VIII.A â€” Simulation setup
+% VIII.A ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Simulation setup
 % ----------------------------------------------------------------
 \subsection{Simulation setup}
 \label{sec:nbody_setup}
@@ -1969,7 +1994,7 @@ interpolator feeds the downstream lensing analysis
 predictions (Sec.~\ref{sec:predictions}).
 
 % ----------------------------------------------------------------
-% VIII.B â€” Null test
+% VIII.B ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Null test
 % ----------------------------------------------------------------
 \subsection{Drain decoupling and the null test}
 \label{sec:null_test}
@@ -1995,7 +2020,6 @@ parameters. All masses are normalized to the $z = 49$
 initial condition. The first three snapshots lie above
 $\ztrans$ and show exactly zero drain.}
 \label{tab:drain_nbody}
-\begin{ruledtabular}
 \begin{tabular}{lcccc}
 $z$ & Null & Prod & Analytic
   & $|\Delta|_{\rm max}$ \\
@@ -2032,7 +2056,6 @@ $0.50$  & $0.9570$ & $0.9570$ & $0.9570$
 $0.00$  & $0.9558$ & $0.9558$ & $0.9558$
   & $0.002\%$ \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 Three results follow from this comparison
@@ -2067,7 +2090,7 @@ in Eq.~(\ref{eq:eps}) is preserved exactly in
 the nonlinear regime. No drain leaks into the
 pre-recombination universe.
 
-\begin{figure}[t]
+\begin{figure}[pos=!htbp]
 \includegraphics[width=\columnwidth]{fig2_anatomy.pdf}
 \caption{Anatomy of the evaporating universe. \textbf{(a)}~The
 coupling function $\varepsilon(z)$, with logistic activation
@@ -2080,7 +2103,7 @@ particles (diamonds).}
 \end{figure}
 
 % ----------------------------------------------------------------
-% VIII.C â€” Power spectrum and growth
+% VIII.C ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Power spectrum and growth
 % ----------------------------------------------------------------
 \subsection{Power spectrum suppression and anemic halos}
 \label{sec:pk_suppression}
@@ -2127,7 +2150,7 @@ anchor the small-scale power spectrum to HMCode
 in the downstream $S_8$ analysis
 (Sec.~\ref{sec:growth}).
 
-\begin{figure}[t]
+\begin{figure}[pos=!htbp]
 \includegraphics[width=\columnwidth]{fig3_power_spectrum.pdf}
 \caption{Power spectrum suppression ratio
 $S(k) \equiv P_{\rm EU}(k) / P_{\Lambda{\rm CDM}}(k)$ at $z = 0$.
@@ -2190,7 +2213,7 @@ bias of $-5\%$ to $-7\%$ systematically depresses the
 $S_8$ inferred by $\Lambda$CDM pipelines.
 
 % ----------------------------------------------------------------
-% IX.A â€” The lensing kernel bias
+% IX.A ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â The lensing kernel bias
 % ----------------------------------------------------------------
 \subsection{The lensing kernel bias}
 \label{sec:kernel_bias}
@@ -2241,7 +2264,7 @@ signal-to-noise ratio. The ratio $\hat{S}_8 / S_8^{\rm EU}$
 is the kernel bias.
 
 % ----------------------------------------------------------------
-% IX.B â€” Resolution by survey
+% IX.B ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Resolution by survey
 % ----------------------------------------------------------------
 \subsection{Quantitative resolution}
 \label{sec:s8_resolution}
@@ -2263,7 +2286,7 @@ converge to $\hat{S}_8 \approx 0.794 \pm 0.002$, with
 inter-survey scatter of $\Delta\hat{S}_8 = 0.004$ ---
 smaller than any individual statistical uncertainty.
 
-% [TABLE: Sâ‚ˆ tensions by survey]
+% [TABLE: SÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Â¹ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â  tensions by survey]
 \begin{table}[t]
 \caption{Resolution of the growth tension across four
 independent Stage-III weak-lensing surveys. $S_8^{\rm pub}$
@@ -2272,7 +2295,6 @@ $\hat{S}_8$ is the pipeline-inferred value in an EU
 universe (forward model). All kernel biases are
 geometric and require no additional parameters.}
 \label{tab:s8}
-\begin{ruledtabular}
 \begin{tabular}{lccccc}
 Survey & $S_8^{\rm pub}$ & $\hat{S}_8$ &
   $\sigma_{\Lambda\rm CDM}$ &
@@ -2290,7 +2312,6 @@ HSC-Y3~\cite{li2023_hsc}
   & $0.776$ & $0.796$ &
   $1.10\sigma$ & $\mathbf{-0.63\sigma}$ & $-5.4\%$ \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 The convergence across surveys with different source
@@ -2344,7 +2365,6 @@ $\mathcal{B}_i \equiv (W_i^{\rm EU} - W_i^{\Lambda{\rm CDM}})
 EU lensing kernel relative to $\Lambda$CDM in each
 tomographic bin.}
 \label{tab:kernel_bias}
-\begin{ruledtabular}
 \begin{tabular}{lccc}
 Survey & Bin & $\bar{z}$ range & Bias (\%) \\
 \hline
@@ -2360,7 +2380,6 @@ KiDS-Legacy & 1 & $0.1$--$0.3$ & $-7.1$ \\
             & 5 & $0.9$--$1.1$ & $-5.6$ \\
             & 6 & $1.1$--$1.5$ & $-4.9$ \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 The total shift from $S_8^{\Lambda\rm CDM} = 0.832$ to
@@ -2394,7 +2413,7 @@ computed in different cosmologies. The EU tension
 (${\sim}\,1\sigma$) compares like with like.
 
 
-\begin{figure}[t]
+\begin{figure}[pos=!htbp]
 \includegraphics[width=\columnwidth]{fig4_s8_forest.pdf}
 \caption{Resolution of the growth tension across four independent
 Stage-III weak-lensing surveys. For each survey, the published
@@ -2442,7 +2461,7 @@ dragged below it by the late-universe data --- landing
 on the EU prediction.
 
 % ----------------------------------------------------------------
-% IX.C â€” Robustness
+% IX.C ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Robustness
 % ----------------------------------------------------------------
 \subsection{Robustness tests}
 \label{sec:s8_robustness}
@@ -2479,7 +2498,7 @@ mechanism; the full MCMC is the definitive numerical
 verdict.
 
 % ----------------------------------------------------------------
-% IX.D — MCMC confirmation
+% IX.D ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â MCMC confirmation
 % ----------------------------------------------------------------
 \subsection{MCMC confirmation}
 \label{sec:mcmc_confirmation}
@@ -2581,7 +2600,7 @@ analyzing an evaporating universe with a
 non-evaporating template.
 
 % ----------------------------------------------------------------
-% IX.E â€” Pipeline bias generalization
+% IX.E ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Pipeline bias generalization
 % ----------------------------------------------------------------
 \subsection{Pipeline bias generalization}
 \label{sec:pipeline_bias}
@@ -2622,7 +2641,7 @@ and the $N$-body calibration of the preceding sections.
 No parameter is adjusted to the test data.
 
 % ----------------------------------------------------------------
-% X.A — Euclid DR1
+% X.A ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Euclid DR1
 % ----------------------------------------------------------------
 \subsection{Euclid DR1 weak lensing and spectroscopy}
 \label{sec:euclid}
@@ -2745,7 +2764,7 @@ providing a direct measurement of the evaporation onset
 redshift.
 
 % ----------------------------------------------------------------
-% X.B — LSST Y1
+% X.B ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â LSST Y1
 % ----------------------------------------------------------------
 \subsection{LSST Y1 weak lensing}
 \label{sec:lsst}
@@ -2810,7 +2829,7 @@ value. The convergence of two independent Stage-IV
 pipelines on the same $\hat{S}_8$ is a consistency
 check of the EU prediction.
 
-\begin{figure}[t]
+\begin{figure}[pos=!htbp]
 \includegraphics[width=\columnwidth]{fig5_kernel_gradient.pdf}
 \caption{Kernel bias gradient $\Delta W_i / W_i$ as a function of
 mean tomographic redshift for Euclid DR1 (10 bins, circles) and
@@ -2821,7 +2840,7 @@ CDM drain freezing at high redshift.}
 \end{figure}
 
 % ----------------------------------------------------------------
-% X.C — DESI and the CPL mirage
+% X.C ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â DESI and the CPL mirage
 % ----------------------------------------------------------------
 \subsection{Distance probes and the equation-of-state mirage}
 \label{sec:cpl_mirage}
@@ -2954,7 +2973,7 @@ This asymmetry is the model's distinctive signature
 which generically alter both growth and geometry at
 comparable levels.
 
-\begin{figure}[t]
+\begin{figure}[pos=!htbp]
 \includegraphics[width=\columnwidth]{fig6_cpl_mirage.pdf}
 \caption{The CPL mirage: apparent $w_0$ recovered by a $w$CDM
 pipeline as a function of the forced $\Omega_m$ prior. The EU
@@ -2967,7 +2986,7 @@ Crossover $w_0 = -1$ at $\Omega_m \approx 0.297$
 \end{figure}
 
 % ----------------------------------------------------------------
-% X.D — Prediction summary and timeline
+% X.D ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Prediction summary and timeline
 % ----------------------------------------------------------------
 \subsection{Prediction summary and timeline}
 \label{sec:timeline}
@@ -2985,7 +3004,6 @@ and the $N$-body calibrated power spectrum, with zero
 additional free parameters. P6 is already tested against
 DESI DR2 data.}
 \label{tab:predictions}
-\begin{ruledtabular}
 \begin{tabular}{clllc}
  & Prediction & Observable & Magnitude & Data \\
 \hline
@@ -3030,7 +3048,6 @@ P10 & BAO distance excess at $z > 2$
   & $+1.7\%,\; +0.6\%$ at $z = 2.33$
   & DESI DR3 \\
 \end{tabular}
-\end{ruledtabular}
 \end{table*}
 
 The timeline is compressed. Euclid DR1
@@ -3062,7 +3079,7 @@ measurements, and the dark energy equation of state
 \label{sec:discussion}
 
 % ----------------------------------------------------------------
-% XI.A â€” Model comparison
+% XI.A ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Model comparison
 % ----------------------------------------------------------------
 \subsection{Model comparison}
 \label{sec:model_comparison}
@@ -3082,7 +3099,6 @@ from published posteriors vs~SH0ES and
 weak-lensing surveys.
 $^\dagger$With SH0ES and KiDS-1000 in fit.}
 \label{tab:model_comparison}
-\begin{ruledtabular}
 \begin{tabular}{p{1.8cm}ccccl}
 Model & $\Delta k$ & $H_0$ & $S_8$ & Level & Ref. \\
 \hline
@@ -3112,7 +3128,6 @@ $w_0 w_a$CDM
   $\mathbf{0.58\sigma}$ & \textbf{3}
   & This work \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 A useful organizing principle is the
@@ -3189,7 +3204,7 @@ a CDM drain artifact.
 
 
 % ----------------------------------------------------------------
-% XI.B â€” Theoretical structure and limitations
+% XI.B ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Theoretical structure and limitations
 % ----------------------------------------------------------------
 \subsection{Theoretical structure and limitations}
 \label{sec:theory_limits}
@@ -3275,7 +3290,7 @@ Sec.~\ref{sec:predictions} are calibrated to the
 sensitivity of Euclid, LSST, and DESI DR3.
 
 % ----------------------------------------------------------------
-% XI.C â€” Outlook
+% XI.C ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â Outlook
 % ----------------------------------------------------------------
 \subsection{Outlook}
 \label{sec:outlook}
@@ -3419,8 +3434,7 @@ predicting it.
 % ================================================================
 % ACKNOWLEDGMENTS
 % ================================================================
-\begin{acknowledgments}
-
+\section*{Acknowledgments}
 
 This work would not have been possible without the open-source tools and
 public data sets maintained by the cosmology community. I gratefully
@@ -3441,12 +3455,17 @@ SH0ES~\cite{breuval2024}, Pantheon$+$~\cite{scolnic2022},
 and DESI~\cite{desi_dr2_2025}
 collaborations for their commitment to public data releases.
 
-Portions of this manuscript were edited and polished with the
-assistance of AI-based writing tools.
 All code, data, and supplementary material for this work are
 publicly available~\cite{eu_github}.
 
-\end{acknowledgments}
+I am deeply grateful to my mother, Nilceia Camarinho, for her
+unwavering dedication to my education and moral foundation,
+filling every role to ensure my growth. A special thanks to my
+wife, Rayane Brum, my perfect life partner, whose unconditional
+support and nurturing presence allowed me to fully explore my
+potential while keeping me tethered to reality---preventing me
+from sharing the solitary fate of Jos\'e Arcadio
+Buend\'ia. To them, I owe the path that led to this work.
 
 % ================================================================
 % DATA AVAILABILITY
@@ -3456,6 +3475,23 @@ publicly available~\cite{eu_github}.
 The modified \textsc{class} source code, analysis notebooks,
 MCMC chains, and $N$-body simulation outputs that support the
 findings of this article are openly available~\cite{eu_github}.
+
+% ================================================================
+% DECLARATION OF COMPETING INTERESTS
+% ================================================================
+\section*{Declaration of competing interests}
+
+The author declares that he has no known competing financial
+interests or personal relationships that could have appeared
+to influence the work reported in this article.
+
+% ================================================================
+% FUNDING
+% ================================================================
+\section*{Funding}
+
+This research did not receive any specific grant from funding
+agencies in the public, commercial, or not-for-profit sectors.
 
 % ================================================================
 % APPENDICES
@@ -3515,11 +3551,10 @@ is evaluated using irreducible exact rational arithmetic, ensuring
 zero floating-point contamination. Four independent momentum
 configurations yield:
 
-\begin{table}[h]
+\begin{table}[pos=!htbp]
 \caption{Verification of $b = 19/36$ across four momentum
   configurations. All computations use exact rational arithmetic.}
 \label{tab:b_verification}
-\begin{ruledtabular}
 \begin{tabular}{lccc}
 Configuration & ${\rm Tr}_{\rm TT}/p^2$ &
   ${\rm Tr}_{\rm full}/p^2$ & Ratio \\
@@ -3529,7 +3564,6 @@ $p \perp k$, axes (2,3) & $19/3$ & $12$ & $19/36$ \\
 $p \perp k$, axes (4,1) & $19/3$ & $12$ & $19/36$ \\
 $|p|{=}|k|{=}\sqrt{2}$  & $38/3$ & $24$ & $19/36$ \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 \noindent
@@ -3551,11 +3585,10 @@ $\Om = (\omega_b + \omega_{\rm cdm})/h^2$, where $\omega_b = 0.02237$
 and $\omega_{\rm cdm} = 0.1200$ are direct CMB
 observables~\cite{planck2018}. For $h \in [0.660, 0.700]$:
 
-\begin{table}[h]
+\begin{table}[pos=!htbp]
 \caption{Sensitivity of $\ztrans$ to the reduced Hubble constant $h$.
   The total variation is $\Delta\ztrans \approx 0.40$ ($\sim 6.7\%$).}
 \label{tab:ztrans_sensitivity}
-\begin{ruledtabular}
 \begin{tabular}{cccl}
 $h$ & $\Om$ & $\ztrans$ & Source \\
 \hline
@@ -3564,7 +3597,6 @@ $0.6736$ & $0.315$ & $5.986$ & Planck ($\Lambda$CDM) \\
 $0.690$ & $0.300$ & $6.150$ & EU upper estimate \\
 $0.700$ & $0.292$ & $6.248$ & Upper bound \\
 \end{tabular}
-\end{ruledtabular}
 \end{table}
 
 \noindent
@@ -3655,7 +3687,7 @@ cancels in the ratio, yielding a universal screening factor.
 \subsection{Perturbation null test}
 \label{app:null_test}
 
-\begin{table*}[!t]
+\begin{table*}[pos=!htbp]
 \caption{Perturbation null test: Phase~1 (perturbation
 source terms off) versus Phase~2 (source terms on).
 The EU-blind configuration frees
@@ -3664,7 +3696,6 @@ theory-fixed configuration holds them at the
 framework-derived values. All posterior shifts are
 $< 0.03\sigma$.}
 \label{tab:null_test}
-\begin{ruledtabular}
 \begin{tabular}{lcccc}
  & \multicolumn{2}{c}{EU-blind ($\Delta k{=}3$)}
  & \multicolumn{2}{c}{EU ($\Delta k{=}0$)} \\
@@ -3713,7 +3744,6 @@ $(R-1)_{\rm max}$
   & $0.003$ & $0.003$
   & $0.004$ & $0.005$ \\
 \end{tabular}
-\end{ruledtabular}
 \end{table*}
 
 Table~\ref{tab:null_test} presents the full posterior
@@ -3740,7 +3770,7 @@ Sec.~\ref{sec:posteriors}; the theory-fixed configuration
 is preferred by $\Delta\text{AIC} = -4.1$.
 
 
-\begin{figure*}[!t]
+\begin{figure*}[pos=!htbp]
 \includegraphics[width=0.85\textwidth]{fig7_corner_comparison.pdf}
 \caption{Posterior comparison between the theory-fixed
 configuration (blue) and the EU-blind free-parameter
@@ -3752,8 +3782,27 @@ the framework-derived values.}
 \end{figure*}
 
 \clearpage
+
+% ================================================================
+% DECLARATION OF GENERATIVE AI
+% ================================================================
+\section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+
+During the preparation of this work, the author used an AI
+coding assistant in order to support manuscript editing,
+structural organization, editorial compliance verification,
+and computational code development (CLASS-EU solver patches,
+Cobaya MCMC configuration files, and Gadget-4 $N$-body
+simulation scripts). After using this tool, the author
+reviewed and edited all content as needed and takes full
+responsibility for the content of the published article.
+
+% To print the credit authorship contribution details
+\printcredits
+
 % BIBLIOGRAPHY
 % ================================================================
+\bibliographystyle{cas-model2-names}
 \bibliography{eu_paper1}
 
 \end{document}
